@@ -1,0 +1,43 @@
+{
+  "name": "pallies",
+  "version": "0.0.1",
+  "description": "",
+  "author": "Derek Wheelden",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "start": "nodemon server",
+    "test": "lab -a @hapi/code -L",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@hapi/boom": "8.x.x",
+    "@hapi/joi": "^16.1.8",
+    "generate-password": "^1.4.2",
+    "haute-couture": "3.x.x",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.20.4",
+    "objection": "^2.0.6",
+    "pg": "^7.14.0",
+    "secure-password": "^3.1.0"
+  },
+  "devDependencies": {
+    "@hapi/code": "6.x.x",
+    "@hapi/eslint-config-hapi": "12.x.x",
+    "@hapi/eslint-plugin-hapi": "4.x.x",
+    "@hapi/glue": "6.x.x",
+    "@hapi/hapi": "18.x.x",
+    "@hapi/lab": "20.x.x",
+    "confidence": "4.x.x",
+    "dotenv": "8.x.x",
+    "eslint": "6.x.x",
+    "hpal": "2.x.x",
+    "hpal-debug": "1.x.x",
+    "nodemon": "^2.0.2",
+    "toys": "2.x.x"
+  }
+}
