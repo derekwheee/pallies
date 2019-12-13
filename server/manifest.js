@@ -43,19 +43,63 @@ module.exports = new Confidence.Store({
                             $env: 'TOKEN_SECRET'
                         }
                     },
+                    isDev: {
+                        $filter: { $env: 'NODE_ENV' },
+                        $default: false,
+                        production: false,
+                        development: true
+                    },
                     jwt: {
                         userRefreshTokens: {
-                            $default: {
-                                $env: 'USE_REFRESH_TOKENS',
-                                $coerce: 'bool',
-                                $default: true
-                            }
+                            $env: 'USE_REFRESH_TOKENS',
+                            $coerce: 'bool',
+                            $default: true
                         },
                         issuer: {
-                            $default: {
-                                $env: 'TOKEN_ISSUER',
-                                $default: ''
+                            $env: 'APPLICATION_NAME',
+                            $default: 'Test Application'
+                        }
+                    },
+                    application: {
+                        name: {
+                            $env: 'APPLICATION_NAME',
+                            $default: 'Test Application'
+                        },
+                        uri: {
+                            $env: 'APPLICATION_URI',
+                            $default: 'http://localhost:3000'
+
+                        },
+                        noreply: {
+                            $env: 'APPLICATION_NOREPLY',
+                            $default: 'no-reply@test.com'
+
+                        }
+                    },
+                    smtp: {
+                        auth: {
+                            user: {
+                                $env: 'SMTP_USERNAME',
+                                $default: null
+                            },
+                            pass: {
+                                $env: 'SMTP_PASSWORD',
+                                $default: null
                             }
+                        },
+                        host: {
+                            $env: 'SMTP_HOST',
+                            $default: 'smtp.ethereal.email'
+                        },
+                        port: {
+                            $env: 'SMTP_PORT',
+                            $coerce: 'number',
+                            $default: 587
+                        },
+                        secure: {
+                            $env: 'SMTP_IS_SECURE',
+                            $coerce: 'bool',
+                            $default: false
                         }
                     }
                 }
