@@ -42,6 +42,21 @@ module.exports = new Confidence.Store({
                         production: {           // In production do not default to "app-secret"
                             $env: 'TOKEN_SECRET'
                         }
+                    },
+                    jwt: {
+                        userRefreshTokens: {
+                            $default: {
+                                $env: 'USE_REFRESH_TOKENS',
+                                $coerce: 'bool',
+                                $default: true
+                            }
+                        },
+                        issuer: {
+                            $default: {
+                                $env: 'TOKEN_ISSUER',
+                                $default: ''
+                            }
+                        }
                     }
                 }
             },
