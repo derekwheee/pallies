@@ -32,7 +32,18 @@ module.exports = new Confidence.Store({
         plugins: [
             {
                 plugin: '../lib', // Main plugin
-                options: {}
+                options: {
+                    tokenSecret: {
+                        $filter: { $env: 'NODE_ENV' },
+                        $default: {
+                            $env: 'TOKEN_SECRET',
+                            $default: 'kissmyants'
+                        },
+                        production: {           // In production do not default to "app-secret"
+                            $env: 'TOKEN_SECRET'
+                        }
+                    }
+                }
             },
             {
                 plugin: {
