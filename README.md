@@ -1,2 +1,1 @@
-# undefined
 # Pallies

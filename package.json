@@ -1,10 +1,14 @@
 {
   "name": "pallies",
   "version": "0.0.1",
-  "description": "",
-  "author": "Derek Wheelden",
+  "description": "Multi-tenant user management for Hapi",
+  "author": "Derek Wheelden <derek.wheelden@gmail.com>",
   "license": "MIT",
   "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frxnz/pallies"
+  },
   "directories": {
     "lib": "lib",
     "test": "test"
