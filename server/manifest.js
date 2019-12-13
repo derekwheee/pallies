@@ -3,6 +3,7 @@
 const Dotenv = require('dotenv');
 const Confidence = require('confidence');
 const Toys = require('toys');
+const Schwifty = require('schwifty');
 
 // Pull .env into process.env
 Dotenv.config({ path: `${__dirname}/.env` });
@@ -38,6 +39,31 @@ module.exports = new Confidence.Store({
                     $filter: { $env: 'NODE_ENV' },
                     $default: 'hpal-debug',
                     production: Toys.noop
+                }
+            },
+            {
+                plugin: 'schwifty',
+                options: {
+                    $filter: { $env: 'NODE_ENV' },
+                    $default: {},
+                    $base: {
+                        migrateOnStart: true,
+                        knex: {
+                            client: 'pg',
+                            connection: {
+                                host: { $env: 'DB_HOST' },
+                                user: { $env: 'DB_USER' },
+                                password: { $env: 'DB_PASSWORD' },
+                                database: { $env: 'DB_DATABASE' }
+                            },
+                            migrations: {
+                                stub: Schwifty.migrationsStubPath
+                            }
+                        }
+                    },
+                    production: {
+                        migrateOnStart: false
+                    }
                 }
             }
         ]
