@@ -15,7 +15,7 @@
         "$filter": {
             "$env": "NODE_ENV"
         },
-        "$default": false,
+        "$default": true,
         "production": false,
         "development": true
     },
