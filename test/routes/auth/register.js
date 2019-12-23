@@ -9,16 +9,21 @@ const Constants = require('../../constants');
 
 // Test shortcuts
 
-const { describe, it, after } = exports.lab = Lab.script();
+const { describe, it, before, after } = exports.lab = Lab.script();
 const { expect } = Code;
+
+const internals = {};
 
 describe('Register', () => {
 
+    before(async () => {
+
+        internals.server = await Server.deployment();
+    });
+
     it('register user', async () => {
 
-        const server = await Server.deployment();
-
-        const response = await server.inject({
+        const response = await internals.server.inject({
             method: 'post',
             url: '/register',
             payload: {
@@ -36,9 +41,7 @@ describe('Register', () => {
 
     it('re-register user fails', async () => {
 
-        const server = await Server.deployment();
-
-        const response = await server.inject({
+        const response = await internals.server.inject({
             method: 'post',
             url: '/register',
             payload: {
@@ -53,8 +56,6 @@ describe('Register', () => {
 
     after(async () => {
 
-        const server = await Server.deployment();
-
-        await server.services().userService.removeByEmail(`register-${Constants.TEST_USER_EMAIL}`);
+        await internals.server.services().userService.removeByEmail(`register-${Constants.TEST_USER_EMAIL}`);
     });
 });
