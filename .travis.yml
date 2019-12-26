@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - 10
+  - 12
+env:
+  - NO_SERIALPORT_INSTALL=1
+
+install:
+  - npm install
+
+script:
+  - npm run test
+
+after_success:
+  - npm run coverage

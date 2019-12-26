@@ -23,7 +23,7 @@ describe('Register', () => {
 
     it('register user', async () => {
 
-        const response = await internals.server.inject({
+        const { result } = await internals.server.inject({
             method: 'post',
             url: '/register',
             payload: {
@@ -33,10 +33,10 @@ describe('Register', () => {
             }
         });
 
-        expect(response.statusCode).to.equal(200);
-        expect(response.result.name).to.equal(Constants.TEST_USER_NAME);
-        expect(response.result.email).to.equal(`register-${Constants.TEST_USER_EMAIL}`);
-        expect(response.result.password).to.not.equal(Constants.TEST_USER_PASSWORD);
+        expect(result.statusCode).to.equal(200);
+        expect(result.data.name).to.equal(Constants.TEST_USER_NAME);
+        expect(result.data.email).to.equal(`register-${Constants.TEST_USER_EMAIL}`);
+        expect('password' in result.data).to.be.false();
     });
 
     it('re-register user fails', async () => {

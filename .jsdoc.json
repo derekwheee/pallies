@@ -1,0 +1,20 @@
+{
+    "source": {
+        "include": ["lib", "package.json", "README.md"],
+        "includePattern": ".js$",
+        "excludePattern": "(node_modules/|docs)"
+    },
+    "templates": {
+        "referenceTitle": "Pallies Documentation",
+        "disableSort": false,
+        "collapse": true
+    },
+    "opts": {
+        "encoding": "utf8",
+        "readme": "./README.md",
+        "destination": "docs/",
+        "recurse": true,
+        "verbose": true,
+        "template": "./node_modules/jsdoc-template"
+    }
+}
