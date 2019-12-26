@@ -21,6 +21,10 @@
     "lint": "eslint .",
     "docs": "jsdoc --configure .jsdoc.json --verbose"
   },
+  "pre-commit": [
+    "lint",
+    "docs"
+  ],
   "dependencies": {
     "@hapi/boom": "8.x.x",
     "@hapi/joi": "^16.1.8",
@@ -57,6 +61,7 @@
     "jsdoc": "^3.6.3",
     "jsdoc-template": "git+https://github.com/braintree/jsdoc-template.git",
     "nodemon": "^2.0.2",
+    "pre-commit": "^1.2.2",
     "toys": "2.x.x"
   }
 }
