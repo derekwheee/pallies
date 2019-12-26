@@ -1,2 +1,8 @@
 *
 !lib/**
+
+docs
+test
+.eslint*
+.jsdoc.json
+.travis.yml

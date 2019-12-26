@@ -4,6 +4,7 @@
   "description": "Multi-tenant user management for Hapi",
   "author": "Derek Wheelden <derek.wheelden@gmail.com>",
   "license": "MIT",
+  "keywords": ["hapi", "hpal", "user", "management", "plugin"],
   "main": "lib/index.js",
   "repository": {
     "type": "git",
@@ -59,7 +60,7 @@
     "hpal": "2.x.x",
     "hpal-debug": "1.x.x",
     "jsdoc": "^3.6.3",
-    "jsdoc-template": "git+https://github.com/braintree/jsdoc-template.git",
+    "jsdoc-template": "git+https://github.com/frxnz/jsdoc-template.git",
     "nodemon": "^2.0.2",
     "pre-commit": "^1.2.2",
     "toys": "2.x.x"
