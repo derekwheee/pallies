@@ -4,7 +4,7 @@ const Dotenv = require('dotenv');
 const Confidence = require('confidence');
 const Toys = require('toys');
 const Schwifty = require('schwifty');
-const Config = require('../.palliesrc.json');
+const Config = require(`${__dirname}/.palliesrc.json`);
 
 // Pull .env into process.env
 Dotenv.config({ path: `${__dirname}/.env` });
