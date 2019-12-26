@@ -6,15 +6,6 @@ node_js:
 services:
   - postgresql
 
-env:
-  - NODE_ENV=development
-  - TOKEN_SECRET=kissmyants
-  - PORT=3000
-  - DB_HOST=localhost
-  - DB_USER=postgres
-  - DB_PASSWORD=
-  - DB_DATABASE=pallies
-
 install:
   - npm install
 
