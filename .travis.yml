@@ -2,11 +2,24 @@ language: node_js
 node_js:
   - 10
   - 12
+
+services:
+  - postgresql
+
 env:
-  - NO_SERIALPORT_INSTALL=1
+  - NODE_ENV=development
+  - TOKEN_SECRET=kissmyants
+  - PORT=3000
+  - DB_HOST=localhost
+  - DB_USER=postgres
+  - DB_PASSWORD=
+  - DB_DATABASE=pallies
 
 install:
   - npm install
+
+before_script:
+  - psql -c 'create database pallies;' -U postgres
 
 script:
   - npm run test
