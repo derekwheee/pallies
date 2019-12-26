@@ -16,8 +16,8 @@
   "scripts": {
     "start": "nodemon server",
     "test": "lab -a @hapi/code -L",
-    "coverage": "lab -a @hapi/code -L -r lcov",
-    "coveralls": "lab -a @hapi/code -L -r lcov | coveralls",
+    "coverage": "lab -a @hapi/code -L -c --coverage-all --coverage-exclude docs --coverage-exclude node_modules --coverage-exclude lib/migrations",
+    "coveralls": "lab -a @hapi/code -L -r lcov -c --coverage-all --coverage-exclude docs --coverage-exclude node_modules --coverage-exclude lib/migrations | coveralls",
     "lint": "eslint .",
     "docs": "jsdoc --configure .jsdoc.json --verbose"
   },
