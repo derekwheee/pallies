@@ -21,7 +21,9 @@
     },
     "jwt": {
         "useRefreshTokens": true,
-        "issuer": "Pallies"
+        "issuer": "Pallies",
+        "accessTokenLifespan": 3600,
+        "refreshTokenLifespan": 604800
     },
     "application": {
         "name": "Pallies",

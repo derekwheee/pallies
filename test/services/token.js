@@ -38,6 +38,8 @@ describe('Token Service', () => {
 
         const decoded = Jwt.decode(token);
 
+        console.log(decoded);
+
         expect(token).to.exist();
         expect(token).to.be.a.string();
         expect(decoded.id).to.equal(internals.user.id);
@@ -69,7 +71,6 @@ describe('Token Service', () => {
     it('validate bad refresh token', () => {
 
         const tokenService = internals.server.services().tokenService;
-        //const validated = await tokenService.validateRefreshToken('badtoken');
 
         expect(tokenService.validateRefreshToken('badtoken')).to.reject('Invalid refresh token');
     });

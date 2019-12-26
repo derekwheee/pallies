@@ -111,7 +111,7 @@ describe('Auth Service', () => {
             }
         };
 
-        const newUser = await authService.invite(request, null, 'INVITE USER', 'inviteuser@test.com');
+        const newUser = await authService.invite(request, 'INVITE USER', 'inviteuser@test.com');
 
         expect(newUser).to.exist();
         expect(newUser.email).to.equal('inviteuser@test.com');
