@@ -20,7 +20,7 @@ Pallies is a user management plugin for [hapi](https://hapi.dev/), designed to w
 
 ### Getting Started
 
-This guide assumes you've already created a hapi project from scratch, or using hpal
+This guide assumes you've already created a hapi project using hpal
 
 Looking for a starting point? Check the [Pallies Demo Repo](https://github.com/frxnz/pallies-demo-api).
 
@@ -37,7 +37,7 @@ Create a configuration file at `server/.palliesrc.js`
 #### Update Your Manifest
 ```js
 // Load Pallies config
-const Config = require('./.palliesrc');
+const PalliesConfig = require('./.palliesrc');
 
 // Register Pallies as a plugin
 {
@@ -51,7 +51,7 @@ const Config = require('./.palliesrc');
             production: false,
             development: true
         },
-        ...Config.pallies
+        ...PalliesConfig
     }
 },
 // Register Schwifty
@@ -62,7 +62,18 @@ const Config = require('./.palliesrc');
         $default: {},
         $base: {
             migrateOnStart: true,
-            knex: Config.knex
+            knex: {
+                client: 'pg',
+                connection: {
+                    host: { $env: 'DB_HOST' },
+                    user: { $env: 'DB_USER' },
+                    password: { $env: 'DB_PASSWORD' },
+                    database: { $env: 'DB_DATABASE' }
+                },
+                migrations: {
+                    stub: 'Schwifty.migrationsStubPath'
+                }
+            }
         },
         production: {
             migrateOnStart: false
@@ -71,8 +82,22 @@ const Config = require('./.palliesrc');
 }
 ```
 
+#### Update `knexfile.js`
+
+Add the Pallies migration directory to your migrations configuration
+
+```js
+// ...
+migrations: {
+    directory: [
+        'node_modules/pallies/lib/migrations',
+        Path.relative(process.cwd(), PluginConfig.migrationsDir)
+    ]
+}
+//...
+```
 
 #### Apply database migrations
 ```bash
-npx knex-migrate up --cwd ./node_modules/pallies
+npx knex migrate:latest
 ```

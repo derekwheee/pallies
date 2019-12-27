@@ -111,7 +111,7 @@
 <li>Use any database supported by <a href="http://knexjs.org/">Knex</a> and <a href="https://vincit.github.io/objection.js/">Objection</a></li>
 </ul>
 <h3>Getting Started</h3>
-<p>This guide assumes you've already created a hapi project from scratch, or using hpal</p>
+<p>This guide assumes you've already created a hapi project using hpal</p>
 <p>Looking for a starting point? Check the <a href="https://github.com/frxnz/pallies-demo-api">Pallies Demo Repo</a>.</p>
 <h4>Install the Pallies module from npm</h4>
 <pre class="prettyprint source lang-bash"><code>npm install --save pallies
@@ -121,7 +121,7 @@
 <p><a href="https://github.com/frxnz/pallies/blob/master/server/.palliesrc.js">Example Pallies configuration</a></p>
 <h4>Update Your Manifest</h4>
 <pre class="prettyprint source lang-js"><code>// Load Pallies config
-const Config = require('./.palliesrc');
+const PalliesConfig = require('./.palliesrc');
 
 // Register Pallies as a plugin
 {
@@ -135,7 +135,7 @@ const Config = require('./.palliesrc');
             production: false,
             development: true
         },
-        ...Config.pallies
+        ...PalliesConfig
     }
 },
 // Register Schwifty
@@ -146,7 +146,18 @@ const Config = require('./.palliesrc');
         $default: {},
         $base: {
             migrateOnStart: true,
-            knex: Config.knex
+            knex: {
+                client: 'pg',
+                connection: {
+                    host: { $env: 'DB_HOST' },
+                    user: { $env: 'DB_USER' },
+                    password: { $env: 'DB_PASSWORD' },
+                    database: { $env: 'DB_DATABASE' }
+                },
+                migrations: {
+                    stub: 'Schwifty.migrationsStubPath'
+                }
+            }
         },
         production: {
             migrateOnStart: false
@@ -154,8 +165,19 @@ const Config = require('./.palliesrc');
     }
 }
 </code></pre>
+<h4>Update <code>knexfile.js</code></h4>
+<p>Add the Pallies migration directory to your migrations configuration</p>
+<pre class="prettyprint source lang-js"><code>// ...
+migrations: {
+    directory: [
+        'node_modules/pallies/lib/migrations',
+        Path.relative(process.cwd(), PluginConfig.migrationsDir)
+    ]
+}
+//...
+</code></pre>
 <h4>Apply database migrations</h4>
-<pre class="prettyprint source lang-bash"><code>npx knex-migrate up --cwd ./node_modules/pallies
+<pre class="prettyprint source lang-bash"><code>npx knex migrate:latest
 </code></pre>
     </article>
   </section>

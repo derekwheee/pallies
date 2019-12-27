@@ -4,7 +4,7 @@ const Dotenv = require('dotenv');
 const Confidence = require('confidence');
 const Toys = require('toys');
 // TODO: Merge a default config with a project-specific config
-const Config = require(`${__dirname}/.palliesrc`);
+const Pallies = require(`${__dirname}/.palliesrc`);
 
 // Pull .env into process.env
 Dotenv.config({ path: `${__dirname}/.env` });
@@ -42,7 +42,7 @@ module.exports = new Confidence.Store({
                         production: false,
                         development: true
                     },
-                    ...Config.pallies
+                    ...Pallies
                 }
             },
             {
@@ -59,7 +59,18 @@ module.exports = new Confidence.Store({
                     $default: {},
                     $base: {
                         migrateOnStart: true,
-                        knex: Config.knex
+                        knex: {
+                            client: 'pg',
+                            connection: {
+                                host: { $env: 'DB_HOST' },
+                                user: { $env: 'DB_USER' },
+                                password: { $env: 'DB_PASSWORD' },
+                                database: { $env: 'DB_DATABASE' }
+                            },
+                            migrations: {
+                                stub: 'Schwifty.migrationsStubPath'
+                            }
+                        }
                     },
                     production: {
                         migrateOnStart: false
