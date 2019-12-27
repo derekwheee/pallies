@@ -1,4 +1,5 @@
 *
+!knexfile.js
 !lib/**
 
 docs

@@ -20,9 +20,59 @@ Pallies is a user management plugin for [hapi](https://hapi.dev/), designed to w
 
 ### Getting Started
 
-> This guide assumes you've already created a hapi project from scratch, or using hpal
+This guide assumes you've already created a hapi project from scratch, or using hpal
 
-Install the Pallies module from npm:
+Looking for a starting point? Check the [Pallies Demo Repo](https://github.com/frxnz/pallies-demo-api).
+
+#### Install the Pallies module from npm
 ```bash
 npm install --save pallies
+```
+
+#### Configure Pallies
+Create a configuration file at `server/.palliesrc.js`
+
+[Example Pallies configuration](https://github.com/frxnz/pallies/blob/master/server/.palliesrc.js)
+
+#### Update Your Manifest
+```js
+// Load Pallies config
+const Config = require('./.palliesrc');
+
+// Register Pallies as a plugin
+{
+    plugin: 'pallies',
+    options: {
+        isDev: {
+            $filter: {
+                $env: 'NODE_ENV'
+            },
+            $default: false,
+            production: false,
+            development: true
+        },
+        ...Config.pallies
+    }
+},
+// Register Schwifty
+{
+    plugin: 'schwifty',
+    options: {
+        $filter: { $env: 'NODE_ENV' },
+        $default: {},
+        $base: {
+            migrateOnStart: true,
+            knex: Config.knex
+        },
+        production: {
+            migrateOnStart: false
+        }
+    }
+}
+```
+
+
+#### Apply database migrations
+```bash
+npx knex-migrate up --cwd ./node_modules/pallies
 ```
