@@ -16,9 +16,9 @@
   },
   "scripts": {
     "start": "nodemon server",
-    "test": "lab -a @hapi/code -L --verbose",
-    "coverage": "lab -a @hapi/code -L -c --coverage-all --coverage-exclude docs --coverage-exclude node_modules --coverage-exclude lib/migrations",
-    "coveralls": "lab -a @hapi/code -L -r lcov -c --coverage-all --coverage-exclude docs --coverage-exclude node_modules --coverage-exclude lib/migrations | coveralls",
+    "test": "lab -a @hapi/code -L --verbose -m 10000",
+    "coverage": "lab -a @hapi/code -L -c --coverage-all --coverage-exclude docs --coverage-exclude node_modules --coverage-exclude lib/migrations -m 10000",
+    "coveralls": "lab -a @hapi/code -L -r lcov -c --coverage-all --coverage-exclude docs --coverage-exclude node_modules --coverage-exclude lib/migrations -m 10000 | coveralls",
     "lint": "eslint .",
     "docs": "jsdoc --configure .jsdoc.json --verbose"
   },

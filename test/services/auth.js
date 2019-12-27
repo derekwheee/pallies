@@ -98,7 +98,7 @@ describe('Auth Service', () => {
         expect('token_type' in newTokens).to.be.true();
     });
 
-    it('invite user', { timeout: 10000 }, async () => {
+    it('invite user', async () => {
 
         const authService = internals.server.services().authService;
         const user = await authService.register(Constants.TEST_USER_NAME, `authService-${Constants.TEST_USER_EMAIL}`, Constants.TEST_USER_PASSWORD);
@@ -121,7 +121,7 @@ describe('Auth Service', () => {
 
     });
 
-    it('forgot password', { timeout: 10000 }, async () => {
+    it('forgot password', async () => {
 
         const authService = internals.server.services().authService;
         const user = await authService.register(Constants.TEST_USER_NAME, `authService-${Constants.TEST_USER_EMAIL}`, Constants.TEST_USER_PASSWORD);
@@ -132,7 +132,7 @@ describe('Auth Service', () => {
         expect(email.rejected).to.have.length(0);
     });
 
-    it('reset password', { timeout: 10000 }, async () => {
+    it('reset password', async () => {
 
         const authService = internals.server.services().authService;
         const user = await authService.register(Constants.TEST_USER_NAME, `authService-${Constants.TEST_USER_EMAIL}`, Constants.TEST_USER_PASSWORD);
@@ -158,7 +158,7 @@ describe('Auth Service', () => {
 
     });
 
-    it('set new password', { timeout: 10000 }, async () => {
+    it('set new password', async () => {
 
         const authService = internals.server.services().authService;
         const user = await authService.register(Constants.TEST_USER_NAME, `authService-${Constants.TEST_USER_EMAIL}`, Constants.TEST_USER_PASSWORD);
@@ -180,7 +180,7 @@ describe('Auth Service', () => {
 
     });
 
-    it('set new password bad token', { timeout: 10000 }, async () => {
+    it('set new password bad token', async () => {
 
         const authService = internals.server.services().authService;
         const user = await authService.register(Constants.TEST_USER_NAME, `authService-${Constants.TEST_USER_EMAIL}`, Constants.TEST_USER_PASSWORD);

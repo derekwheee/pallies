@@ -33,7 +33,7 @@ describe('Invite User', () => {
 
     });
 
-    it('unauthenticated', { timeout: 5000 }, async () => {
+    it('unauthenticated', async () => {
 
         const { result } = await internals.server.inject({
             method: 'post',
@@ -47,7 +47,7 @@ describe('Invite User', () => {
         expect(result.statusCode).to.equal(401);
     });
 
-    it('send invite', { timeout: 5000 }, async () => {
+    it('send invite', async () => {
 
         const { result } = await internals.server.inject({
             method: 'post',
@@ -64,7 +64,7 @@ describe('Invite User', () => {
         expect(result.statusCode).to.equal(200);
     });
 
-    it('invite existing user', { timeout: 5000 }, async () => {
+    it('invite existing user', async () => {
 
         const userService = internals.server.services().userService;
 
@@ -90,7 +90,7 @@ describe('Invite User', () => {
         expect(result.message).to.include('already registered');
     });
 
-    it('force invite existing user', { timeout: 5000 }, async () => {
+    it('force invite existing user', async () => {
 
         const userService = internals.server.services().userService;
 

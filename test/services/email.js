@@ -29,21 +29,21 @@ describe('Email Service', () => {
         });
     });
 
-    it('send user invite without token', { timeout: 5000 }, () => {
+    it('send user invite without token', () => {
 
         const emailService = internals.server.services().emailService;
 
         expect(emailService.sendUserInvite('Inviter', internals.user)).to.reject('Invalid invite token');
     });
 
-    it('send forgot password without token', { timeout: 5000 }, () => {
+    it('send forgot password without token', () => {
 
         const emailService = internals.server.services().emailService;
 
         expect(emailService.sendForgotPassword(internals.user)).to.reject('Invalid forgot password token');
     });
 
-    it('send user invite', { timeout: 5000 }, async () => {
+    it('send user invite', async () => {
 
         const emailService = internals.server.services().emailService;
         const userService = internals.server.services().userService;
@@ -57,7 +57,7 @@ describe('Email Service', () => {
         expect(email.rejected).to.have.length(0);
     });
 
-    it('send forgot password', { timeout: 5000 }, async () => {
+    it('send forgot password', async () => {
 
         const emailService = internals.server.services().emailService;
 

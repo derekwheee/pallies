@@ -21,7 +21,7 @@ describe('Forgot Password', () => {
         internals.server = await Server.deployment();
     });
 
-    it('send forgot password', { timeout: 5000 }, async () => {
+    it('send forgot password', async () => {
 
         const userService = internals.server.services().userService;
 

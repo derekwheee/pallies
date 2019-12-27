@@ -16,7 +16,7 @@ Pallies is a user management plugin for [hapi](https://hapi.dev/), designed to w
 * Built-in support for user invite and forgot password emails
 * Powerful configuration using [Confidence](https://github.com/hapijs/confidence)
 * Strong password encryption using [Argon2](https://www.npmjs.com/package/argon2)
-* Supports Postgres (more DB integration coming soon)
+* Use any database supported by [Knex](http://knexjs.org/) and [Objection](https://vincit.github.io/objection.js/)
 
 ### Getting Started
 

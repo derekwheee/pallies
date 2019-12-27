@@ -3,8 +3,7 @@
 const Dotenv = require('dotenv');
 const Confidence = require('confidence');
 const Toys = require('toys');
-const Schwifty = require('schwifty');
-const Config = require(`${__dirname}/.palliesrc.json`);
+const Config = require(`${__dirname}/.palliesrc`);
 
 // Pull .env into process.env
 Dotenv.config({ path: `${__dirname}/.env` });
@@ -42,7 +41,7 @@ module.exports = new Confidence.Store({
                         production: false,
                         development: true
                     },
-                    ...Config
+                    ...Config.pallies
                 }
             },
             {
@@ -59,18 +58,7 @@ module.exports = new Confidence.Store({
                     $default: {},
                     $base: {
                         migrateOnStart: true,
-                        knex: {
-                            client: 'pg',
-                            connection: {
-                                host: { $env: 'DB_HOST' },
-                                user: { $env: 'DB_USER' },
-                                password: { $env: 'DB_PASSWORD' },
-                                database: { $env: 'DB_DATABASE' }
-                            },
-                            migrations: {
-                                stub: Schwifty.migrationsStubPath
-                            }
-                        }
+                        knex: Config.knex
                     },
                     production: {
                         migrateOnStart: false
