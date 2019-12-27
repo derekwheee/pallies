@@ -32,9 +32,9 @@ module.exports = {
                 $filter: {
                     $env: 'NODE_ENV'
                 },
-                $default: 'htt://localhos:3001',
+                $default: 'http://localhost:3001',
                 production: '',
-                development: 'htt://localhos:3001'
+                development: 'http://localhost:3001'
             },
             resetPasswordPath: '/reset-password',
             noreply: 'no-reply@test.com'

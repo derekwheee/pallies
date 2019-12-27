@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>
-      AuthService - Documentation
+      UserService - Documentation
   </title>
 
   <link href="https://www.braintreepayments.com/images/favicon-ccda0b14.png" rel="icon" type="image/png">
@@ -81,7 +81,7 @@
   <div id="main">
     
       <h1 class="page-title">
-        AuthService
+        UserService
       </h1>
     
 
@@ -92,7 +92,7 @@
     
       <h2>
         
-        AuthService
+        UserService
         
       </h2>
 
@@ -109,13 +109,13 @@
   
 
   <span class='name-container'>
-    <a class="link-icon" href="#AuthService">
+    <a class="link-icon" href="#UserService">
       <svg height="20" width="20" style="fill: black;">
         <use xlink:href="#linkIcon"></use>
       </svg>
     </a>
-    <h4 class="name" id="AuthService">
-      <span class="type-signature"></span>new AuthService<span class="signature">()</span><span class="type-signature"></span>
+    <h4 class="name" id="UserService">
+      <span class="type-signature"></span>new UserService<span class="signature">()</span><span class="type-signature"></span>
     </h4>
   </span>
 
@@ -163,7 +163,7 @@
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="auth.js.html">auth.js</a>, <a href="auth.js.html#line13">line 13</a>
+          <a href="user.js.html">user.js</a>, <a href="user.js.html#line9">line 9</a>
         </li>
       </ul>
     </dd>
@@ -214,13 +214,13 @@
   
 
   <span class='name-container'>
-    <a class="link-icon" href="#forgotPassword">
+    <a class="link-icon" href="#create">
       <svg height="20" width="20" style="fill: black;">
         <use xlink:href="#linkIcon"></use>
       </svg>
     </a>
-    <h4 class="name" id="forgotPassword">
-      <span class="type-signature">(async) </span>forgotPassword<span class="signature">(email, txn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {object}</span>
+    <h4 class="name" id="create">
+      <span class="type-signature">(async) </span>create<span class="signature">(user, txn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {User}</span>
     </h4>
   </span>
 
@@ -229,7 +229,7 @@
 
 
   <div class="description">
-    Send a forgot password email to a user
+    Create a new user
   </div>
 
 
@@ -264,44 +264,7 @@
     
       <tr>
         
-          <td class="name"><code>email</code></td>
-        
-
-        <td class="type">
-          
-            
-    <span class="param-type">
-      string
-    </span>
-
-    
-
-
-          
-        </td>
-
-        
-          <td class="attributes">
-            
-
-            
-
-            
-          </td>
-        
-
-        
-
-        <td class="description last">
-          The user's email address
-          
-        </td>
-      </tr>
-
-    
-      <tr>
-        
-          <td class="name"><code>txn</code></td>
+          <td class="name"><code>user</code></td>
         
 
         <td class="type">
@@ -320,8 +283,6 @@
         
           <td class="attributes">
             
-              &lt;optional><br>
-            
 
             
 
@@ -332,109 +293,10 @@
         
 
         <td class="description last">
-          An instance of a Knex transaction
+          A new user object
           
-        </td>
-      </tr>
-
-    
-  </tbody>
-</table>
-
-
-
-
-
-<dl class="details">
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source">
-      <ul class="dummy">
-        <li>
-          <a href="auth.js.html">auth.js</a>, <a href="auth.js.html#line180">line 180</a>
-        </li>
-      </ul>
-    </dd>
-  
-
-  
-
-  
-
-  
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
-        
-
-
-  
-
-  <span class='name-container'>
-    <a class="link-icon" href="#invite">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h4 class="name" id="invite">
-      <span class="type-signature">(async) </span>invite<span class="signature">(request, name, email, force, txn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {User}</span>
-    </h4>
-  </span>
-
-  
-
-
-
-  <div class="description">
-    Send an email invitation to a new user
-  </div>
-
-
-
-
-
-
-
-  <h5>Parameters:</h5>
-  
+            <h6>Properties</h6>
+            
 
 <table class="params">
   <thead>
@@ -446,8 +308,6 @@
       <th>Type</th>
 
       
-        <th>Attributes</th>
-      
 
       
 
@@ -456,43 +316,6 @@
   </thead>
 
   <tbody>
-    
-      <tr>
-        
-          <td class="name"><code>request</code></td>
-        
-
-        <td class="type">
-          
-            
-    <span class="param-type">
-      object
-    </span>
-
-    
-
-
-          
-        </td>
-
-        
-          <td class="attributes">
-            
-
-            
-
-            
-          </td>
-        
-
-        
-
-        <td class="description last">
-          The hapi request object
-          
-        </td>
-      </tr>
-
     
       <tr>
         
@@ -512,14 +335,6 @@
           
         </td>
 
-        
-          <td class="attributes">
-            
-
-            
-
-            
-          </td>
         
 
         
@@ -550,14 +365,6 @@
         </td>
 
         
-          <td class="attributes">
-            
-
-            
-
-            
-          </td>
-        
 
         
 
@@ -570,14 +377,14 @@
     
       <tr>
         
-          <td class="name"><code>force</code></td>
+          <td class="name"><code>password</code></td>
         
 
         <td class="type">
           
             
     <span class="param-type">
-      bool
+      string
     </span>
 
     
@@ -587,19 +394,19 @@
         </td>
 
         
-          <td class="attributes">
-            
-
-            
-
-            
-          </td>
-        
 
         
 
         <td class="description last">
-          If true will remove an existing user and send a new invite
+          The new user's password
+          
+        </td>
+      </tr>
+
+    
+  </tbody>
+</table>
+
           
         </td>
       </tr>
@@ -682,7 +489,7 @@
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="auth.js.html">auth.js</a>, <a href="auth.js.html#line142">line 142</a>
+          <a href="user.js.html">user.js</a>, <a href="user.js.html#line29">line 29</a>
         </li>
       </ul>
     </dd>
@@ -715,13 +522,13 @@
   
 
   <span class='name-container'>
-    <a class="link-icon" href="#login">
+    <a class="link-icon" href="#createForgotPasswordToken">
       <svg height="20" width="20" style="fill: black;">
         <use xlink:href="#linkIcon"></use>
       </svg>
     </a>
-    <h4 class="name" id="login">
-      <span class="type-signature">(async) </span>login<span class="signature">(email, password)</span><span class="type-signature"> &rarr; {object}</span>
+    <h4 class="name" id="createForgotPasswordToken">
+      <span class="type-signature">(async) </span>createForgotPasswordToken<span class="signature">(user, txn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {object}</span>
     </h4>
   </span>
 
@@ -730,328 +537,7 @@
 
 
   <div class="description">
-    Log a user in
-  </div>
-
-
-
-
-
-
-
-  <h5>Parameters:</h5>
-  
-
-<table class="params">
-  <thead>
-    <tr>
-      
-        <th>Name</th>
-      
-
-      <th>Type</th>
-
-      
-
-      
-
-      <th class="last">Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    
-      <tr>
-        
-          <td class="name"><code>email</code></td>
-        
-
-        <td class="type">
-          
-            
-    <span class="param-type">
-      string
-    </span>
-
-    
-
-
-          
-        </td>
-
-        
-
-        
-
-        <td class="description last">
-          The user's email address
-          
-        </td>
-      </tr>
-
-    
-      <tr>
-        
-          <td class="name"><code>password</code></td>
-        
-
-        <td class="type">
-          
-            
-    <span class="param-type">
-      string
-    </span>
-
-    
-
-
-          
-        </td>
-
-        
-
-        
-
-        <td class="description last">
-          The user's password
-          
-        </td>
-      </tr>
-
-    
-  </tbody>
-</table>
-
-
-
-
-
-<dl class="details">
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source">
-      <ul class="dummy">
-        <li>
-          <a href="auth.js.html">auth.js</a>, <a href="auth.js.html#line51">line 51</a>
-        </li>
-      </ul>
-    </dd>
-  
-
-  
-
-  
-
-  
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
-        
-
-
-  
-
-  <span class='name-container'>
-    <a class="link-icon" href="#reauthorize">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h4 class="name" id="reauthorize">
-      <span class="type-signature">(async) </span>reauthorize<span class="signature">(token)</span><span class="type-signature"> &rarr; {object}</span>
-    </h4>
-  </span>
-
-  
-
-
-
-  <div class="description">
-    Update user's authentication using refresh token
-  </div>
-
-
-
-
-
-
-
-  <h5>Parameters:</h5>
-  
-
-<table class="params">
-  <thead>
-    <tr>
-      
-        <th>Name</th>
-      
-
-      <th>Type</th>
-
-      
-
-      
-
-      <th class="last">Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    
-      <tr>
-        
-          <td class="name"><code>token</code></td>
-        
-
-        <td class="type">
-          
-            
-    <span class="param-type">
-      object
-    </span>
-
-    
-
-
-          
-        </td>
-
-        
-
-        
-
-        <td class="description last">
-          A refresh token
-          
-        </td>
-      </tr>
-
-    
-  </tbody>
-</table>
-
-
-
-
-
-<dl class="details">
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source">
-      <ul class="dummy">
-        <li>
-          <a href="auth.js.html">auth.js</a>, <a href="auth.js.html#line123">line 123</a>
-        </li>
-      </ul>
-    </dd>
-  
-
-  
-
-  
-
-  
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
-        
-
-
-  
-
-  <span class='name-container'>
-    <a class="link-icon" href="#register">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h4 class="name" id="register">
-      <span class="type-signature">(async) </span>register<span class="signature">(name, email, password, txn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {User}</span>
-    </h4>
-  </span>
-
-  
-
-
-
-  <div class="description">
-    Register a new user
+    Assign a forgot password token to a user
   </div>
 
 
@@ -1086,14 +572,14 @@
     
       <tr>
         
-          <td class="name"><code>name</code></td>
+          <td class="name"><code>user</code></td>
         
 
         <td class="type">
           
             
     <span class="param-type">
-      string
+      User
     </span>
 
     
@@ -1115,81 +601,7 @@
         
 
         <td class="description last">
-          The user's full name
-          
-        </td>
-      </tr>
-
-    
-      <tr>
-        
-          <td class="name"><code>email</code></td>
-        
-
-        <td class="type">
-          
-            
-    <span class="param-type">
-      string
-    </span>
-
-    
-
-
-          
-        </td>
-
-        
-          <td class="attributes">
-            
-
-            
-
-            
-          </td>
-        
-
-        
-
-        <td class="description last">
-          The user's email address
-          
-        </td>
-      </tr>
-
-    
-      <tr>
-        
-          <td class="name"><code>password</code></td>
-        
-
-        <td class="type">
-          
-            
-    <span class="param-type">
-      string
-    </span>
-
-    
-
-
-          
-        </td>
-
-        
-          <td class="attributes">
-            
-
-            
-
-            
-          </td>
-        
-
-        
-
-        <td class="description last">
-          The user's password
+          The user
           
         </td>
       </tr>
@@ -1272,7 +684,787 @@
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="auth.js.html">auth.js</a>, <a href="auth.js.html#line34">line 34</a>
+          <a href="user.js.html">user.js</a>, <a href="user.js.html#line117">line 117</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+        
+
+
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#getByEmail">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="getByEmail">
+      <span class="type-signature">(async) </span>getByEmail<span class="signature">(email, txn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {User}</span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    Get a user from the database by email address
+  </div>
+
+
+
+
+
+
+
+  <h5>Parameters:</h5>
+  
+
+<table class="params">
+  <thead>
+    <tr>
+      
+        <th>Name</th>
+      
+
+      <th>Type</th>
+
+      
+        <th>Attributes</th>
+      
+
+      
+
+      <th class="last">Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    
+      <tr>
+        
+          <td class="name"><code>email</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      string
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+
+            
+
+            
+          </td>
+        
+
+        
+
+        <td class="description last">
+          The user's email address
+          
+        </td>
+      </tr>
+
+    
+      <tr>
+        
+          <td class="name"><code>txn</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      object
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+
+        <td class="description last">
+          An instance of a Knex transaction
+          
+        </td>
+      </tr>
+
+    
+  </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="user.js.html">user.js</a>, <a href="user.js.html#line69">line 69</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+        
+
+
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#getById">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="getById">
+      <span class="type-signature">(async) </span>getById<span class="signature">(userId, txn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {User}</span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    Get a user from the database by ID
+  </div>
+
+
+
+
+
+
+
+  <h5>Parameters:</h5>
+  
+
+<table class="params">
+  <thead>
+    <tr>
+      
+        <th>Name</th>
+      
+
+      <th>Type</th>
+
+      
+        <th>Attributes</th>
+      
+
+      
+
+      <th class="last">Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    
+      <tr>
+        
+          <td class="name"><code>userId</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      number
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+
+            
+
+            
+          </td>
+        
+
+        
+
+        <td class="description last">
+          The user's database ID
+          
+        </td>
+      </tr>
+
+    
+      <tr>
+        
+          <td class="name"><code>txn</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      object
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+
+        <td class="description last">
+          An instance of a Knex transaction
+          
+        </td>
+      </tr>
+
+    
+  </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="user.js.html">user.js</a>, <a href="user.js.html#line57">line 57</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+        
+
+
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#remove">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="remove">
+      <span class="type-signature">(async) </span>remove<span class="signature">(userId, txn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {object}</span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    Remove an existing user by ID
+  </div>
+
+
+
+
+
+
+
+  <h5>Parameters:</h5>
+  
+
+<table class="params">
+  <thead>
+    <tr>
+      
+        <th>Name</th>
+      
+
+      <th>Type</th>
+
+      
+        <th>Attributes</th>
+      
+
+      
+
+      <th class="last">Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    
+      <tr>
+        
+          <td class="name"><code>userId</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      number
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+
+            
+
+            
+          </td>
+        
+
+        
+
+        <td class="description last">
+          The user's database ID
+          
+        </td>
+      </tr>
+
+    
+      <tr>
+        
+          <td class="name"><code>txn</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      object
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+
+        <td class="description last">
+          An instance of a Knex transaction
+          
+        </td>
+      </tr>
+
+    
+  </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="user.js.html">user.js</a>, <a href="user.js.html#line93">line 93</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+        
+
+
+  
+
+  <span class='name-container'>
+    <a class="link-icon" href="#removeByEmail">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h4 class="name" id="removeByEmail">
+      <span class="type-signature">(async) </span>removeByEmail<span class="signature">(email, txn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {object}</span>
+    </h4>
+  </span>
+
+  
+
+
+
+  <div class="description">
+    Remove an existing user by email address
+  </div>
+
+
+
+
+
+
+
+  <h5>Parameters:</h5>
+  
+
+<table class="params">
+  <thead>
+    <tr>
+      
+        <th>Name</th>
+      
+
+      <th>Type</th>
+
+      
+        <th>Attributes</th>
+      
+
+      
+
+      <th class="last">Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    
+      <tr>
+        
+          <td class="name"><code>email</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      number
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+
+            
+
+            
+          </td>
+        
+
+        
+
+        <td class="description last">
+          The user's email address
+          
+        </td>
+      </tr>
+
+    
+      <tr>
+        
+          <td class="name"><code>txn</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      object
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+
+        <td class="description last">
+          An instance of a Knex transaction
+          
+        </td>
+      </tr>
+
+    
+  </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="user.js.html">user.js</a>, <a href="user.js.html#line105">line 105</a>
         </li>
       </ul>
     </dd>
@@ -1311,7 +1503,7 @@
       </svg>
     </a>
     <h4 class="name" id="resetPassword">
-      <span class="type-signature">(async) </span>resetPassword<span class="signature">(request, oldPassword<span class="signature-attributes">opt</span>, userHash<span class="signature-attributes">opt</span>, forgotPasswordToken, newPassword, txn<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span>
+      <span class="type-signature">(async) </span>resetPassword<span class="signature">(user, password, txn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {object}</span>
     </h4>
   </span>
 
@@ -1320,7 +1512,7 @@
 
 
   <div class="description">
-    Reset an existing user's password or set a new user's password
+    Reset an existing user's password
   </div>
 
 
@@ -1355,14 +1547,14 @@
     
       <tr>
         
-          <td class="name"><code>request</code></td>
+          <td class="name"><code>user</code></td>
         
 
         <td class="type">
           
             
     <span class="param-type">
-      object
+      User
     </span>
 
     
@@ -1384,22 +1576,40 @@
         
 
         <td class="description last">
-          The hapi request object
+          The user
           
-        </td>
-      </tr>
+            <h6>Properties</h6>
+            
 
+<table class="params">
+  <thead>
+    <tr>
+      
+        <th>Name</th>
+      
+
+      <th>Type</th>
+
+      
+
+      
+
+      <th class="last">Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
     
       <tr>
         
-          <td class="name"><code>oldPassword</code></td>
+          <td class="name"><code>id</code></td>
         
 
         <td class="type">
           
             
     <span class="param-type">
-      string
+      number
     </span>
 
     
@@ -1409,21 +1619,19 @@
         </td>
 
         
-          <td class="attributes">
-            
-              &lt;optional><br>
-            
-
-            
-
-            
-          </td>
-        
 
         
 
         <td class="description last">
-          The user's old password, if resetting
+          The user's database ID
+          
+        </td>
+      </tr>
+
+    
+  </tbody>
+</table>
+
           
         </td>
       </tr>
@@ -1431,83 +1639,7 @@
     
       <tr>
         
-          <td class="name"><code>userHash</code></td>
-        
-
-        <td class="type">
-          
-            
-    <span class="param-type">
-      string
-    </span>
-
-    
-
-
-          
-        </td>
-
-        
-          <td class="attributes">
-            
-              &lt;optional><br>
-            
-
-            
-
-            
-          </td>
-        
-
-        
-
-        <td class="description last">
-          The user hash from an invite email
-          
-        </td>
-      </tr>
-
-    
-      <tr>
-        
-          <td class="name"><code>forgotPasswordToken</code></td>
-        
-
-        <td class="type">
-          
-            
-    <span class="param-type">
-      string
-    </span>
-
-    
-
-
-          
-        </td>
-
-        
-          <td class="attributes">
-            
-
-            
-
-            
-          </td>
-        
-
-        
-
-        <td class="description last">
-          Forgot password token from email
-          
-        </td>
-      </tr>
-
-    
-      <tr>
-        
-          <td class="name"><code>newPassword</code></td>
+          <td class="name"><code>password</code></td>
         
 
         <td class="type">
@@ -1619,7 +1751,7 @@
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="auth.js.html">auth.js</a>, <a href="auth.js.html#line203">line 203</a>
+          <a href="user.js.html">user.js</a>, <a href="user.js.html#line134">line 134</a>
         </li>
       </ul>
     </dd>
@@ -1652,13 +1784,13 @@
   
 
   <span class='name-container'>
-    <a class="link-icon" href="#validate">
+    <a class="link-icon" href="#update">
       <svg height="20" width="20" style="fill: black;">
         <use xlink:href="#linkIcon"></use>
       </svg>
     </a>
-    <h4 class="name" id="validate">
-      <span class="type-signature"></span>validate<span class="signature">(token, request)</span><span class="type-signature"> &rarr; {object}</span>
+    <h4 class="name" id="update">
+      <span class="type-signature">(async) </span>update<span class="signature">(user, txn<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {object}</span>
     </h4>
   </span>
 
@@ -1667,7 +1799,7 @@
 
 
   <div class="description">
-    Validate a request's bearer token
+    Update an existing user
   </div>
 
 
@@ -1689,180 +1821,7 @@
       <th>Type</th>
 
       
-
-      
-
-      <th class="last">Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    
-      <tr>
-        
-          <td class="name"><code>token</code></td>
-        
-
-        <td class="type">
-          
-            
-    <span class="param-type">
-      string
-    </span>
-
-    
-
-
-          
-        </td>
-
-        
-
-        
-
-        <td class="description last">
-          A JSON web token
-          
-        </td>
-      </tr>
-
-    
-      <tr>
-        
-          <td class="name"><code>request</code></td>
-        
-
-        <td class="type">
-          
-            
-    <span class="param-type">
-      object
-    </span>
-
-    
-
-
-          
-        </td>
-
-        
-
-        
-
-        <td class="description last">
-          The hapi request object
-          
-        </td>
-      </tr>
-
-    
-  </tbody>
-</table>
-
-
-
-
-
-<dl class="details">
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source">
-      <ul class="dummy">
-        <li>
-          <a href="auth.js.html">auth.js</a>, <a href="auth.js.html#line101">line 101</a>
-        </li>
-      </ul>
-    </dd>
-  
-
-  
-
-  
-
-  
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
-        
-
-
-  
-
-  <span class='name-container'>
-    <a class="link-icon" href="#verifyPassword">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h4 class="name" id="verifyPassword">
-      <span class="type-signature">(async) </span>verifyPassword<span class="signature">(user, password)</span><span class="type-signature"> &rarr; {bool}</span>
-    </h4>
-  </span>
-
-  
-
-
-
-  <div class="description">
-    Verify a user's password
-  </div>
-
-
-
-
-
-
-
-  <h5>Parameters:</h5>
-  
-
-<table class="params">
-  <thead>
-    <tr>
-      
-        <th>Name</th>
-      
-
-      <th>Type</th>
-
+        <th>Attributes</th>
       
 
       
@@ -1882,6 +1841,43 @@
           
             
     <span class="param-type">
+      User
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+
+            
+
+            
+          </td>
+        
+
+        
+
+        <td class="description last">
+          The modified user object
+          
+        </td>
+      </tr>
+
+    
+      <tr>
+        
+          <td class="name"><code>txn</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
       object
     </span>
 
@@ -1892,95 +1888,21 @@
         </td>
 
         
-
-        
-
-        <td class="description last">
-          The user's full name
-          
-            <h6>Properties</h6>
+          <td class="attributes">
+            
+              &lt;optional><br>
             
 
-<table class="params">
-  <thead>
-    <tr>
-      
-        <th>Name</th>
-      
-
-      <th>Type</th>
-
-      
-
-      
-
-      <th class="last">Description</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    
-      <tr>
-        
-          <td class="name"><code>email</code></td>
-        
-
-        <td class="type">
-          
             
-    <span class="param-type">
-      string
-    </span>
 
-    
-
-
-          
-        </td>
-
+            
+          </td>
         
 
         
 
         <td class="description last">
-          The user's email address
-          
-        </td>
-      </tr>
-
-    
-  </tbody>
-</table>
-
-          
-        </td>
-      </tr>
-
-    
-      <tr>
-        
-          <td class="name"><code>password</code></td>
-        
-
-        <td class="type">
-          
-            
-    <span class="param-type">
-      string
-    </span>
-
-    
-
-
-          
-        </td>
-
-        
-
-        
-
-        <td class="description last">
-          The user's password
+          An instance of a Knex transaction
           
         </td>
       </tr>
@@ -2024,7 +1946,7 @@
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="auth.js.html">auth.js</a>, <a href="auth.js.html#line88">line 88</a>
+          <a href="user.js.html">user.js</a>, <a href="user.js.html#line81">line 81</a>
         </li>
       </ul>
     </dd>

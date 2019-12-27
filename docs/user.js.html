@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>
-      auth.js - Documentation
+      user.js - Documentation
   </title>
 
   <link href="https://www.braintreepayments.com/images/favicon-ccda0b14.png" rel="icon" type="image/png">
@@ -83,7 +83,7 @@
   <div id="main">
     
       <h1 class="page-title">
-        auth.js
+        user.js
       </h1>
     
 
@@ -94,239 +94,148 @@
   <article>
     <pre class="prettyprint source linenums"><code>'use strict';
 
-const Boom = require('@hapi/boom');
+const Joi = require('@hapi/joi');
 const Schmervice = require('schmervice');
 const Argon2 = require('argon2');
-const Jwt = require('jsonwebtoken');
 const Csprng = require('csprng');
 const Moment = require('moment');
-const Hashids = require('hashids/cjs');
-
-const hashids = new Hashids('SALTY LAD', 16);
 
 /**
- * @class AuthService
+ * @class UserService
  */
-class AuthService extends Schmervice.Service {
+class UserService extends Schmervice.Service {
 
     initialize() {
 
-        this.UserService = this.server.services().userService;
-        this.EmailService = this.server.services().emailService;
-        this.TokenService = this.server.services().tokenService;
+        this.User = this.server.models().User;
     }
 
     /**
-    * Register a new user
+    * Create a new user
     * @async
-    * @param {string} name - The user's full name
-    * @param {string} email - The user's email address
-    * @param {string} password - The user's password
-    * @param {object} [txn] - An instance of a Knex transaction
-    * @returns {User} The newly created User
-    */
-    async register(name, email, password, txn) {
-
-        try {
-            return await this.UserService.create({ name, email, password }, txn);
-        }
-        catch (err) {
-            return Boom.badRequest(`${email} is already registered`);
-        }
-    }
-
-    /**
-    * Log a user in
-    * @async
-    * @param {string} email - The user's email address
-    * @param {string} password - The user's password
-    * @returns {object} A token object with a access and refresh tokens, and the token type
-    */
-    async login(email, password) {
-
-        const user = await this.UserService.getByEmail(email);
-
-        if (!user) {
-            return Boom.unauthorized('Email or password is incorrect');
-        }
-
-        const isValidPassword  = await this.verifyPassword(user, password);
-
-        if (!isValidPassword) {
-            return Boom.unauthorized('Email or password is invalid');
-        }
-
-        const accessToken = this.TokenService.createAccessToken(user);
-        let refreshToken;
-
-        if (this.options.jwt.useRefreshTokens) {
-            refreshToken = await this.TokenService.createRefreshToken(user);
-        }
-
-        return !this.options.jwt.useRefreshTokens ? accessToken : {
-            'access_token': accessToken,
-            'refresh_token': refreshToken,
-            'token_type': 'Bearer'
-        };
-
-    }
-
-    /**
-    * Verify a user's password
-    * @async
-    * @param {object} user - The user's full name
-    * @param {string} user.email - The user's email address
-    * @param {string} password - The user's password
-    * @returns {bool}
-    */
-    async verifyPassword({ email }, password) {
-
-        const user = await this.UserService.getByEmail(email);
-
-        return await Argon2.verify(user.password.toString(), password);
-    }
-
-    /**
-    * Validate a request's bearer token
-    * @param {string} token - A JSON web token
-    * @param {object} request - The hapi request object
-    * @returns {object}
-    */
-    validate(token, request) {
-
-        if (!token) {
-            return { isValid: false };
-        }
-
-        try {
-            const verified = Jwt.verify(request.auth.token, this.options.tokenSecret, { algorithm: 'HS256' });
-            return verified ? { isValid: true } : { isValid: false };
-        }
-        catch (err) {
-            return { isValid: false };
-        }
-
-    }
-
-    /**
-    * Update user's authentication using refresh token
-    * @async
-    * @param {object} token - A refresh token
-    * @returns {object} A token object with a access and refresh tokens, and the token type
-    */
-    async reauthorize(token) {
-
-        if (!token) {
-            return Boom.badRequest('No token passed for reauthorization');
-        }
-
-        return await this.TokenService.validateRefreshToken(token);
-    }
-
-    /**
-    * Send an email invitation to a new user
-    * @async
-    * @param {object} request - The hapi request object
-    * @param {string} name - The new user's name
-    * @param {string} email - The new user's email address
-    * @param {bool} force - If true will remove an existing user and send a new invite
+    * @param {object} user - A new user object
+    * @param {string} user.name - The new user's name
+    * @param {string} user.email - The new user's email address
+    * @param {string} user.password - The new user's password
     * @param {object} [txn] - An instance of a Knex transaction
     * @returns {User} The newly created user
     */
-    async invite(request, name, email, force, txn) {
+    async create({ name, email, password }, txn) {
 
-        const currentUser = await this.UserService.getById(request.auth.credentials.id, txn);
-        const existingUser = await this.UserService.getByEmail(email, txn);
+        Joi.assert({ email, name, password }, this.User.joiSchema);
 
-        if (existingUser &amp;&amp; force) {
-            // For use with "Resend invite"
-            await this.UserService.remove(existingUser.id, txn);
-        }
-        else if (existingUser &amp;&amp; !force) {
-            return Boom.badRequest(`${email} is already registered`);
+        const existingUser = await this.User.query(txn).findOne('email', email);
+
+        if (existingUser) {
+            throw new Error(`${email} is already registered`);
         }
 
-        // Register new user with temporary password
-        const tempPassword = Csprng(128, 32);
+        const hashedPassword = await Argon2.hash(password);
 
-        const newUser = await this.register(name, email, tempPassword, txn);
+        const user = await this.User.query(txn).insert({
+            name,
+            email,
+            password: hashedPassword
+        });
 
-        await this.UserService.createForgotPasswordToken(newUser);
-
-        try {
-            await this.EmailService.sendUserInvite(currentUser.name, newUser);
-        }
-        catch (err) {
-            await this.UserService.remove(existingUser.id, txn);
-            return Boom.badRequest(`${email} could not be invited`);
-        }
-
-        return newUser;
+        return user;
     }
 
     /**
-    * Send a forgot password email to a user
+    * Get a user from the database by ID
+    * @async
+    * @param {number} userId - The user's database ID
+    * @param {object} [txn] - An instance of a Knex transaction
+    * @returns {User} The user
+    */
+    async getById(userId, txn) {
+
+        return await this.User.query(txn).findById(userId);
+    }
+
+    /**
+    * Get a user from the database by email address
     * @async
     * @param {string} email - The user's email address
     * @param {object} [txn] - An instance of a Knex transaction
-    * @returns {object} The mail object from Nodemailer
+    * @returns {User} The user
     */
-    async forgotPassword(email, txn) {
+    async getByEmail(email, txn) {
 
-        const user = await this.UserService.getByEmail(email, txn);
-
-        if (!user) {
-            return Boom.badRequest(`${email} does not exist`);
-        }
-
-        await this.UserService.createForgotPasswordToken(user);
-
-        return await this.EmailService.sendForgotPassword(user);
+        return await this.User.query(txn).findOne('email', email);
     }
 
     /**
-    * Reset an existing user's password or set a new user's password
+    * Update an existing user
     * @async
-    * @param {object} request - The hapi request object
-    * @param {string} [oldPassword] - The user's old password, if resetting
-    * @param {string} [userHash] - The user hash from an invite email
-    * @param {string} forgotPasswordToken - Forgot password token from email
-    * @param {string} newPassword - The user's new password
+    * @param {User} user - The modified user object
     * @param {object} [txn] - An instance of a Knex transaction
+    * @returns {object}
     */
-    async resetPassword(request, oldPassword, userHash, forgotPasswordToken, newPassword, txn) {
+    async update(user, txn) {
 
-        if (oldPassword) {
-            const user = await this.UserService.getById(request.auth.credentials.id);
-            const isValidPassword = await this.verifyPassword(user, oldPassword);
+        return await this.User.query(txn).findById(user.id).patch(user);
+    }
 
-            if (!isValidPassword) {
-                return Boom.unauthorized('Password is invalid');
-            }
+    /**
+    * Remove an existing user by ID
+    * @async
+    * @param {number} userId - The user's database ID
+    * @param {object} [txn] - An instance of a Knex transaction
+    * @returns {object}
+    */
+    async remove(userId, txn) {
 
-            return await this.UserService.resetPassword(user, newPassword, txn);
-        }
+        return await this.User.query(txn).deleteById(userId);
+    }
 
-        const user = await this.UserService.getById(hashids.decode(userHash));
-        const expiration = Moment(user.forgotPasswordExpiresAt);
+    /**
+    * Remove an existing user by email address
+    * @async
+    * @param {number} email - The user's email address
+    * @param {object} [txn] - An instance of a Knex transaction
+    * @returns {object}
+    */
+    async removeByEmail(email, txn) {
 
-        if (!userHash || !forgotPasswordToken) {
-            return Boom.badRequest('Invalid request');
-        }
+        return await this.User.query(txn).delete().where('email', email);
+    }
 
-        if (expiration.isAfter(Moment().format())) {
-            return Boom.badRequest('Token has expired');
-        }
+    /**
+    * Assign a forgot password token to a user
+    * @async
+    * @param {User} user - The user
+    * @param {object} [txn] - An instance of a Knex transaction
+    * @returns {object}
+    */
+    async createForgotPasswordToken(user, txn) {
 
-        if (forgotPasswordToken !== user.forgotPasswordToken) {
-            return Boom.badRequest('Invalid token');
-        }
+        user.forgotPasswordToken = Csprng(128, 32);
+        user.forgotPasswordExpiresAt = Moment().add(4, 'hours').toISOString();
 
-        return await this.UserService.resetPassword(user, newPassword, txn);
+        await this.update(user, txn);
+    }
+
+    /**
+    * Reset an existing user's password
+    * @async
+    * @param {User} user - The user
+    * @param {number} user.id - The user's database ID
+    * @param {string} password - The user's new password
+    * @param {object} [txn] - An instance of a Knex transaction
+    * @returns {object}
+    */
+    async resetPassword({ id }, password, txn) {
+
+        const hashedPassword = await Argon2.hash(password);
+
+        await this.User.query(txn).findById(id).patch({
+            password: hashedPassword
+        });
     }
 }
 
-module.exports = AuthService;
+module.exports = UserService;
 </code></pre>
   </article>
 </section>

@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>
-      auth.js - Documentation
+      email.js - Documentation
   </title>
 
   <link href="https://www.braintreepayments.com/images/favicon-ccda0b14.png" rel="icon" type="image/png">
@@ -83,7 +83,7 @@
   <div id="main">
     
       <h1 class="page-title">
-        auth.js
+        email.js
       </h1>
     
 
@@ -94,239 +94,109 @@
   <article>
     <pre class="prettyprint source linenums"><code>'use strict';
 
-const Boom = require('@hapi/boom');
 const Schmervice = require('schmervice');
-const Argon2 = require('argon2');
-const Jwt = require('jsonwebtoken');
-const Csprng = require('csprng');
-const Moment = require('moment');
+const Nodemailer = require('nodemailer');
+const Handlebars = require('handlebars');
 const Hashids = require('hashids/cjs');
+const InviteTemplate = require('../assets/templates/invite');
+const ForgotPasswordTemplate = require('../assets/templates/forgotPassword');
 
 const hashids = new Hashids('SALTY LAD', 16);
+const internals = {};
 
 /**
- * @class AuthService
+ * @class EmailService
  */
-class AuthService extends Schmervice.Service {
+class EmailService extends Schmervice.Service {
 
-    initialize() {
+    async initialize() {
 
-        this.UserService = this.server.services().userService;
-        this.EmailService = this.server.services().emailService;
-        this.TokenService = this.server.services().tokenService;
+        if (this.options.isDev) {
+            internals.smtp = {
+                auth: await Nodemailer.createTestAccount(),
+                host: 'smtp.ethereal.email',
+                port: 587,
+                secure: false
+            };
+        }
+        else {
+            internals.smtp = this.options.smtp;
+        }
+
+        internals.transporter = Nodemailer.createTransport(internals.smtp);
     }
 
     /**
-    * Register a new user
+    * Send a user invite email
     * @async
-    * @param {string} name - The user's full name
-    * @param {string} email - The user's email address
-    * @param {string} password - The user's password
-    * @param {object} [txn] - An instance of a Knex transaction
-    * @returns {User} The newly created User
+    * @param {string} from - The name of the user sending the invite
+    * @param {User} user - The user object for the new user
+    * @returns {object} A Nodemailer mail object
     */
-    async register(name, email, password, txn) {
+    async sendUserInvite(from, user) {
 
-        try {
-            return await this.UserService.create({ name, email, password }, txn);
-        }
-        catch (err) {
-            return Boom.badRequest(`${email} is already registered`);
-        }
-    }
-
-    /**
-    * Log a user in
-    * @async
-    * @param {string} email - The user's email address
-    * @param {string} password - The user's password
-    * @returns {object} A token object with a access and refresh tokens, and the token type
-    */
-    async login(email, password) {
-
-        const user = await this.UserService.getByEmail(email);
-
-        if (!user) {
-            return Boom.unauthorized('Email or password is incorrect');
+        if (!user.forgotPasswordToken) {
+            throw new Error('Invalid invite token');
         }
 
-        const isValidPassword  = await this.verifyPassword(user, password);
-
-        if (!isValidPassword) {
-            return Boom.unauthorized('Email or password is invalid');
-        }
-
-        const accessToken = this.TokenService.createAccessToken(user);
-        let refreshToken;
-
-        if (this.options.jwt.useRefreshTokens) {
-            refreshToken = await this.TokenService.createRefreshToken(user);
-        }
-
-        return !this.options.jwt.useRefreshTokens ? accessToken : {
-            'access_token': accessToken,
-            'refresh_token': refreshToken,
-            'token_type': 'Bearer'
+        const config = {
+            applicationName: this.options.application.name,
+            inviter: from,
+            inviteUrl: `${this.options.application.uri}${this.options.application.resetPasswordPath}/?token=${user.forgotPasswordToken}&amp;uid=${hashids.encode(user.id)}`
         };
 
+        const html = Handlebars.compile(InviteTemplate)(config);
+
+        const mail = await internals.transporter.sendMail({
+            from: `"${this.options.application.name}" &lt;${this.options.application.noreply}>`,
+            to: `"${user.name}" &lt;${user.email}>`,
+            subject: `Here\'s your invite from ${this.options.application.name}`,
+            text: `To log in and reset your password go to ${config.inviteUrl}`,
+            html
+        });
+
+        if (this.options.isDev) {
+            console.log(`Preview URL: ${Nodemailer.getTestMessageUrl(mail)}`);
+        }
+
+        return mail;
     }
 
     /**
-    * Verify a user's password
+    * Send a forgot password email
     * @async
-    * @param {object} user - The user's full name
-    * @param {string} user.email - The user's email address
-    * @param {string} password - The user's password
-    * @returns {bool}
+    * @param {User} user - The user object for user who forgot their password
+    * @returns {object} A Nodemailer mail object
     */
-    async verifyPassword({ email }, password) {
+    async sendForgotPassword(user) {
 
-        const user = await this.UserService.getByEmail(email);
-
-        return await Argon2.verify(user.password.toString(), password);
-    }
-
-    /**
-    * Validate a request's bearer token
-    * @param {string} token - A JSON web token
-    * @param {object} request - The hapi request object
-    * @returns {object}
-    */
-    validate(token, request) {
-
-        if (!token) {
-            return { isValid: false };
+        if (!user.forgotPasswordToken) {
+            throw new Error('Invalid forgot password token');
         }
 
-        try {
-            const verified = Jwt.verify(request.auth.token, this.options.tokenSecret, { algorithm: 'HS256' });
-            return verified ? { isValid: true } : { isValid: false };
-        }
-        catch (err) {
-            return { isValid: false };
-        }
+        const config = {
+            passwordResetUrl: `${this.options.application.uri}${this.options.application.resetPasswordPath}/?token=${user.forgotPasswordToken}&amp;uid=${hashids.encode(user.id)}`
+        };
 
-    }
+        const html = Handlebars.compile(ForgotPasswordTemplate)(config);
 
-    /**
-    * Update user's authentication using refresh token
-    * @async
-    * @param {object} token - A refresh token
-    * @returns {object} A token object with a access and refresh tokens, and the token type
-    */
-    async reauthorize(token) {
+        const mail = await internals.transporter.sendMail({
+            from: `"${this.options.application.name}" &lt;${this.options.application.noreply}>`,
+            to: `"${user.name}" &lt;${user.email}>`,
+            subject: `Forgot password for ${user.name}`,
+            text: `To log in and reset your password go to ${config.passwordResetUrl}`,
+            html
+        });
 
-        if (!token) {
-            return Boom.badRequest('No token passed for reauthorization');
+        if (this.options.isDev) {
+            console.log(`Preview URL: ${Nodemailer.getTestMessageUrl(mail)}`);
         }
 
-        return await this.TokenService.validateRefreshToken(token);
-    }
-
-    /**
-    * Send an email invitation to a new user
-    * @async
-    * @param {object} request - The hapi request object
-    * @param {string} name - The new user's name
-    * @param {string} email - The new user's email address
-    * @param {bool} force - If true will remove an existing user and send a new invite
-    * @param {object} [txn] - An instance of a Knex transaction
-    * @returns {User} The newly created user
-    */
-    async invite(request, name, email, force, txn) {
-
-        const currentUser = await this.UserService.getById(request.auth.credentials.id, txn);
-        const existingUser = await this.UserService.getByEmail(email, txn);
-
-        if (existingUser &amp;&amp; force) {
-            // For use with "Resend invite"
-            await this.UserService.remove(existingUser.id, txn);
-        }
-        else if (existingUser &amp;&amp; !force) {
-            return Boom.badRequest(`${email} is already registered`);
-        }
-
-        // Register new user with temporary password
-        const tempPassword = Csprng(128, 32);
-
-        const newUser = await this.register(name, email, tempPassword, txn);
-
-        await this.UserService.createForgotPasswordToken(newUser);
-
-        try {
-            await this.EmailService.sendUserInvite(currentUser.name, newUser);
-        }
-        catch (err) {
-            await this.UserService.remove(existingUser.id, txn);
-            return Boom.badRequest(`${email} could not be invited`);
-        }
-
-        return newUser;
-    }
-
-    /**
-    * Send a forgot password email to a user
-    * @async
-    * @param {string} email - The user's email address
-    * @param {object} [txn] - An instance of a Knex transaction
-    * @returns {object} The mail object from Nodemailer
-    */
-    async forgotPassword(email, txn) {
-
-        const user = await this.UserService.getByEmail(email, txn);
-
-        if (!user) {
-            return Boom.badRequest(`${email} does not exist`);
-        }
-
-        await this.UserService.createForgotPasswordToken(user);
-
-        return await this.EmailService.sendForgotPassword(user);
-    }
-
-    /**
-    * Reset an existing user's password or set a new user's password
-    * @async
-    * @param {object} request - The hapi request object
-    * @param {string} [oldPassword] - The user's old password, if resetting
-    * @param {string} [userHash] - The user hash from an invite email
-    * @param {string} forgotPasswordToken - Forgot password token from email
-    * @param {string} newPassword - The user's new password
-    * @param {object} [txn] - An instance of a Knex transaction
-    */
-    async resetPassword(request, oldPassword, userHash, forgotPasswordToken, newPassword, txn) {
-
-        if (oldPassword) {
-            const user = await this.UserService.getById(request.auth.credentials.id);
-            const isValidPassword = await this.verifyPassword(user, oldPassword);
-
-            if (!isValidPassword) {
-                return Boom.unauthorized('Password is invalid');
-            }
-
-            return await this.UserService.resetPassword(user, newPassword, txn);
-        }
-
-        const user = await this.UserService.getById(hashids.decode(userHash));
-        const expiration = Moment(user.forgotPasswordExpiresAt);
-
-        if (!userHash || !forgotPasswordToken) {
-            return Boom.badRequest('Invalid request');
-        }
-
-        if (expiration.isAfter(Moment().format())) {
-            return Boom.badRequest('Token has expired');
-        }
-
-        if (forgotPasswordToken !== user.forgotPasswordToken) {
-            return Boom.badRequest('Invalid token');
-        }
-
-        return await this.UserService.resetPassword(user, newPassword, txn);
+        return mail;
     }
 }
 
-module.exports = AuthService;
+module.exports = EmailService;
 </code></pre>
   </article>
 </section>

@@ -1,7 +1,5 @@
 'use strict';
 
-// Load modules
-
 const Code = require('@hapi/code');
 const Lab = require('@hapi/lab');
 const Moment = require('moment');
