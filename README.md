@@ -35,26 +35,26 @@ Create a configuration file at `server/.palliesrc.js`
 [Example Pallies configuration](https://github.com/frxnz/pallies/blob/master/server/.palliesrc.js)
 
 #### Update Your Manifest
-```js
-// Load Pallies config
-const PalliesConfig = require('./.palliesrc');
 
-// Register Pallies as a plugin
-{
-    plugin: 'pallies',
-    options: {
-        isDev: {
-            $filter: {
-                $env: 'NODE_ENV'
-            },
-            $default: false,
-            production: false,
-            development: true
-        },
-        ...PalliesConfig
+```js
+// Register Pallies as a plugin in `lib/plugins/pallies.js
+'use strict';
+
+const PalliesConfig = require('../../server/.palliesrc');
+const User = require('../models/user');
+
+module.exports = (server, options) => ({
+    plugins: {
+        options: {
+            isDev : options.isDev,
+            ...PalliesConfig
+        }
     }
-},
-// Register Schwifty
+});
+```
+
+```js
+// Register Schwifty in server/manifest.js
 {
     plugin: 'schwifty',
     options: {
