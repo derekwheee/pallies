@@ -1,6 +1,6 @@
 {
   "name": "pallies",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Multi-tenant user management for Hapi",
   "author": "Derek Wheelden <derek.wheelden@gmail.com>",
   "license": "MIT",
