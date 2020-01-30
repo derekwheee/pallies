@@ -19,7 +19,15 @@ module.exports = {
         production: false,
         development: true
     },
-    useCSRFTokens: true,
+    useCSRFTokens: {
+        $filter: {
+            $env: 'NODE_ENV'
+        },
+        $default: true,
+        production: true,
+        development: true,
+        test: false
+    },
     jwt: {
         useRefreshTokens: true,
         issuer: 'Pallies',
@@ -35,34 +43,6 @@ module.exports = {
             $default: 'http://localhost:3001',
             production: '',
             development: 'http://localhost:3001'
-        },
-        resetPasswordPath: '/reset-password',
-        noreply: 'no-reply@test.com'
-    },
-    smtp: {
-        auth: {
-            user: {
-                $env: 'SMTP_USERNAME',
-                $default: null
-            },
-            pass: {
-                $env: 'SMTP_PASSWORD',
-                $default: null
-            }
-        },
-        host: {
-            $env: 'SMTP_HOST',
-            $default: 'smtp.ethereal.email'
-        },
-        port: {
-            $env: 'SMTP_PORT',
-            $coerce: 'number',
-            $default: 587
-        },
-        secure: {
-            $env: 'SMTP_IS_SECURE',
-            $coerce: 'bool',
-            $default: false
         }
     }
 };

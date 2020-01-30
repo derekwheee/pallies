@@ -1,7 +1,7 @@
 {
   "name": "pallies",
-  "version": "0.1.1",
-  "description": "Multi-tenant user management for Hapi",
+  "version": "0.2.0",
+  "description": "Robust user management for Hapi",
   "author": "Derek Wheelden <derek.wheelden@gmail.com>",
   "license": "MIT",
   "keywords": [
@@ -9,7 +9,9 @@
     "hpal",
     "user",
     "management",
-    "plugin"
+    "plugin",
+    "csrf",
+    "token"
   ],
   "main": "lib/index.js",
   "repository": {
@@ -41,14 +43,12 @@
     "argon2": "^0.25.1",
     "csprng": "^0.1.2",
     "generate-password": "^1.4.2",
-    "handlebars": "^4.5.3",
     "hapi-auth-jwt2": "^8.8.1",
     "hashids": "^2.1.0",
     "haute-couture": "^3.5.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.20.4",
     "moment": "^2.24.0",
-    "nodemailer": "^6.4.2",
     "objection": "^2.0.6",
     "pg": "^7.14.0",
     "rand-token": "^0.4.0",

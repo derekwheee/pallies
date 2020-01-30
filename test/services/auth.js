@@ -120,12 +120,15 @@ describe('Auth Service', () => {
     it('forgot password', async () => {
 
         const authService = internals.server.services().authService;
-        const user = await authService.register(Constants.TEST_USER_NAME, `authService-${Constants.TEST_USER_EMAIL}`, Constants.TEST_USER_PASSWORD);
-        const email = await authService.forgotPassword(user.email);
 
-        expect(email).to.exist();
-        expect(email.accepted).to.have.length(1);
-        expect(email.rejected).to.have.length(0);
+        await authService.register(Constants.TEST_USER_NAME, `authService-${Constants.TEST_USER_EMAIL}`, Constants.TEST_USER_PASSWORD);
+
+        const user = await authService.forgotPassword(`authService-${Constants.TEST_USER_EMAIL}`);
+
+        console.log(user);
+
+        expect(user.hasOwnProperty('forgotPasswordToken')).to.be.true();
+        expect(user.hasOwnProperty('forgotPasswordExpiresAt')).to.be.true();
     });
 
     it('reset password', async () => {
