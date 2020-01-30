@@ -36,8 +36,6 @@ describe('Token Service', () => {
 
         const decoded = Jwt.decode(token);
 
-        console.log(decoded);
-
         expect(token).to.exist();
         expect(token).to.be.a.string();
         expect(decoded.id).to.equal(internals.user.id);
@@ -61,9 +59,7 @@ describe('Token Service', () => {
 
         expect(validated).to.exist();
         expect(validated).to.be.a.object();
-        expect('access_token' in validated).to.be.true();
-        expect('refresh_token' in validated).to.be.true();
-        expect('token_type' in validated).to.be.true();
+        expect('accessToken' in validated).to.be.true();
     });
 
     it('validate bad refresh token', () => {

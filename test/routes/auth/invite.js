@@ -49,7 +49,7 @@ describe('Invite User', () => {
             method: 'post',
             url: '/invite',
             headers: {
-                Authorization: `Bearer ${internals.token.access_token}`
+                Authorization: `Bearer ${internals.token.accessToken}`
             },
             payload: {
                 name: Constants.TEST_USER_NAME,
@@ -74,7 +74,7 @@ describe('Invite User', () => {
             method: 'post',
             url: '/invite',
             headers: {
-                Authorization: `Bearer ${internals.token.access_token}`
+                Authorization: `Bearer ${internals.token.accessToken}`
             },
             payload: {
                 name: Constants.TEST_USER_NAME,
@@ -100,7 +100,7 @@ describe('Invite User', () => {
             method: 'post',
             url: '/invite',
             headers: {
-                Authorization: `Bearer ${internals.token.access_token}`
+                Authorization: `Bearer ${internals.token.accessToken}`
             },
             payload: {
                 name: Constants.TEST_USER_NAME,

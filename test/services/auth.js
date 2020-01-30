@@ -43,9 +43,7 @@ describe('Auth Service', () => {
         const token = await authService.login(`authService-${Constants.TEST_USER_EMAIL}`, Constants.TEST_USER_PASSWORD);
 
         expect(token).to.exist();
-        expect('access_token' in token).to.be.true();
-        expect('refresh_token' in token).to.be.true();
-        expect('token_type' in token).to.be.true();
+        expect('accessToken' in token).to.be.true();
     });
 
     it('verify password', async () => {
@@ -66,7 +64,7 @@ describe('Auth Service', () => {
         await authService.register(Constants.TEST_USER_NAME, `authService-${Constants.TEST_USER_EMAIL}`, Constants.TEST_USER_PASSWORD);
 
         const token = await authService.login(`authService-${Constants.TEST_USER_EMAIL}`, Constants.TEST_USER_PASSWORD);
-        const { isValid } = authService.validate(token.access_token, { auth: { token: token.access_token } });
+        const { isValid } = authService.validate(token.accessToken, { auth: { token: token.accessToken } });
 
         expect(isValid).to.be.true();
     });
@@ -86,14 +84,14 @@ describe('Auth Service', () => {
 
         await authService.register(Constants.TEST_USER_NAME, `authService-${Constants.TEST_USER_EMAIL}`, Constants.TEST_USER_PASSWORD);
 
-        const token = await authService.login(`authService-${Constants.TEST_USER_EMAIL}`, Constants.TEST_USER_PASSWORD);
-        const newTokens = await authService.reauthorize(token.refresh_token);
+        const { payload, headers } = await internals.server.inject({ method: 'GET', url: `/token?email=authService-${Constants.TEST_USER_EMAIL}&password=${Constants.TEST_USER_PASSWORD}` });
+        const refreshToken = headers['set-cookie'][0].match(/=([^;]+)/)[1];
+
+        const newTokens = await authService.reauthorize(refreshToken);
 
         expect(newTokens).to.exist();
-        expect(newTokens.access_token).to.not.equal(token.access_token);
-        expect('access_token' in newTokens).to.be.true();
-        expect('refresh_token' in newTokens).to.be.true();
-        expect('token_type' in newTokens).to.be.true();
+        expect(newTokens.accessToken).to.not.equal(payload.accessToken);
+        expect('accessToken' in newTokens).to.be.true();
     });
 
     it('invite user', async () => {
@@ -150,9 +148,7 @@ describe('Auth Service', () => {
         const token = await authService.login(`authService-${Constants.TEST_USER_EMAIL}`, 'test321?');
 
         expect(token).to.exist();
-        expect('access_token' in token).to.be.true();
-        expect('refresh_token' in token).to.be.true();
-        expect('token_type' in token).to.be.true();
+        expect('accessToken' in token).to.be.true();
 
     });
 

@@ -4,7 +4,13 @@
   "description": "Multi-tenant user management for Hapi",
   "author": "Derek Wheelden <derek.wheelden@gmail.com>",
   "license": "MIT",
-  "keywords": ["hapi", "hpal", "user", "management", "plugin"],
+  "keywords": [
+    "hapi",
+    "hpal",
+    "user",
+    "management",
+    "plugin"
+  ],
   "main": "lib/index.js",
   "repository": {
     "type": "git",
@@ -28,6 +34,7 @@
   ],
   "dependencies": {
     "@hapi/boom": "8.x.x",
+    "@hapi/crumb": "^8.0.0",
     "@hapi/joi": "^16.1.8",
     "argon2": "^0.25.1",
     "csprng": "^0.1.2",

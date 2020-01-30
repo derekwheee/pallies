@@ -30,9 +30,7 @@ describe('Token', () => {
 
         expect(response.statusCode).to.equal(200);
         expect(response.result.data).to.be.a.object();
-        expect('access_token' in response.result.data).to.be.true();
-        expect('refresh_token' in response.result.data).to.be.true();
-        expect('token_type' in response.result.data).to.be.true();
+        expect('accessToken' in response.result.data).to.be.true();
     });
 
     after(async () => {
