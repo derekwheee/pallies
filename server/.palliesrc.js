@@ -19,6 +19,7 @@ module.exports = {
         production: false,
         development: true
     },
+    useCSRFTokens: true,
     jwt: {
         useRefreshTokens: true,
         issuer: 'Pallies',

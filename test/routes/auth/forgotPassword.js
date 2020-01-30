@@ -14,7 +14,7 @@ describe('Forgot Password', () => {
 
     before(async () => {
 
-        internals.server = await Server.deployment();
+        internals.server = await Server.deployment(null, true);
     });
 
     it('send forgot password', async () => {
