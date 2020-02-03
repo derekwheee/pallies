@@ -376,7 +376,7 @@
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="services_auth.js.html">services/auth.js</a>, <a href="services_auth.js.html#line169">line 169</a>
+          <a href="services_auth.js.html">services/auth.js</a>, <a href="services_auth.js.html#line175">line 175</a>
         </li>
       </ul>
     </dd>
@@ -682,7 +682,7 @@
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="services_auth.js.html">services/auth.js</a>, <a href="services_auth.js.html#line140">line 140</a>
+          <a href="services_auth.js.html">services/auth.js</a>, <a href="services_auth.js.html#line146">line 146</a>
         </li>
       </ul>
     </dd>
@@ -1003,7 +1003,7 @@
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="services_auth.js.html">services/auth.js</a>, <a href="services_auth.js.html#line121">line 121</a>
+          <a href="services_auth.js.html">services/auth.js</a>, <a href="services_auth.js.html#line127">line 127</a>
         </li>
       </ul>
     </dd>
@@ -1311,7 +1311,7 @@
       </svg>
     </a>
     <h4 class="name" id="resetPassword">
-      <span class="type-signature">(async) </span>resetPassword<span class="signature">(request, oldPassword<span class="signature-attributes">opt</span>, userHash<span class="signature-attributes">opt</span>, forgotPasswordToken, newPassword, txn<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span>
+      <span class="type-signature">(async) </span>resetPassword<span class="signature">(credentials, oldPassword<span class="signature-attributes">opt</span>, userHash<span class="signature-attributes">opt</span>, forgotPasswordToken, newPassword, txn<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span>
     </h4>
   </span>
 
@@ -1355,7 +1355,7 @@
     
       <tr>
         
-          <td class="name"><code>request</code></td>
+          <td class="name"><code>credentials</code></td>
         
 
         <td class="type">
@@ -1384,7 +1384,7 @@
         
 
         <td class="description last">
-          The hapi request object
+          The hapi credentials object
           
         </td>
       </tr>
@@ -1619,7 +1619,7 @@
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="services_auth.js.html">services/auth.js</a>, <a href="services_auth.js.html#line192">line 192</a>
+          <a href="services_auth.js.html">services/auth.js</a>, <a href="services_auth.js.html#line198">line 198</a>
         </li>
       </ul>
     </dd>
@@ -1658,7 +1658,7 @@
       </svg>
     </a>
     <h4 class="name" id="validate">
-      <span class="type-signature"></span>validate<span class="signature">(token, request)</span><span class="type-signature"> &rarr; {object}</span>
+      <span class="type-signature">(async) </span>validate<span class="signature">(token, auth)</span><span class="type-signature"> &rarr; {object}</span>
     </h4>
   </span>
 
@@ -1729,7 +1729,7 @@
     
       <tr>
         
-          <td class="name"><code>request</code></td>
+          <td class="name"><code>auth</code></td>
         
 
         <td class="type">
@@ -1750,7 +1750,7 @@
         
 
         <td class="description last">
-          The hapi request object
+          The hapi auth object
           
         </td>
       </tr>
