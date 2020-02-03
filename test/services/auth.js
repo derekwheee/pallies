@@ -60,20 +60,18 @@ describe('Auth Service', () => {
     it('validate token', async () => {
 
         const authService = internals.server.services().authService;
-
-        await authService.register(Constants.TEST_USER_NAME, `authService-${Constants.TEST_USER_EMAIL}`, Constants.TEST_USER_PASSWORD);
-
+        const user = await authService.register(Constants.TEST_USER_NAME, `authService-${Constants.TEST_USER_EMAIL}`, Constants.TEST_USER_PASSWORD);
         const token = await authService.login(`authService-${Constants.TEST_USER_EMAIL}`, Constants.TEST_USER_PASSWORD);
-        const { isValid } = authService.validate(token.accessToken, { auth: { token: token.accessToken } });
+        const { isValid } = await authService.validate({ id: user.id }, { token: token.accessToken });
 
         expect(isValid).to.be.true();
     });
 
-    it('validate bad token', () => {
+    it('validate bad token', async () => {
 
         const authService = internals.server.services().authService;
 
-        const { isValid } = authService.validate('badtoken', { auth: { token: 'badtoken' } });
+        const { isValid } = await authService.validate('badtoken', { auth: { token: 'badtoken' } });
 
         expect(isValid).to.be.false();
     });
@@ -97,17 +95,8 @@ describe('Auth Service', () => {
     it('invite user', async () => {
 
         const authService = internals.server.services().authService;
-        const user = await authService.register(Constants.TEST_USER_NAME, `authService-${Constants.TEST_USER_EMAIL}`, Constants.TEST_USER_PASSWORD);
 
-        const request = {
-            auth : {
-                credentials : {
-                    id: user.id
-                }
-            }
-        };
-
-        const newUser = await authService.invite(request, 'INVITE USER', 'inviteuser@test.com');
+        const newUser = await authService.invite('INVITE USER', 'inviteuser@test.com');
 
         expect(newUser).to.exist();
         expect(newUser.email).to.equal('inviteuser@test.com');
@@ -137,16 +126,7 @@ describe('Auth Service', () => {
         const user = await authService.register(Constants.TEST_USER_NAME, `authService-${Constants.TEST_USER_EMAIL}`, Constants.TEST_USER_PASSWORD);
 
         await authService.forgotPassword(user.email);
-
-        const request = {
-            auth : {
-                credentials : {
-                    id: user.id
-                }
-            }
-        };
-
-        await authService.resetPassword(request, Constants.TEST_USER_PASSWORD, hashids.encode(user.id), null, 'test321?');
+        await authService.resetPassword({ id: user.id }, Constants.TEST_USER_PASSWORD, hashids.encode(user.id), null, 'test321?');
 
         const token = await authService.login(`authService-${Constants.TEST_USER_EMAIL}`, 'test321?');
 
