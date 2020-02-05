@@ -1,6 +1,6 @@
 {
   "name": "pallies",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Robust user management for Hapi",
   "author": "Derek Wheelden <derek.wheelden@gmail.com>",
   "license": "MIT",
@@ -44,7 +44,7 @@
     "csprng": "^0.1.2",
     "generate-password": "^1.4.2",
     "hapi-auth-jwt2": "^8.8.1",
-    "hashids": "^2.1.0",
+    "hashids": "^2.2.1",
     "haute-couture": "^3.5.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.20.4",
