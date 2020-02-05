@@ -114,8 +114,6 @@ describe('Auth Service', () => {
 
         const user = await authService.forgotPassword(`authService-${Constants.TEST_USER_EMAIL}`);
 
-        console.log(user);
-
         expect(user.hasOwnProperty('forgotPasswordToken')).to.be.true();
         expect(user.hasOwnProperty('forgotPasswordExpiresAt')).to.be.true();
     });
