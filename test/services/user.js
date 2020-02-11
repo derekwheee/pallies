@@ -19,12 +19,12 @@ describe('User Service', () => {
 
         const user = await userService.create({
             name: Constants.TEST_USER_NAME,
-            email: `userService-${Constants.TEST_USER_EMAIL}`,
+            username: `userService-${Constants.TEST_USER_EMAIL}`,
             password: Constants.TEST_USER_PASSWORD
         });
 
         expect(user.name).to.equal(Constants.TEST_USER_NAME);
-        expect(user.email).to.equal(`userService-${Constants.TEST_USER_EMAIL}`);
+        expect(user.username).to.equal(`userService-${Constants.TEST_USER_EMAIL}`);
         expect(user.password).to.not.equal(Constants.TEST_USER_PASSWORD);
     });
 
@@ -35,31 +35,31 @@ describe('User Service', () => {
 
         const { id } = await userService.create({
             name: Constants.TEST_USER_NAME,
-            email: `userService-${Constants.TEST_USER_EMAIL}`,
+            username: `userService-${Constants.TEST_USER_EMAIL}`,
             password: Constants.TEST_USER_PASSWORD
         });
 
         const user = await userService.getById(id);
 
         expect(user.id).to.equal(id);
-        expect(user.email).to.equal(`userService-${Constants.TEST_USER_EMAIL}`);
+        expect(user.username).to.equal(`userService-${Constants.TEST_USER_EMAIL}`);
     });
 
-    it('get user by email', async () => {
+    it('get user by username', async () => {
 
         const server = await Server.deployment();
         const userService = server.services().userService;
 
-        const { id, email } = await userService.create({
+        const { id, username } = await userService.create({
             name: Constants.TEST_USER_NAME,
-            email: `userService-${Constants.TEST_USER_EMAIL}`,
+            username: `userService-${Constants.TEST_USER_EMAIL}`,
             password: Constants.TEST_USER_PASSWORD
         });
 
-        const user = await userService.getByEmail(email);
+        const user = await userService.getByUsername(username);
 
         expect(user.id).to.equal(id);
-        expect(user.email).to.equal(`userService-${Constants.TEST_USER_EMAIL}`);
+        expect(user.username).to.equal(`userService-${Constants.TEST_USER_EMAIL}`);
     });
 
     it('update user', async () => {
@@ -69,7 +69,7 @@ describe('User Service', () => {
 
         const user = await userService.create({
             name: Constants.TEST_USER_NAME,
-            email: `userService-${Constants.TEST_USER_EMAIL}`,
+            username: `userService-${Constants.TEST_USER_EMAIL}`,
             password: Constants.TEST_USER_PASSWORD
         });
 
@@ -78,7 +78,7 @@ describe('User Service', () => {
         const updatedUser = await userService.getById(user.id);
 
         expect(updatedUser.id).to.equal(user.id);
-        expect(updatedUser.email).to.equal(`userService-${Constants.TEST_USER_EMAIL}`);
+        expect(updatedUser.username).to.equal(`userService-${Constants.TEST_USER_EMAIL}`);
         expect(updatedUser.name).to.equal('Updated User');
     });
 
@@ -89,7 +89,7 @@ describe('User Service', () => {
 
         const user = await userService.create({
             name: Constants.TEST_USER_NAME,
-            email: `userService-${Constants.TEST_USER_EMAIL}`,
+            username: `userService-${Constants.TEST_USER_EMAIL}`,
             password: Constants.TEST_USER_PASSWORD
         });
 
@@ -107,13 +107,13 @@ describe('User Service', () => {
 
         const user = await userService.create({
             name: Constants.TEST_USER_NAME,
-            email: `userService-${Constants.TEST_USER_EMAIL}`,
+            username: `userService-${Constants.TEST_USER_EMAIL}`,
             password: Constants.TEST_USER_PASSWORD
         });
 
-        await userService.removeByEmail(user.email);
+        await userService.removeByUsername(user.email);
 
-        const deletedUser = await userService.getByEmail(user.email);
+        const deletedUser = await userService.getByUsername(user.email);
 
         expect(deletedUser).to.not.exist();
     });
@@ -125,7 +125,7 @@ describe('User Service', () => {
 
         const user = await userService.create({
             name: Constants.TEST_USER_NAME,
-            email: `userService-${Constants.TEST_USER_EMAIL}`,
+            username: `userService-${Constants.TEST_USER_EMAIL}`,
             password: Constants.TEST_USER_PASSWORD
         });
 
@@ -143,7 +143,7 @@ describe('User Service', () => {
 
         const user = await userService.create({
             name: Constants.TEST_USER_NAME,
-            email: `userService-${Constants.TEST_USER_EMAIL}`,
+            username: `userService-${Constants.TEST_USER_EMAIL}`,
             password: Constants.TEST_USER_PASSWORD
         });
 
@@ -163,6 +163,6 @@ describe('User Service', () => {
 
         const server = await Server.deployment();
 
-        await server.services().userService.removeByEmail(`userService-${Constants.TEST_USER_EMAIL}`);
+        await server.services().userService.removeByUsername(`userService-${Constants.TEST_USER_EMAIL}`);
     });
 });

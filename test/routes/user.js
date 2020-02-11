@@ -22,7 +22,7 @@ describe('User Route', () => {
 
         const response = await internals.server.inject({
             method: 'get',
-            url: `/token?email=userRoute-${Constants.TEST_USER_EMAIL}&password=${Constants.TEST_USER_PASSWORD}`
+            url: `/token?username=userRoute-${Constants.TEST_USER_EMAIL}&password=${Constants.TEST_USER_PASSWORD}`
         });
 
         internals.token = response.result.data.accessToken;
@@ -39,19 +39,19 @@ describe('User Route', () => {
         });
 
         expect(response.statusCode).to.equal(200);
-        expect(response.result.data.email).to.equal(`userRoute-${Constants.TEST_USER_EMAIL}`);
+        expect(response.result.data.username).to.equal(`userRoute-${Constants.TEST_USER_EMAIL}`);
         expect(response.result.data.name).to.equal('Test User');
     });
 
     after(async () => {
 
-        const user = await internals.server.services().userService.getByEmail(`userRoute-${Constants.TEST_USER_EMAIL}`);
+        const user = await internals.server.services().userService.getByUsername(`userRoute-${Constants.TEST_USER_EMAIL}`);
 
         try {
             await internals.server.services().tokenService.clearRefreshTokens(user);
         }
         catch (err) {}
 
-        await internals.server.services().userService.removeByEmail(`userRoute-${Constants.TEST_USER_EMAIL}`);
+        await internals.server.services().userService.removeByUsername(`userRoute-${Constants.TEST_USER_EMAIL}`);
     });
 });

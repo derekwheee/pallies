@@ -30,7 +30,7 @@ describe('Auth Service', () => {
         const user = await authService.register(Constants.TEST_USER_NAME, `authService-${Constants.TEST_USER_EMAIL}`, Constants.TEST_USER_PASSWORD);
 
         expect(user.name).to.equal(Constants.TEST_USER_NAME);
-        expect(user.email).to.equal(`authService-${Constants.TEST_USER_EMAIL}`);
+        expect(user.username).to.equal(`authService-${Constants.TEST_USER_EMAIL}`);
         expect(user.password).to.not.equal(Constants.TEST_USER_PASSWORD);
     });
 
@@ -52,7 +52,7 @@ describe('Auth Service', () => {
 
         await authService.register(Constants.TEST_USER_NAME, `authService-${Constants.TEST_USER_EMAIL}`, Constants.TEST_USER_PASSWORD);
 
-        const isVerified = await authService.verifyPassword({ email: `authService-${Constants.TEST_USER_EMAIL}` }, Constants.TEST_USER_PASSWORD);
+        const isVerified = await authService.verifyPassword({ username: `authService-${Constants.TEST_USER_EMAIL}` }, Constants.TEST_USER_PASSWORD);
 
         expect(isVerified).to.be.true();
     });
@@ -82,7 +82,7 @@ describe('Auth Service', () => {
 
         await authService.register(Constants.TEST_USER_NAME, `authService-${Constants.TEST_USER_EMAIL}`, Constants.TEST_USER_PASSWORD);
 
-        const { payload, headers } = await internals.server.inject({ method: 'GET', url: `/token?email=authService-${Constants.TEST_USER_EMAIL}&password=${Constants.TEST_USER_PASSWORD}` });
+        const { payload, headers } = await internals.server.inject({ method: 'GET', url: `/token?username=authService-${Constants.TEST_USER_EMAIL}&password=${Constants.TEST_USER_PASSWORD}` });
         const refreshToken = headers['set-cookie'][0].match(/=([^;]+)/)[1];
 
         const newTokens = await authService.reauthorize(refreshToken);
@@ -99,10 +99,10 @@ describe('Auth Service', () => {
         const newUser = await authService.invite('INVITE USER', 'inviteuser@test.com');
 
         expect(newUser).to.exist();
-        expect(newUser.email).to.equal('inviteuser@test.com');
+        expect(newUser.username).to.equal('inviteuser@test.com');
         expect(newUser.forgotPasswordToken).to.not.be.undefined();
 
-        await internals.server.services().userService.removeByEmail('inviteuser@test.com');
+        await internals.server.services().userService.removeByUsername('inviteuser@test.com');
 
     });
 
@@ -160,7 +160,7 @@ describe('Auth Service', () => {
         const authService = internals.server.services().authService;
         const user = await authService.register(Constants.TEST_USER_NAME, `authService-${Constants.TEST_USER_EMAIL}`, Constants.TEST_USER_PASSWORD);
 
-        await authService.forgotPassword(user.email);
+        await authService.forgotPassword(user.username);
 
         const request = {
             auth : {
@@ -179,13 +179,13 @@ describe('Auth Service', () => {
 
     afterEach(async () => {
 
-        const user = await internals.server.services().userService.getByEmail(`authService-${Constants.TEST_USER_EMAIL}`);
+        const user = await internals.server.services().userService.getByUsername(`authService-${Constants.TEST_USER_EMAIL}`);
 
         try {
             await internals.server.services().tokenService.clearRefreshTokens(user);
         }
         catch (err) {}
 
-        await internals.server.services().userService.removeByEmail(`authService-${Constants.TEST_USER_EMAIL}`);
+        await internals.server.services().userService.removeByUsername(`authService-${Constants.TEST_USER_EMAIL}`);
     });
 });

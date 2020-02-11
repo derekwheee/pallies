@@ -21,11 +21,11 @@ describe('Invite User', () => {
 
         const user = await userService.create({
             name: Constants.TEST_USER_NAME,
-            email: `auth-${Constants.TEST_USER_EMAIL}`,
+            username: `auth-${Constants.TEST_USER_EMAIL}`,
             password: Constants.TEST_USER_PASSWORD
         });
 
-        internals.token = await authService.login(user.email, Constants.TEST_USER_PASSWORD);
+        internals.token = await authService.login(user.username, Constants.TEST_USER_PASSWORD);
 
     });
 
@@ -36,7 +36,7 @@ describe('Invite User', () => {
             url: '/invite',
             payload: {
                 name: Constants.TEST_USER_NAME,
-                email: `invite-${Constants.TEST_USER_EMAIL}`
+                username: `invite-${Constants.TEST_USER_EMAIL}`
             }
         });
 
@@ -53,7 +53,7 @@ describe('Invite User', () => {
             },
             payload: {
                 name: Constants.TEST_USER_NAME,
-                email: `invite-${Constants.TEST_USER_EMAIL}`
+                username: `invite-${Constants.TEST_USER_EMAIL}`
             }
         });
 
@@ -66,7 +66,7 @@ describe('Invite User', () => {
 
         await userService.create({
             name: Constants.TEST_USER_NAME,
-            email: `invite-${Constants.TEST_USER_EMAIL}`,
+            username: `invite-${Constants.TEST_USER_EMAIL}`,
             password: Constants.TEST_USER_PASSWORD
         });
 
@@ -78,7 +78,7 @@ describe('Invite User', () => {
             },
             payload: {
                 name: Constants.TEST_USER_NAME,
-                email: `invite-${Constants.TEST_USER_EMAIL}`
+                username: `invite-${Constants.TEST_USER_EMAIL}`
             }
         });
 
@@ -92,7 +92,7 @@ describe('Invite User', () => {
 
         await userService.create({
             name: Constants.TEST_USER_NAME,
-            email: `invite-${Constants.TEST_USER_EMAIL}`,
+            username: `invite-${Constants.TEST_USER_EMAIL}`,
             password: Constants.TEST_USER_PASSWORD
         });
 
@@ -104,7 +104,7 @@ describe('Invite User', () => {
             },
             payload: {
                 name: Constants.TEST_USER_NAME,
-                email: `invite-${Constants.TEST_USER_EMAIL}`,
+                username: `invite-${Constants.TEST_USER_EMAIL}`,
                 force: true
             }
         });
@@ -114,18 +114,18 @@ describe('Invite User', () => {
 
     afterEach(async () => {
 
-        await internals.server.services().userService.removeByEmail(`invite-${Constants.TEST_USER_EMAIL}`);
+        await internals.server.services().userService.removeByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
     });
 
     after(async () => {
 
-        const user = await internals.server.services().userService.getByEmail(`auth-${Constants.TEST_USER_EMAIL}`);
+        const user = await internals.server.services().userService.getByUsername(`auth-${Constants.TEST_USER_EMAIL}`);
 
         try {
             await internals.server.services().tokenService.clearRefreshTokens(user);
         }
         catch (err) {}
 
-        await internals.server.services().userService.removeByEmail(`auth-${Constants.TEST_USER_EMAIL}`);
+        await internals.server.services().userService.removeByUsername(`auth-${Constants.TEST_USER_EMAIL}`);
     });
 });

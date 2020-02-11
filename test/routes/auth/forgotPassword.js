@@ -23,7 +23,7 @@ describe('Forgot Password', () => {
 
         const user = await userService.create({
             name: Constants.TEST_USER_NAME,
-            email: `forgotPassword-${Constants.TEST_USER_EMAIL}`,
+            username: `forgotPassword-${Constants.TEST_USER_EMAIL}`,
             password: Constants.TEST_USER_PASSWORD
         });
 
@@ -31,7 +31,7 @@ describe('Forgot Password', () => {
             method: 'post',
             url: '/forgotpassword',
             payload: {
-                email: user.email
+                username: user.username
             }
         });
 
@@ -40,6 +40,6 @@ describe('Forgot Password', () => {
 
     after(async () => {
 
-        await internals.server.services().userService.removeByEmail(`forgotPassword-${Constants.TEST_USER_EMAIL}`);
+        await internals.server.services().userService.removeByUsername(`forgotPassword-${Constants.TEST_USER_EMAIL}`);
     });
 });

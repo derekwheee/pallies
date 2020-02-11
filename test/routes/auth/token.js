@@ -25,7 +25,7 @@ describe('Token', () => {
 
         const response = await internals.server.inject({
             method: 'get',
-            url: `/token?email=token-${Constants.TEST_USER_EMAIL}&password=${Constants.TEST_USER_PASSWORD}`
+            url: `/token?username=token-${Constants.TEST_USER_EMAIL}&password=${Constants.TEST_USER_PASSWORD}`
         });
 
         expect(response.statusCode).to.equal(200);
@@ -35,13 +35,13 @@ describe('Token', () => {
 
     after(async () => {
 
-        const user = await internals.server.services().userService.getByEmail(`token-${Constants.TEST_USER_EMAIL}`);
+        const user = await internals.server.services().userService.getByUsername(`token-${Constants.TEST_USER_EMAIL}`);
 
         try {
             await internals.server.services().tokenService.clearRefreshTokens(user);
         }
         catch (err) {}
 
-        await internals.server.services().userService.removeByEmail(`token-${Constants.TEST_USER_EMAIL}`);
+        await internals.server.services().userService.removeByUsername(`token-${Constants.TEST_USER_EMAIL}`);
     });
 });

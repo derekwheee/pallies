@@ -44,6 +44,6 @@ describe('Validation', () => {
 
         const server = await Server.deployment();
 
-        await server.services().userService.removeByEmail(`validation-${Constants.TEST_USER_EMAIL}`);
+        await server.services().userService.removeByUsername(`validation-${Constants.TEST_USER_EMAIL}`);
     });
 });

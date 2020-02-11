@@ -1,6 +1,7 @@
 'use strict';
 
 const Dotenv = require('dotenv');
+const Schwifty = require('schwifty');
 const Confidence = require('confidence');
 const Toys = require('toys');
 // TODO: Merge a default config with a project-specific config
@@ -68,7 +69,7 @@ module.exports = new Confidence.Store({
                                 database: { $env: 'DB_DATABASE' }
                             },
                             migrations: {
-                                stub: 'Schwifty.migrationsStubPath'
+                                stub: Schwifty.migrationsStubPath
                             }
                         }
                     },

@@ -77,7 +77,7 @@
 
     
 
-    <h3>Classes</h3><ul><li id="AuthService-nav"><a href="AuthService.html">AuthService</a><ul class='methods'><li data-type="method" id="AuthService-forgotPassword-nav"><a href="AuthService.html#forgotPassword">forgotPassword</a></li><li data-type="method" id="AuthService-invite-nav"><a href="AuthService.html#invite">invite</a></li><li data-type="method" id="AuthService-login-nav"><a href="AuthService.html#login">login</a></li><li data-type="method" id="AuthService-reauthorize-nav"><a href="AuthService.html#reauthorize">reauthorize</a></li><li data-type="method" id="AuthService-register-nav"><a href="AuthService.html#register">register</a></li><li data-type="method" id="AuthService-resetPassword-nav"><a href="AuthService.html#resetPassword">resetPassword</a></li><li data-type="method" id="AuthService-validate-nav"><a href="AuthService.html#validate">validate</a></li><li data-type="method" id="AuthService-verifyPassword-nav"><a href="AuthService.html#verifyPassword">verifyPassword</a></li></ul></li><li id="RefreshToken-nav"><a href="RefreshToken.html">RefreshToken</a></li><li id="SuccessResult-nav"><a href="SuccessResult.html">SuccessResult</a></li><li id="TokenService-nav"><a href="TokenService.html">TokenService</a><ul class='methods'><li data-type="method" id="TokenService-clearRefreshTokens-nav"><a href="TokenService.html#clearRefreshTokens">clearRefreshTokens</a></li><li data-type="method" id="TokenService-createAccessToken-nav"><a href="TokenService.html#createAccessToken">createAccessToken</a></li><li data-type="method" id="TokenService-createRefreshToken-nav"><a href="TokenService.html#createRefreshToken">createRefreshToken</a></li><li data-type="method" id="TokenService-validateRefreshToken-nav"><a href="TokenService.html#validateRefreshToken">validateRefreshToken</a></li></ul></li><li id="User-nav"><a href="User.html">User</a></li><li id="UserService-nav"><a href="UserService.html">UserService</a><ul class='methods'><li data-type="method" id="UserService-create-nav"><a href="UserService.html#create">create</a></li><li data-type="method" id="UserService-createForgotPasswordToken-nav"><a href="UserService.html#createForgotPasswordToken">createForgotPasswordToken</a></li><li data-type="method" id="UserService-getByEmail-nav"><a href="UserService.html#getByEmail">getByEmail</a></li><li data-type="method" id="UserService-getById-nav"><a href="UserService.html#getById">getById</a></li><li data-type="method" id="UserService-remove-nav"><a href="UserService.html#remove">remove</a></li><li data-type="method" id="UserService-removeByEmail-nav"><a href="UserService.html#removeByEmail">removeByEmail</a></li><li data-type="method" id="UserService-resetPassword-nav"><a href="UserService.html#resetPassword">resetPassword</a></li><li data-type="method" id="UserService-update-nav"><a href="UserService.html#update">update</a></li></ul></li></ul>
+    <h3>Classes</h3><ul><li id="AuthService-nav"><a href="AuthService.html">AuthService</a><ul class='methods'><li data-type="method" id="AuthService-forgotPassword-nav"><a href="AuthService.html#forgotPassword">forgotPassword</a></li><li data-type="method" id="AuthService-invite-nav"><a href="AuthService.html#invite">invite</a></li><li data-type="method" id="AuthService-login-nav"><a href="AuthService.html#login">login</a></li><li data-type="method" id="AuthService-reauthorize-nav"><a href="AuthService.html#reauthorize">reauthorize</a></li><li data-type="method" id="AuthService-register-nav"><a href="AuthService.html#register">register</a></li><li data-type="method" id="AuthService-resetPassword-nav"><a href="AuthService.html#resetPassword">resetPassword</a></li><li data-type="method" id="AuthService-validate-nav"><a href="AuthService.html#validate">validate</a></li><li data-type="method" id="AuthService-verifyPassword-nav"><a href="AuthService.html#verifyPassword">verifyPassword</a></li></ul></li><li id="RefreshToken-nav"><a href="RefreshToken.html">RefreshToken</a></li><li id="Role-nav"><a href="Role.html">Role</a></li><li id="SuccessResult-nav"><a href="SuccessResult.html">SuccessResult</a></li><li id="TokenService-nav"><a href="TokenService.html">TokenService</a><ul class='methods'><li data-type="method" id="TokenService-clearRefreshTokens-nav"><a href="TokenService.html#clearRefreshTokens">clearRefreshTokens</a></li><li data-type="method" id="TokenService-createAccessToken-nav"><a href="TokenService.html#createAccessToken">createAccessToken</a></li><li data-type="method" id="TokenService-createRefreshToken-nav"><a href="TokenService.html#createRefreshToken">createRefreshToken</a></li><li data-type="method" id="TokenService-validateRefreshToken-nav"><a href="TokenService.html#validateRefreshToken">validateRefreshToken</a></li></ul></li><li id="User-nav"><a href="User.html">User</a></li><li id="UserService-nav"><a href="UserService.html">UserService</a><ul class='methods'><li data-type="method" id="UserService-create-nav"><a href="UserService.html#create">create</a></li><li data-type="method" id="UserService-createForgotPasswordToken-nav"><a href="UserService.html#createForgotPasswordToken">createForgotPasswordToken</a></li><li data-type="method" id="UserService-getById-nav"><a href="UserService.html#getById">getById</a></li><li data-type="method" id="UserService-getByUsername-nav"><a href="UserService.html#getByUsername">getByUsername</a></li><li data-type="method" id="UserService-remove-nav"><a href="UserService.html#remove">remove</a></li><li data-type="method" id="UserService-removeByUsername-nav"><a href="UserService.html#removeByUsername">removeByUsername</a></li><li data-type="method" id="UserService-resetPassword-nav"><a href="UserService.html#resetPassword">resetPassword</a></li><li data-type="method" id="UserService-update-nav"><a href="UserService.html#update">update</a></li></ul></li></ul>
   </nav>
 
   <div id="main">
@@ -119,40 +119,40 @@ class AuthService extends Schmervice.Service {
     * Register a new user
     * @async
     * @param {string} name - The user's full name
-    * @param {string} email - The user's email address
+    * @param {string} username - The user's username
     * @param {string} password - The user's password
     * @param {object} [txn] - An instance of a Knex transaction
     * @returns {User} The newly created User
     */
-    async register(name, email, password, txn) {
+    async register(name, username, password, txn) {
 
         try {
-            return await this.UserService.create({ name, email, password }, txn);
+            return await this.UserService.create({ name, username, password }, txn);
         }
         catch (err) {
-            return Boom.badRequest(`${email} is already registered`);
+            return Boom.badRequest(`${username} is already registered`);
         }
     }
 
     /**
     * Log a user in
     * @async
-    * @param {string} email - The user's email address
+    * @param {string} username - The user's username address
     * @param {string} password - The user's password
     * @returns {object} A token object with a access and refresh tokens, and the token type
     */
-    async login(email, password) {
+    async login(username, password) {
 
-        const user = await this.UserService.getByEmail(email);
+        const user = await this.UserService.getByUsername(username);
 
         if (!user) {
-            return Boom.unauthorized('Email or password is incorrect');
+            return Boom.unauthorized('Username or password is incorrect');
         }
 
         const isValidPassword  = await this.verifyPassword(user, password);
 
         if (!isValidPassword) {
-            return Boom.unauthorized('Email or password is invalid');
+            return Boom.unauthorized('Username or password is invalid');
         }
 
         const accessToken = this.TokenService.createAccessToken(user);
@@ -173,13 +173,13 @@ class AuthService extends Schmervice.Service {
     * Verify a user's password
     * @async
     * @param {object} user - The user's full name
-    * @param {string} user.email - The user's email address
+    * @param {string} user.username - The user's username
     * @param {string} password - The user's password
     * @returns {bool}
     */
-    async verifyPassword({ email }, password) {
+    async verifyPassword({ username }, password) {
 
-        const user = await this.UserService.getByEmail(email);
+        const user = await this.UserService.getByUsername(username);
 
         return await Argon2.verify(user.password.toString(), password);
     }
@@ -228,31 +228,31 @@ class AuthService extends Schmervice.Service {
     }
 
     /**
-    * Send an email invitation to a new user
+    * Get a user invite token
     * @async
     * @param {object} request - The hapi request object
     * @param {string} name - The new user's name
-    * @param {string} email - The new user's email address
+    * @param {string} username - The new user's username
     * @param {bool} force - If true will remove an existing user and send a new invite
     * @param {object} [txn] - An instance of a Knex transaction
     * @returns {User} The newly created user
     */
-    async invite(name, email, force, txn) {
+    async invite(name, username, force, txn) {
 
-        const existingUser = await this.UserService.getByEmail(email, txn);
+        const existingUser = await this.UserService.getByUsername(username, txn);
 
         if (existingUser &amp;&amp; force) {
             // For use with "Resend invite"
             await this.UserService.remove(existingUser.id, txn);
         }
         else if (existingUser &amp;&amp; !force) {
-            return Boom.badRequest(`${email} is already registered`);
+            return Boom.badRequest(`${username} is already registered`);
         }
 
         // Register new user with temporary password
         const tempPassword = Csprng(128, 32);
 
-        const newUser = await this.register(name, email, tempPassword, txn);
+        const newUser = await this.register(name, username, tempPassword, txn);
 
         await this.UserService.createForgotPasswordToken(newUser);
 
@@ -260,18 +260,18 @@ class AuthService extends Schmervice.Service {
     }
 
     /**
-    * Send a forgot password email to a user
+    * Get a forgot password token
     * @async
-    * @param {string} email - The user's email address
+    * @param {string} username - The user's username
     * @param {object} [txn] - An instance of a Knex transaction
-    * @returns {object} The mail object from Nodemailer
+    * @returns {User} A user with a forgot password token
     */
-    async forgotPassword(email, txn) {
+    async forgotPassword(username, txn) {
 
-        const user = await this.UserService.getByEmail(email, txn);
+        const user = await this.UserService.getByUsername(username, txn);
 
         if (!user) {
-            return Boom.badRequest(`${email} does not exist`);
+            return Boom.badRequest(`${username} does not exist`);
         }
 
         await this.UserService.createForgotPasswordToken(user);

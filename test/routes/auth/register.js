@@ -24,14 +24,14 @@ describe('Register', () => {
             url: '/register',
             payload: {
                 name: Constants.TEST_USER_NAME,
-                email: `register-${Constants.TEST_USER_EMAIL}`,
+                username: `register-${Constants.TEST_USER_EMAIL}`,
                 password: Constants.TEST_USER_PASSWORD
             }
         });
 
         expect(result.statusCode).to.equal(200);
         expect(result.data.name).to.equal(Constants.TEST_USER_NAME);
-        expect(result.data.email).to.equal(`register-${Constants.TEST_USER_EMAIL}`);
+        expect(result.data.username).to.equal(`register-${Constants.TEST_USER_EMAIL}`);
         expect('password' in result.data).to.be.false();
     });
 
@@ -42,7 +42,7 @@ describe('Register', () => {
             url: '/register',
             payload: {
                 name: Constants.TEST_USER_NAME,
-                email: `register-${Constants.TEST_USER_EMAIL}`,
+                username: `register-${Constants.TEST_USER_EMAIL}`,
                 password: Constants.TEST_USER_PASSWORD
             }
         });
@@ -52,6 +52,6 @@ describe('Register', () => {
 
     after(async () => {
 
-        await internals.server.services().userService.removeByEmail(`register-${Constants.TEST_USER_EMAIL}`);
+        await internals.server.services().userService.removeByUsername(`register-${Constants.TEST_USER_EMAIL}`);
     });
 });
