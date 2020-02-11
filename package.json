@@ -1,6 +1,6 @@
 {
   "name": "pallies",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Robust user management for Hapi",
   "author": "Derek Wheelden <derek.wheelden@gmail.com>",
   "license": "MIT",
@@ -39,7 +39,7 @@
     "@hapi/crumb": "^8.0.0",
     "@hapi/glue": "^7.0.0",
     "@hapi/hapi": "^19.0.5",
-    "@hapi/joi": "^16.1.8",
+    "@hapi/joi": "^17.1.0",
     "argon2": "^0.25.1",
     "csprng": "^0.1.2",
     "generate-password": "^1.4.2",
