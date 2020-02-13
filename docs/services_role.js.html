@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>
-      models/user.js - Documentation
+      services/role.js - Documentation
   </title>
 
   <link href="https://www.braintreepayments.com/images/favicon-ccda0b14.png" rel="icon" type="image/png">
@@ -83,7 +83,7 @@
   <div id="main">
     
       <h1 class="page-title">
-        models/user.js
+        services/role.js
       </h1>
     
 
@@ -94,80 +94,74 @@
   <article>
     <pre class="prettyprint source linenums"><code>'use strict';
 
-const Model = require('./helpers');
-const Joi = require('@hapi/joi');
+const Schmervice = require('schmervice');
 
 /**
- * @class User
- * @extends {Model}
+ * @class RoleService
  */
-class User extends Model {
+class RoleService extends Schmervice.Service {
 
-    /**
-     * @readonly
-     * @static
-     */
-    static get tableName() {
+    initialize() {
 
-        return 'Users';
+        this.Role = this.server.models().Role;
     }
 
     /**
-     * @readonly
-     * @static
-     */
-    static get joiSchema() {
+    * Create a new user role
+    * @param {string} name - The name of the role
+    * @returns {Role} The new role object
+    */
+    async create(name, txn) {
 
-        return Joi.object({
-            id: Joi.number().integer().greater(0),
-            roleId: Joi.number().allow(null),
-            name: Joi.string().min(6).max(255).allow(null),
-            username: Joi.string().min(6).max(255).required(),
-            email: Joi.string().email().min(6).max(255).allow(null),
-            password: Joi.binary().required(),
-            loginAttempts: Joi.number().integer().min(0),
-            forgotPasswordToken: Joi.string().max(255).allow(null),
-            forgotPasswordExpiresAt: Joi.date().iso().allow(null),
-            passwordExpiresOn: Joi.date().iso().allow(null),
-            archivedAt: Joi.date().iso().allow(null),
-            createdAt: Joi.date().iso(),
-            updatedAt: Joi.date().iso(),
-            role: Joi.object().allow(null)
-        });
+        return await this.Role.query(txn).insert({ name }).returning('*');
     }
 
     /**
-     * @readonly
-     * @static
+     * Get all user roles
+     * @returns [Role] An array of user roles
      */
-    static get relationMappings() {
+    async getAll(txn) {
 
-        const Role = require('./role');
-
-        return {
-            role: {
-                relation: Model.BelongsToOneRelation,
-                modelClass: Role,
-                join: {
-                    from: 'Users.roleId',
-                    to: 'Roles.id'
-                }
-            }
-        };
+        return await this.Role.query(txn);
     }
 
-    $beforeInsert() {
+    /**
+     * Get user role by ID
+     * @returns {Role} A single user role
+     */
+    async getById(id, txn) {
 
-        this.createdAt = this.updatedAt = new Date().toISOString();
+        return await this.Role.query(txn).findById(id);
     }
 
-    $beforeUpdate() {
+    /**
+     * Get user role by name
+     * @returns {Role} A single user role
+     */
+    async getByName(name, txn) {
 
-        this.updatedAt = new Date().toISOString();
+        return await this.Role.query(txn).findOne({ name });
+    }
+
+    /**
+     * Update a user role
+     * @returns {Role} A single user role
+     */
+    async update(role, txn) {
+
+        return await this.Role.query(txn).patch(role).findById(role.id).returning('*');
+    }
+
+    /**
+     * Delete a user role
+     */
+    async delete(id, txn) {
+
+        return await this.Role.query(txn).deleteById(id);
     }
 }
 
-module.exports = User;
+module.exports = RoleService;
 </code></pre>
   </article>
 </section>
