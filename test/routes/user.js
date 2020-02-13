@@ -18,7 +18,7 @@ describe('User Route', () => {
 
         const authService = internals.server.services().authService;
 
-        await authService.register(Constants.TEST_USER_NAME, `userRoute-${Constants.TEST_USER_EMAIL}`, Constants.TEST_USER_PASSWORD);
+        await authService.register({ name: Constants.TEST_USER_NAME, username: `userRoute-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
 
         const response = await internals.server.inject({
             method: 'get',
@@ -41,6 +41,47 @@ describe('User Route', () => {
         expect(response.statusCode).to.equal(200);
         expect(response.result.data.username).to.equal(`userRoute-${Constants.TEST_USER_EMAIL}`);
         expect(response.result.data.name).to.equal('Test User');
+    });
+
+    it('update user', async () => {
+
+        const user = await internals.server.services().userService.getByUsername(`userRoute-${Constants.TEST_USER_EMAIL}`);
+
+        user.name = 'Test User Update';
+
+        const response = await internals.server.inject({
+            method: 'post',
+            url: '/user',
+            headers: {
+                Authorization: `Bearer ${internals.token}`
+            },
+            payload: user
+        });
+
+        expect(response.result.data.id).to.equal(user.id);
+        expect(response.result.data.name).to.equal('Test User Update');
+    });
+
+    it('password change fails', async () => {
+
+        const user = await internals.server.services().userService.getByUsername(`userRoute-${Constants.TEST_USER_EMAIL}`);
+        const originalPassword = user.password;
+
+        user.password = 'newpassword';
+
+        const response = await internals.server.inject({
+            method: 'post',
+            url: '/user',
+            headers: {
+                Authorization: `Bearer ${internals.token}`
+            },
+            payload: user
+        });
+
+        const updated = await internals.server.services().userService.getByUsername(`userRoute-${Constants.TEST_USER_EMAIL}`);
+
+        expect(response.result.data.id).to.equal(user.id);
+        expect(updated.password).to.equal(originalPassword);
     });
 
     after(async () => {

@@ -5,7 +5,7 @@ const Lab = require('@hapi/lab');
 const Server = require('../../../server');
 const Constants = require('../../constants');
 
-const { describe, it, before, after } = exports.lab = Lab.script();
+const { describe, it, before, afterEach } = exports.lab = Lab.script();
 const { expect } = Code;
 
 const internals = {};
@@ -37,6 +37,16 @@ describe('Register', () => {
 
     it('re-register user fails', async () => {
 
+        await internals.server.inject({
+            method: 'post',
+            url: '/register',
+            payload: {
+                name: Constants.TEST_USER_NAME,
+                username: `register-${Constants.TEST_USER_EMAIL}`,
+                password: Constants.TEST_USER_PASSWORD
+            }
+        });
+
         const response = await internals.server.inject({
             method: 'post',
             url: '/register',
@@ -50,7 +60,7 @@ describe('Register', () => {
         expect(response.statusCode).to.equal(400);
     });
 
-    after(async () => {
+    afterEach(async () => {
 
         await internals.server.services().userService.removeByUsername(`register-${Constants.TEST_USER_EMAIL}`);
     });

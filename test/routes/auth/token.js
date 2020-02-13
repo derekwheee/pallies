@@ -21,7 +21,7 @@ describe('Token', () => {
 
         const authService = internals.server.services().authService;
 
-        await authService.register(Constants.TEST_USER_NAME, `token-${Constants.TEST_USER_EMAIL}`, Constants.TEST_USER_PASSWORD);
+        await authService.register({ name: Constants.TEST_USER_NAME, username: `token-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
 
         const response = await internals.server.inject({
             method: 'get',
