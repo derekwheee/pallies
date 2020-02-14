@@ -124,7 +124,7 @@ class TokenService extends Schmervice.Service {
             exp: new Date().getTime() + 1000 * this.options.jwt.accessTokenLifespan,
             id: user.id,
             user,
-            role: user.role
+            scope: user &amp;&amp; user.role ? user.role.name : null
         }, this.options.tokenSecret, { algorithm: 'HS256' });
     }
 

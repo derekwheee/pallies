@@ -54,8 +54,8 @@ describe('Token', () => {
         const token = Jwt.decode(response.result.data.accessToken);
 
         expect(response.statusCode).to.equal(200);
-        expect(token.hasOwnProperty('role')).to.be.true();
-        expect(token.role.id).to.equal(role.id);
+        expect(token.hasOwnProperty('scope')).to.be.true();
+        expect(token.scope).to.equal(role.name);
     });
 
     afterEach(async () => {
