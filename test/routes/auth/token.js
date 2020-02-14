@@ -2,17 +2,18 @@
 
 const Code = require('@hapi/code');
 const Lab = require('@hapi/lab');
+const Jwt = require('jsonwebtoken');
 const Server = require('../../../server');
 const Constants = require('../../constants');
 
-const { describe, it, before, after } = exports.lab = Lab.script();
+const { describe, it, beforeEach, afterEach } = exports.lab = Lab.script();
 const { expect } = Code;
 
 const internals = {};
 
 describe('Token', () => {
 
-    before(async () => {
+    beforeEach(async () => {
 
         internals.server = await Server.deployment();
     });
@@ -33,7 +34,31 @@ describe('Token', () => {
         expect('accessToken' in response.result.data).to.be.true();
     });
 
-    after(async () => {
+    it('get user token with role', async () => {
+
+        const { authService, roleService } = internals.server.services();
+        const role = await roleService.create('Test Role');
+
+        await authService.register({
+            name: Constants.TEST_USER_NAME,
+            username: `token-${Constants.TEST_USER_EMAIL}`,
+            password: Constants.TEST_USER_PASSWORD,
+            roleId: role.id
+        });
+
+        const response = await internals.server.inject({
+            method: 'get',
+            url: `/token?username=token-${Constants.TEST_USER_EMAIL}&password=${Constants.TEST_USER_PASSWORD}`
+        });
+
+        const token = Jwt.decode(response.result.data.accessToken);
+
+        expect(response.statusCode).to.equal(200);
+        expect(token.hasOwnProperty('role')).to.be.true();
+        expect(token.role.id).to.equal(role.id);
+    });
+
+    afterEach(async () => {
 
         const user = await internals.server.services().userService.getByUsername(`token-${Constants.TEST_USER_EMAIL}`);
 
@@ -43,5 +68,7 @@ describe('Token', () => {
         catch (err) {}
 
         await internals.server.services().userService.removeByUsername(`token-${Constants.TEST_USER_EMAIL}`);
+
+        await internals.server.services().roleService.deleteByName('Test Role');
     });
 });

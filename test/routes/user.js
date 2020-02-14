@@ -18,7 +18,7 @@ describe('User Route', () => {
 
         const authService = internals.server.services().authService;
 
-        await authService.register({ name: Constants.TEST_USER_NAME, username: `userRoute-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
+        internals.user = await authService.register({ name: Constants.TEST_USER_NAME, username: `userRoute-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
 
         const response = await internals.server.inject({
             method: 'get',
@@ -39,8 +39,9 @@ describe('User Route', () => {
         });
 
         expect(response.statusCode).to.equal(200);
-        expect(response.result.data.username).to.equal(`userRoute-${Constants.TEST_USER_EMAIL}`);
-        expect(response.result.data.name).to.equal('Test User');
+        expect(response.result.data.id).to.equal(internals.user.id);
+        expect(response.result.data.user.id).to.equal(internals.user.id);
+        expect(response.result.data.user.username).to.equal(internals.user.username);
     });
 
     it('update user', async () => {
