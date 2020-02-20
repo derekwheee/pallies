@@ -96,11 +96,11 @@ describe('Auth Service', () => {
 
         const authService = internals.server.services().authService;
 
-        const newUser = await authService.invite('INVITE USER', 'inviteuser@test.com');
+        const newUser = await authService.invite({ name: 'INVITE USER', username: 'inviteuser@test.com' });
 
         expect(newUser).to.exist();
         expect(newUser.username).to.equal('inviteuser@test.com');
-        expect(newUser.forgotPasswordToken).to.not.be.undefined();
+        expect(newUser.forgotPasswordToken).to.exist();
 
         await internals.server.services().userService.removeByUsername('inviteuser@test.com');
 

@@ -35,8 +35,10 @@ describe('Invite User', () => {
             method: 'post',
             url: '/invite',
             payload: {
-                name: Constants.TEST_USER_NAME,
-                username: `invite-${Constants.TEST_USER_EMAIL}`
+                user: {
+                    name: Constants.TEST_USER_NAME,
+                    username: `invite-${Constants.TEST_USER_EMAIL}`
+                }
             }
         });
 
@@ -52,12 +54,66 @@ describe('Invite User', () => {
                 Authorization: `Bearer ${internals.token.accessToken}`
             },
             payload: {
-                name: Constants.TEST_USER_NAME,
-                username: `invite-${Constants.TEST_USER_EMAIL}`
+                user: {
+                    name: Constants.TEST_USER_NAME,
+                    username: `invite-${Constants.TEST_USER_EMAIL}`
+                }
             }
         });
 
         expect(result.statusCode).to.equal(200);
+    });
+
+    it('send invite with role name', async () => {
+
+        const role = await internals.server.services().roleService.create('Test Role');
+
+        const { result } = await internals.server.inject({
+            method: 'post',
+            url: '/invite',
+            headers: {
+                Authorization: `Bearer ${internals.token.accessToken}`
+            },
+            payload: {
+                user: {
+                    name: Constants.TEST_USER_NAME,
+                    username: `invite-${Constants.TEST_USER_EMAIL}`
+                },
+                role: 'Test Role'
+            }
+        });
+
+        expect(result.statusCode).to.equal(200);
+        expect(result.data.roleId).to.equal(role.id);
+
+        await internals.server.services().userService.removeByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
+        await internals.server.services().roleService.delete(role.id);
+    });
+
+    it('send invite with role id', async () => {
+
+        const role = await internals.server.services().roleService.create('Test Role');
+
+        const { result } = await internals.server.inject({
+            method: 'post',
+            url: '/invite',
+            headers: {
+                Authorization: `Bearer ${internals.token.accessToken}`
+            },
+            payload: {
+                user: {
+                    name: Constants.TEST_USER_NAME,
+                    username: `invite-${Constants.TEST_USER_EMAIL}`,
+                    roleId: role.id
+                }
+            }
+        });
+
+        expect(result.statusCode).to.equal(200);
+        expect(result.data.roleId).to.equal(role.id);
+
+        await internals.server.services().userService.removeByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
+        await internals.server.services().roleService.delete(role.id);
     });
 
     it('invite existing user', async () => {
@@ -77,8 +133,10 @@ describe('Invite User', () => {
                 Authorization: `Bearer ${internals.token.accessToken}`
             },
             payload: {
-                name: Constants.TEST_USER_NAME,
-                username: `invite-${Constants.TEST_USER_EMAIL}`
+                user: {
+                    name: Constants.TEST_USER_NAME,
+                    username: `invite-${Constants.TEST_USER_EMAIL}`
+                }
             }
         });
 
@@ -103,8 +161,10 @@ describe('Invite User', () => {
                 Authorization: `Bearer ${internals.token.accessToken}`
             },
             payload: {
-                name: Constants.TEST_USER_NAME,
-                username: `invite-${Constants.TEST_USER_EMAIL}`,
+                user: {
+                    name: Constants.TEST_USER_NAME,
+                    username: `invite-${Constants.TEST_USER_EMAIL}`
+                },
                 force: true
             }
         });
@@ -124,7 +184,7 @@ describe('Invite User', () => {
         try {
             await internals.server.services().tokenService.clearRefreshTokens(user);
         }
-        catch (err) {}
+        catch (err) { }
 
         await internals.server.services().userService.removeByUsername(`auth-${Constants.TEST_USER_EMAIL}`);
     });
