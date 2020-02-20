@@ -227,15 +227,14 @@ class AuthService extends Schmervice.Service {
     /**
     * Get a user invite token
     * @async
-    * @param {object} request - The hapi request object
-    * @param {string} name - The new user's name
-    * @param {string} username - The new user's username
+    * @param {User} user - The new user object
     * @param {bool} force - If true will remove an existing user and send a new invite
     * @param {object} [txn] - An instance of a Knex transaction
     * @returns {User} The newly created user
     */
-    async invite(name, username, force, txn) {
+    async invite(user, force, txn) {
 
+        const { username } = user;
         const existingUser = await this.UserService.getByUsername(username, txn);
 
         if (existingUser &amp;&amp; force) {
@@ -249,7 +248,7 @@ class AuthService extends Schmervice.Service {
         // Register new user with temporary password
         const tempPassword = Csprng(128, 32);
 
-        const newUser = await this.register({ name, username, password: tempPassword }, txn);
+        const newUser = await this.register({ ...user, password: tempPassword }, txn);
 
         await this.UserService.createForgotPasswordToken(newUser);
 
