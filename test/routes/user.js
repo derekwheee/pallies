@@ -40,8 +40,7 @@ describe('User Route', () => {
 
         expect(response.statusCode).to.equal(200);
         expect(response.result.data.id).to.equal(internals.user.id);
-        expect(response.result.data.user.id).to.equal(internals.user.id);
-        expect(response.result.data.user.username).to.equal(internals.user.username);
+        expect(response.result.data.username).to.equal(internals.user.username);
     });
 
     it('update user', async () => {
@@ -50,17 +49,17 @@ describe('User Route', () => {
 
         user.name = 'Test User Update';
 
-        const response = await internals.server.inject({
+        const { result } = await internals.server.inject({
             method: 'post',
             url: '/user',
             headers: {
                 Authorization: `Bearer ${internals.token}`
             },
-            payload: user
+            payload: { user }
         });
 
-        expect(response.result.data.id).to.equal(user.id);
-        expect(response.result.data.name).to.equal('Test User Update');
+        expect(result.data.id).to.equal(user.id);
+        expect(result.data.name).to.equal('Test User Update');
     });
 
     it('password change fails', async () => {
@@ -76,13 +75,38 @@ describe('User Route', () => {
             headers: {
                 Authorization: `Bearer ${internals.token}`
             },
-            payload: user
+            payload: { user }
         });
 
         const updated = await internals.server.services().userService.getByUsername(`userRoute-${Constants.TEST_USER_EMAIL}`);
 
         expect(response.result.data.id).to.equal(user.id);
         expect(updated.password).to.equal(originalPassword);
+    });
+
+    it('update user role', async () => {
+
+        const role = await internals.server.services().roleService.create('Test Role');
+
+        const user = await internals.server.services().userService.getByUsername(`userRoute-${Constants.TEST_USER_EMAIL}`);
+
+        user.name = 'Test User Update';
+
+        const { result } = await internals.server.inject({
+            method: 'post',
+            url: '/user',
+            headers: {
+                Authorization: `Bearer ${internals.token}`
+            },
+            payload: { user, role : role.name }
+        });
+
+        expect(result.data.id).to.equal(user.id);
+        expect(result.data.roleId).to.equal(role.id);
+
+        await internals.server.services().tokenService.clearRefreshTokens(user);
+        await internals.server.services().userService.removeByUsername(`userRoute-${Constants.TEST_USER_EMAIL}`);
+        await internals.server.models().Role.query().delete().where('name', role.name);
     });
 
     after(async () => {

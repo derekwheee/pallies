@@ -62,6 +62,23 @@ describe('User Service', () => {
         expect(user.username).to.equal(`userService-${Constants.TEST_USER_EMAIL}`);
     });
 
+    it('get all users', async () => {
+
+        const server = await Server.deployment();
+        const userService = server.services().userService;
+
+        const { id } = await userService.create({
+            name: Constants.TEST_USER_NAME,
+            username: `userService-${Constants.TEST_USER_EMAIL}`,
+            password: Constants.TEST_USER_PASSWORD
+        });
+
+        const users = await userService.getAll();
+
+        expect(Array.isArray(users)).to.be.true();
+        expect(users[0].id).to.equal(id);
+    });
+
     it('update user', async () => {
 
         const server = await Server.deployment();
