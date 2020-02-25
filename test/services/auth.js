@@ -82,7 +82,7 @@ describe('Auth Service', () => {
 
         await authService.register({ name: Constants.TEST_USER_NAME, username: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
 
-        const { payload, headers } = await internals.server.inject({ method: 'GET', url: `/token?username=authService-${Constants.TEST_USER_EMAIL}&password=${Constants.TEST_USER_PASSWORD}` });
+        const { payload, headers } = await internals.server.inject({ method: 'POST', url: '/login', payload: { username: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD } });
         const refreshToken = headers['set-cookie'][0].match(/=([^;]+)/)[1];
 
         const newTokens = await authService.reauthorize(refreshToken);
@@ -114,8 +114,8 @@ describe('Auth Service', () => {
 
         const user = await authService.forgotPassword(`authService-${Constants.TEST_USER_EMAIL}`);
 
-        expect(user.hasOwnProperty('forgotPasswordToken')).to.be.true();
-        expect(user.hasOwnProperty('forgotPasswordExpiresAt')).to.be.true();
+        expect(user.hasOwnProperty('hash')).to.be.true();
+        expect(user.hasOwnProperty('token')).to.be.true();
     });
 
     it('reset password', async () => {
