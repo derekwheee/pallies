@@ -164,7 +164,6 @@ class AuthService extends Schmervice.Service {
             accessToken,
             refreshToken
         };
-
     }
 
     /**
@@ -272,7 +271,10 @@ class AuthService extends Schmervice.Service {
 
         await this.UserService.createForgotPasswordToken(user);
 
-        return user;
+        return {
+            hash: hashids.encode(user.username),
+            token: user.forgotPasswordToken
+        };
     }
 
     /**
