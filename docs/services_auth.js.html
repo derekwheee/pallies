@@ -272,7 +272,7 @@ class AuthService extends Schmervice.Service {
         await this.UserService.createForgotPasswordToken(user);
 
         return {
-            hash: hashids.encode(user.username),
+            hash: hashids.encode(user.id),
             token: user.forgotPasswordToken
         };
     }
@@ -300,14 +300,14 @@ class AuthService extends Schmervice.Service {
             return await this.UserService.resetPassword(user, newPassword, txn);
         }
 
-        const user = await this.UserService.getById(hashids.decode(userHash));
+        const user = await this.UserService.getById(hashids.decode(userHash)[0]);
         const expiration = Moment(user.forgotPasswordExpiresAt);
 
         if (!userHash || !forgotPasswordToken) {
             return Boom.badRequest('Invalid request');
         }
 
-        if (expiration.isAfter(Moment().format())) {
+        if (expiration.isBefore(Moment().format())) {
             return Boom.badRequest('Token has expired');
         }
 

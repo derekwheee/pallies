@@ -66,7 +66,7 @@ module.exports = new Confidence.Store({
                                 host: { $env: 'DB_HOST' },
                                 user: { $env: 'DB_USER' },
                                 password: { $env: 'DB_PASSWORD' },
-                                database: { $env: 'DB_DATABASE' }
+                                database: { $env: 'DB_NAME' }
                             },
                             migrations: {
                                 stub: Schwifty.migrationsStubPath
