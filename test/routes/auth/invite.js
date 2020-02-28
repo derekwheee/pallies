@@ -83,8 +83,13 @@ describe('Invite User', () => {
             }
         });
 
+        const user = await internals.server.services().userService.getByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
+
         expect(result.statusCode).to.equal(200);
-        expect(result.data.roleId).to.equal(role.id);
+        expect(result.data.hash).to.exist();
+        expect(result.data.token).to.exist();
+        expect(user).to.exist();
+        expect(user.forgotPasswordToken).to.equal(result.data.token);
 
         await internals.server.services().userService.removeByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
         await internals.server.services().roleService.delete(role.id);
@@ -109,8 +114,16 @@ describe('Invite User', () => {
             }
         });
 
+        const user = await internals.server.services().userService.getByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
+
         expect(result.statusCode).to.equal(200);
-        expect(result.data.roleId).to.equal(role.id);
+        expect(result.data.hash).to.exist();
+        expect(result.data.token).to.exist();
+        expect(user).to.exist();
+        expect(user.forgotPasswordToken).to.equal(result.data.token);
+
+        expect(result.statusCode).to.equal(200);
+        expect(user.roleId).to.equal(role.id);
 
         await internals.server.services().userService.removeByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
         await internals.server.services().roleService.delete(role.id);

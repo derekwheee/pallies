@@ -94,13 +94,16 @@ describe('Auth Service', () => {
 
     it('invite user', async () => {
 
-        const authService = internals.server.services().authService;
+        const { authService, userService } = internals.server.services();
 
-        const newUser = await authService.invite({ name: 'INVITE USER', username: 'inviteuser@test.com' });
+        const { token } = await authService.invite({ name: 'INVITE USER', username: 'inviteuser@test.com' });
+
+        const newUser = await userService.getByUsername('inviteuser@test.com');
 
         expect(newUser).to.exist();
         expect(newUser.username).to.equal('inviteuser@test.com');
         expect(newUser.forgotPasswordToken).to.exist();
+        expect(newUser.forgotPasswordToken).to.equal(token);
 
         await internals.server.services().userService.removeByUsername('inviteuser@test.com');
 
