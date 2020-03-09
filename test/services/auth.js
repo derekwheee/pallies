@@ -46,6 +46,21 @@ describe('Auth Service', () => {
         expect('accessToken' in token).to.be.true();
     });
 
+    it('log out', async () => {
+
+        const { authService } = internals.server.services();
+        const { RefreshToken } = internals.server.models();
+
+        const user = await authService.register({ name: Constants.TEST_USER_NAME, username: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
+
+        await authService.logout({ id: user.id });
+
+        const tokens = await RefreshToken.query().where({ userId: user.id });
+
+        expect(tokens).to.be.an.array();
+        expect(tokens.length).to.equal(0);
+    });
+
     it('verify password', async () => {
 
         const authService = internals.server.services().authService;
