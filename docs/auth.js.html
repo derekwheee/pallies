@@ -131,7 +131,7 @@ class AuthService extends Schmervice.Service {
             return await this.UserService.create({ name, email, password }, txn);
         }
         catch (err) {
-            return Boom.badRequest(`${email} is already registered`);
+            throw Boom.badRequest(`${email} is already registered`);
         }
     }
 
@@ -147,13 +147,13 @@ class AuthService extends Schmervice.Service {
         const user = await this.UserService.getByUsername(email);
 
         if (!user) {
-            return Boom.unauthorized('Email or password is incorrect');
+            throw Boom.unauthorized('Email or password is incorrect');
         }
 
         const isValidPassword  = await this.verifyPassword(user, password);
 
         if (!isValidPassword) {
-            return Boom.unauthorized('Email or password is invalid');
+            throw Boom.unauthorized('Email or password is invalid');
         }
 
         const accessToken = this.TokenService.createAccessToken(user);
@@ -217,7 +217,7 @@ class AuthService extends Schmervice.Service {
     async reauthorize(token) {
 
         if (!token) {
-            return Boom.badRequest('No token passed for reauthorization');
+            throw Boom.badRequest('No token passed for reauthorization');
         }
 
         return await this.TokenService.validateRefreshToken(token);
@@ -243,7 +243,7 @@ class AuthService extends Schmervice.Service {
             await this.UserService.remove(existingUser.id, txn);
         }
         else if (existingUser &amp;&amp; !force) {
-            return Boom.badRequest(`${email} is already registered`);
+            throw Boom.badRequest(`${email} is already registered`);
         }
 
         // Register new user with temporary password
@@ -258,7 +258,7 @@ class AuthService extends Schmervice.Service {
         }
         catch (err) {
             await this.UserService.remove(existingUser.id, txn);
-            return Boom.badRequest(`${email} could not be invited`);
+            throw Boom.badRequest(`${email} could not be invited`);
         }
 
         return newUser;
@@ -276,7 +276,7 @@ class AuthService extends Schmervice.Service {
         const user = await this.UserService.getByUsername(email, txn);
 
         if (!user) {
-            return Boom.badRequest(`${email} does not exist`);
+            throw Boom.badRequest(`${email} does not exist`);
         }
 
         await this.UserService.createForgotPasswordToken(user);
@@ -301,7 +301,7 @@ class AuthService extends Schmervice.Service {
             const isValidPassword = await this.verifyPassword(user, oldPassword);
 
             if (!isValidPassword) {
-                return Boom.unauthorized('Password is invalid');
+                throw Boom.unauthorized('Password is invalid');
             }
 
             return await this.UserService.resetPassword(user, newPassword, txn);
@@ -311,15 +311,15 @@ class AuthService extends Schmervice.Service {
         const expiration = Moment(user.forgotPasswordExpiresAt);
 
         if (!userHash || !forgotPasswordToken) {
-            return Boom.badRequest('Invalid request');
+            throw Boom.badRequest('Invalid request');
         }
 
         if (expiration.isAfter(Moment().format())) {
-            return Boom.badRequest('Token has expired');
+            throw Boom.badRequest('Token has expired');
         }
 
         if (forgotPasswordToken !== user.forgotPasswordToken) {
-            return Boom.badRequest('Invalid token');
+            throw Boom.badRequest('Invalid token');
         }
 
         return await this.UserService.resetPassword(user, newPassword, txn);

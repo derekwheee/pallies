@@ -138,7 +138,7 @@ describe('User Service', () => {
     it('create forgot password token', async () => {
 
         const server = await Server.deployment();
-        const userService = server.services().userService;
+        const { userService, tokenService } = server.services();
 
         const user = await userService.create({
             name: Constants.TEST_USER_NAME,
@@ -146,7 +146,7 @@ describe('User Service', () => {
             password: Constants.TEST_USER_PASSWORD
         });
 
-        await userService.createForgotPasswordToken(user);
+        await tokenService.createForgotPasswordToken(user);
 
         expect(user.forgotPasswordToken).to.exist();
         expect(user.forgotPasswordExpiresAt).to.exist();
@@ -156,7 +156,7 @@ describe('User Service', () => {
     it('reset password', async () => {
 
         const server = await Server.deployment();
-        const userService = server.services().userService;
+        const { userService, tokenService } = server.services();
 
         const user = await userService.create({
             name: Constants.TEST_USER_NAME,
@@ -168,7 +168,7 @@ describe('User Service', () => {
 
         expect(validatePassword).to.be.true();
 
-        await userService.resetPassword(user, 'test321?');
+        await tokenService.resetPassword(user, 'test321?');
 
         const updatedUser = await userService.getById(user.id);
         const validateNewPassword = await Argon2.verify(updatedUser.password.toString(), Constants.TEST_USER_PASSWORD);

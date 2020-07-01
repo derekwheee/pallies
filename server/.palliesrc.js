@@ -19,15 +19,6 @@ module.exports = {
         production: false,
         development: true
     },
-    requireSSL: {
-        $filter: {
-            $env: 'NODE_ENV'
-        },
-        $default: true,
-        production: true,
-        development: false,
-        test: false
-    },
     useCSRFTokens: {
         $filter: {
             $env: 'NODE_ENV'

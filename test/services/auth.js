@@ -141,7 +141,7 @@ describe('Auth Service', () => {
         const authService = internals.server.services().authService;
         const user = await authService.register({ name: Constants.TEST_USER_NAME, username: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
 
-        await authService.forgotPassword(user.email);
+        await authService.forgotPassword(user.username);
         await authService.resetPassword({ id: user.id }, Constants.TEST_USER_PASSWORD, hashids.encode(user.id), null, 'test321?');
 
         const token = await authService.login(`authService-${Constants.TEST_USER_EMAIL}`, 'test321?');
@@ -156,7 +156,7 @@ describe('Auth Service', () => {
         const authService = internals.server.services().authService;
         const user = await authService.register({ name: Constants.TEST_USER_NAME, username: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
 
-        await authService.forgotPassword(user.email);
+        await authService.forgotPassword(user.username);
 
         const request = {
             auth : {
@@ -166,10 +166,7 @@ describe('Auth Service', () => {
             }
         };
 
-        const result = await authService.resetPassword(request, null, hashids.encode(user.id), user.forgotPasswordToken, 'test321?');
-
-        expect('isBoom' in result).to.be.true();
-        expect(result.isBoom).to.be.true();
+        await expect(authService.resetPassword(request, null, hashids.encode(user.id), user.forgotPasswordToken, 'test321?')).to.reject();
 
     });
 
@@ -188,11 +185,7 @@ describe('Auth Service', () => {
             }
         };
 
-        const result = await authService.resetPassword(request, null, hashids.encode(user.id), 'badtoken', 'test321?');
-
-        expect('isBoom' in result).to.be.true();
-        expect(result.isBoom).to.be.true();
-
+        await expect(authService.resetPassword(request, null, hashids.encode(user.id), 'badtoken', 'test321?')).to.reject();
     });
 
     afterEach(async () => {

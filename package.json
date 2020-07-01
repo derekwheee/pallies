@@ -1,6 +1,6 @@
 {
   "name": "pallies",
-  "version": "0.3.12",
+  "version": "0.4.0",
   "description": "Robust user management for Hapi",
   "author": "Derek Wheelden <derek.wheelden@gmail.com>",
   "license": "MIT",
@@ -53,7 +53,7 @@
     "objection-db-errors": "^1.1.2",
     "pg": "^7.14.0",
     "rand-token": "^0.4.0",
-    "schmervice": "^1.4.0",
+    "schmervice": "^1.5.0",
     "schwifty": "^5.2.1",
     "toys": "^2.3.0"
   },
