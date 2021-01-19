@@ -1,4 +1,5 @@
 name: Bump version
+
 on:
   push:
     branches:
@@ -7,13 +8,22 @@ on:
       - 'package.json'
       - 'CHANGELOG.md'
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v2
-      with:
-        token: ${{ secrets.ACTION_TOKEN }}
-    - name: Conventional Changelog Action
-      uses: TriPSs/conventional-changelog-action@v3
-      with:
-        github-token: ${{ secrets.ACTION_TOKEN }}
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+
+      - name: install
+        run: npm i
+
+      - name: Conventional Changelog Action
+        uses: TriPSs/conventional-changelog-action@v3
+        id: changelog
+        with:
+          github-token: ${{ secrets.action_token }}
