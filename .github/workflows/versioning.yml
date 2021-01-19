@@ -7,20 +7,13 @@ on:
     paths-ignore:
       - 'package.json'
       - 'CHANGELOG.md'
+  workflow_dispatch:
 jobs:
   publish:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
-
-      - name: Use Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14.x
-
-      - name: install
-        run: npm i
 
       - name: Conventional Changelog Action
         uses: TriPSs/conventional-changelog-action@v3
