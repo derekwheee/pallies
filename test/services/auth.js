@@ -159,8 +159,8 @@ describe('Auth Service', () => {
         await authService.forgotPassword(user.username);
 
         const request = {
-            auth : {
-                credentials : {
+            auth: {
+                credentials: {
                     id: user.id
                 }
             }
@@ -178,8 +178,8 @@ describe('Auth Service', () => {
         await authService.forgotPassword(user.username);
 
         const request = {
-            auth : {
-                credentials : {
+            auth: {
+                credentials: {
                     id: user.id
                 }
             }

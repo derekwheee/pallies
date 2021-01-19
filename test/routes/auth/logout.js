@@ -44,7 +44,7 @@ describe('Logout Route', () => {
         expect(response.statusCode).to.equal(200);
 
         const user = await userService.getByUsername(`logoutRoute-${Constants.TEST_USER_EMAIL}`);
-        const tokens = await RefreshToken.query().where({ userId : user.id });
+        const tokens = await RefreshToken.query().where({ userId: user.id });
 
         expect(tokens).to.be.an.array();
         expect(tokens.length).to.equal(0);

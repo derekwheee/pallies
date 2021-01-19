@@ -98,7 +98,7 @@ describe('User Route', () => {
             headers: {
                 Authorization: `Bearer ${internals.token}`
             },
-            payload: { user, role : role.name }
+            payload: { user, role: role.name }
         });
 
         expect(result.data.id).to.equal(user.id);
