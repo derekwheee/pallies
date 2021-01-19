@@ -3,7 +3,7 @@ name: Bump version
 on:
   push:
     branches:
-      - master
+      - develop
     paths-ignore:
       - 'package.json'
       - 'CHANGELOG.md'
