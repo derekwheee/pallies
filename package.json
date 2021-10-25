@@ -62,6 +62,7 @@
     "@hapi/eslint-config-hapi": "^13.0.2",
     "@hapi/eslint-plugin-hapi": "^4.3.6",
     "@hapi/lab": "^24.1.0",
+    "babel-eslint": "^10.1.0",
     "confidence": "^5.0.0",
     "coveralls": "^3.1.0",
     "dotenv": "8.x.x",
