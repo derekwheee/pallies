@@ -71,25 +71,6 @@ describe('Auth Service', () => {
         expect(isVerified).to.be.true();
     });
 
-    it('validate token', async () => {
-
-        const authService = internals.server.services().authService;
-        const user = await authService.register({ identifier: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
-        const token = await authService.login(`authService-${Constants.TEST_USER_EMAIL}`, Constants.TEST_USER_PASSWORD);
-        const { isValid } = await authService.validate({ id: user.id }, { token: token.accessToken });
-
-        expect(isValid).to.be.true();
-    });
-
-    it('validate bad token', async () => {
-
-        const authService = internals.server.services().authService;
-
-        const { isValid } = await authService.validate('badtoken', { auth: { token: 'badtoken' } });
-
-        expect(isValid).to.be.false();
-    });
-
     it('reauthorize user', async () => {
 
         const authService = internals.server.services().authService;

@@ -4,8 +4,6 @@ const Dotenv = require('dotenv');
 const Schwifty = require('schwifty');
 const Confidence = require('confidence');
 const Toys = require('toys');
-// TODO: Merge a default config with a project-specific config
-const Pallies = require(`${__dirname}/.palliesrc`);
 
 // Pull .env into process.env
 Dotenv.config({ path: `${__dirname}/.env` });
@@ -42,7 +40,24 @@ module.exports = new Confidence.Store({
                         production: false,
                         development: true
                     },
-                    ...Pallies
+                    tokenSecret: {
+                        $filter: {
+                            $env: 'NODE_ENV'
+                        },
+                        $default: {
+                            $env: 'TOKEN_SECRET',
+                            $default: 'kissmyants'
+                        },
+                        production: {
+                            $env: 'TOKEN_SECRET'
+                        }
+                    },
+                    jwt: {
+                        useRefreshTokens: true,
+                        issuer: 'Pallies',
+                        accessTokenLifespan: 3600,
+                        refreshTokenLifespan: 604800
+                    }
                 }
             },
             {
