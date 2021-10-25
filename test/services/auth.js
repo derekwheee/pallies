@@ -27,10 +27,9 @@ describe('Auth Service', () => {
 
         const authService = internals.server.services().authService;
 
-        const user = await authService.register({ name: Constants.TEST_USER_NAME, username: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
+        const user = await authService.register({ identifier: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
 
-        expect(user.name).to.equal(Constants.TEST_USER_NAME);
-        expect(user.username).to.equal(`authService-${Constants.TEST_USER_EMAIL}`);
+        expect(user.identifier).to.equal(`authService-${Constants.TEST_USER_EMAIL}`);
         expect(user.password).to.not.equal(Constants.TEST_USER_PASSWORD);
     });
 
@@ -38,7 +37,7 @@ describe('Auth Service', () => {
 
         const authService = internals.server.services().authService;
 
-        await authService.register({ name: Constants.TEST_USER_NAME, username: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
+        await authService.register({ identifier: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
 
         const token = await authService.login(`authService-${Constants.TEST_USER_EMAIL}`, Constants.TEST_USER_PASSWORD);
 
@@ -51,7 +50,7 @@ describe('Auth Service', () => {
         const { authService } = internals.server.services();
         const { RefreshToken } = internals.server.models();
 
-        const user = await authService.register({ name: Constants.TEST_USER_NAME, username: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
+        const user = await authService.register({ identifier: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
 
         await authService.logout({ id: user.id });
 
@@ -65,9 +64,9 @@ describe('Auth Service', () => {
 
         const authService = internals.server.services().authService;
 
-        await authService.register({ name: Constants.TEST_USER_NAME, username: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
+        await authService.register({ identifier: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
 
-        const isVerified = await authService.verifyPassword({ username: `authService-${Constants.TEST_USER_EMAIL}` }, Constants.TEST_USER_PASSWORD);
+        const isVerified = await authService.verifyPassword({ identifier: `authService-${Constants.TEST_USER_EMAIL}` }, Constants.TEST_USER_PASSWORD);
 
         expect(isVerified).to.be.true();
     });
@@ -75,7 +74,7 @@ describe('Auth Service', () => {
     it('validate token', async () => {
 
         const authService = internals.server.services().authService;
-        const user = await authService.register({ name: Constants.TEST_USER_NAME, username: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
+        const user = await authService.register({ identifier: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
         const token = await authService.login(`authService-${Constants.TEST_USER_EMAIL}`, Constants.TEST_USER_PASSWORD);
         const { isValid } = await authService.validate({ id: user.id }, { token: token.accessToken });
 
@@ -95,9 +94,9 @@ describe('Auth Service', () => {
 
         const authService = internals.server.services().authService;
 
-        await authService.register({ name: Constants.TEST_USER_NAME, username: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
+        await authService.register({ identifier: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
 
-        const { payload, headers } = await internals.server.inject({ method: 'POST', url: '/login', payload: { username: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD } });
+        const { payload, headers } = await internals.server.inject({ method: 'POST', url: '/login', payload: { identifier: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD } });
         const refreshToken = headers['set-cookie'][0].match(/=([^;]+)/)[1];
 
         const newTokens = await authService.reauthorize(refreshToken);
@@ -111,16 +110,16 @@ describe('Auth Service', () => {
 
         const { authService, userService } = internals.server.services();
 
-        const { token } = await authService.invite({ name: 'INVITE USER', username: 'inviteuser@test.com' });
+        const { token } = await authService.invite({ identifier: 'inviteuser@test.com' });
 
-        const newUser = await userService.getByUsername('inviteuser@test.com');
+        const newUser = await userService.getByIdentifier('inviteuser@test.com');
 
         expect(newUser).to.exist();
-        expect(newUser.username).to.equal('inviteuser@test.com');
+        expect(newUser.identifier).to.equal('inviteuser@test.com');
         expect(newUser.forgotPasswordToken).to.exist();
         expect(newUser.forgotPasswordToken).to.equal(token);
 
-        await internals.server.services().userService.removeByUsername('inviteuser@test.com');
+        await internals.server.services().userService.removeByIdentifier('inviteuser@test.com');
 
     });
 
@@ -128,7 +127,7 @@ describe('Auth Service', () => {
 
         const authService = internals.server.services().authService;
 
-        await authService.register({ name: Constants.TEST_USER_NAME, username: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
+        await authService.register({ identifier: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
 
         const user = await authService.forgotPassword(`authService-${Constants.TEST_USER_EMAIL}`);
 
@@ -139,9 +138,9 @@ describe('Auth Service', () => {
     it('reset password', async () => {
 
         const authService = internals.server.services().authService;
-        const user = await authService.register({ name: Constants.TEST_USER_NAME, username: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
+        const user = await authService.register({ identifier: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
 
-        await authService.forgotPassword(user.username);
+        await authService.forgotPassword(user.identifier);
         await authService.resetPassword({ id: user.id }, Constants.TEST_USER_PASSWORD, hashids.encode(user.id), null, 'test321?');
 
         const token = await authService.login(`authService-${Constants.TEST_USER_EMAIL}`, 'test321?');
@@ -154,9 +153,9 @@ describe('Auth Service', () => {
     it('set new password', async () => {
 
         const authService = internals.server.services().authService;
-        const user = await authService.register({ name: Constants.TEST_USER_NAME, username: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
+        const user = await authService.register({ identifier: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
 
-        await authService.forgotPassword(user.username);
+        await authService.forgotPassword(user.identifier);
 
         const request = {
             auth: {
@@ -173,9 +172,9 @@ describe('Auth Service', () => {
     it('set new password bad token', async () => {
 
         const authService = internals.server.services().authService;
-        const user = await authService.register({ name: Constants.TEST_USER_NAME, username: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
+        const user = await authService.register({ identifier: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
 
-        await authService.forgotPassword(user.username);
+        await authService.forgotPassword(user.identifier);
 
         const request = {
             auth: {
@@ -190,13 +189,13 @@ describe('Auth Service', () => {
 
     afterEach(async () => {
 
-        const user = await internals.server.services().userService.getByUsername(`authService-${Constants.TEST_USER_EMAIL}`);
+        const user = await internals.server.services().userService.getByIdentifier(`authService-${Constants.TEST_USER_EMAIL}`);
 
         try {
             await internals.server.services().tokenService.clearRefreshTokens(user);
         }
         catch (err) {}
 
-        await internals.server.services().userService.removeByUsername(`authService-${Constants.TEST_USER_EMAIL}`);
+        await internals.server.services().userService.removeByIdentifier(`authService-${Constants.TEST_USER_EMAIL}`);
     });
 });

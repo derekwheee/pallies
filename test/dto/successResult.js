@@ -12,12 +12,12 @@ describe('Success Result', () => {
 
     it('has correct structure', () => {
 
-        const result = new SuccessResult({ username: Constants.TEST_USER_NAME });
+        const result = new SuccessResult({ identifier: Constants.TEST_USER_EMAIL });
 
         expect(result.hasOwnProperty('statusCode')).to.be.true();
         expect(result.hasOwnProperty('data')).to.be.true();
-        expect(result.data.hasOwnProperty('username')).to.be.true();
-        expect(result.data.username).to.equal(Constants.TEST_USER_NAME);
+        expect(result.data.hasOwnProperty('identifier')).to.be.true();
+        expect(result.data.identifier).to.equal(Constants.TEST_USER_EMAIL);
     });
 
     it('has correct structure: string edition', () => {

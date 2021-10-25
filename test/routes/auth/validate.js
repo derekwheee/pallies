@@ -18,7 +18,6 @@ describe('Validation', () => {
             method: 'post',
             url: '/register',
             payload: {
-                name: Constants.TEST_USER_NAME,
                 email: `validation-${Constants.TEST_USER_EMAIL}`,
                 password: Constants.TEST_USER_PASSWORD
             }
@@ -44,6 +43,6 @@ describe('Validation', () => {
 
         const server = await Server.deployment();
 
-        await server.services().userService.removeByUsername(`validation-${Constants.TEST_USER_EMAIL}`);
+        await server.services().userService.removeByIdentifier(`validation-${Constants.TEST_USER_EMAIL}`);
     });
 });

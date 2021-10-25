@@ -18,11 +18,11 @@ describe('Logout Route', () => {
 
         const authService = internals.server.services().authService;
 
-        await authService.register({ name: Constants.TEST_USER_NAME, username: `logoutRoute-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
+        await authService.register({ identifier: `logoutRoute-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
 
         const response = await internals.server.inject({
             method: 'get',
-            url: `/token?username=logoutRoute-${Constants.TEST_USER_EMAIL}&password=${Constants.TEST_USER_PASSWORD}`
+            url: `/token?identifier=logoutRoute-${Constants.TEST_USER_EMAIL}&password=${Constants.TEST_USER_PASSWORD}`
         });
 
         internals.token = response.result.data.accessToken;
@@ -43,7 +43,7 @@ describe('Logout Route', () => {
 
         expect(response.statusCode).to.equal(200);
 
-        const user = await userService.getByUsername(`logoutRoute-${Constants.TEST_USER_EMAIL}`);
+        const user = await userService.getByIdentifier(`logoutRoute-${Constants.TEST_USER_EMAIL}`);
         const tokens = await RefreshToken.query().where({ userId: user.id });
 
         expect(tokens).to.be.an.array();
@@ -62,13 +62,13 @@ describe('Logout Route', () => {
 
     after(async () => {
 
-        const user = await internals.server.services().userService.getByUsername(`logoutRoute-${Constants.TEST_USER_EMAIL}`);
+        const user = await internals.server.services().userService.getByIdentifier(`logoutRoute-${Constants.TEST_USER_EMAIL}`);
 
         try {
             await internals.server.services().tokenService.clearRefreshTokens(user);
         }
         catch (err) {}
 
-        await internals.server.services().userService.removeByUsername(`logoutRoute-${Constants.TEST_USER_EMAIL}`);
+        await internals.server.services().userService.removeByIdentifier(`logoutRoute-${Constants.TEST_USER_EMAIL}`);
     });
 });

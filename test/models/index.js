@@ -5,8 +5,7 @@ const Lab = require('@hapi/lab');
 const Server = require('../../server');
 const Model = require('../../lib/models');
 const User = require('../../lib/models/user');
-const RefreshToken = require('../../lib/models/refreshToken');
-const Role = require('../../lib/models/role');
+const RefreshToken = require('../../lib/models/refresh-token');
 
 const { describe, it, before, after } = exports.lab = Lab.script();
 const { expect } = Code;
@@ -27,21 +26,18 @@ describe('Model Entry', () => {
         expect(entry).to.be.an.array();
         expect(new entry[0]()).to.be.an.instanceof(User);
         expect(new entry[1]()).to.be.an.instanceof(RefreshToken);
-        expect(new entry[2]()).to.be.an.instanceof(Role);
     });
 
     it('uses passed options', () => {
 
         const entry = Model(null, {
             User: 'USER',
-            RefreshToken: 'REFRESH_TOKEN',
-            Role: 'ROLE'
+            RefreshToken: 'REFRESH_TOKEN'
         });
 
         expect(entry).to.be.an.array();
         expect(entry).to.include('USER');
         expect(entry).to.include('REFRESH_TOKEN');
-        expect(entry).to.include('ROLE');
     });
 
     after(async () => {

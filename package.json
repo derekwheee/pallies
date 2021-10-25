@@ -10,7 +10,6 @@
     "user",
     "management",
     "plugin",
-    "csrf",
     "token"
   ],
   "main": "lib/index.js",

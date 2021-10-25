@@ -23,8 +23,7 @@ describe('Token Service', () => {
         const userService = internals.server.services().userService;
 
         internals.user = await userService.create({
-            name: Constants.TEST_USER_NAME,
-            username: `tokenService-${Constants.TEST_USER_EMAIL}`,
+            identifier: `tokenService-${Constants.TEST_USER_EMAIL}`,
             password: Constants.TEST_USER_PASSWORD
         });
     });
@@ -98,6 +97,6 @@ describe('Token Service', () => {
         const server = await Server.deployment();
 
         await server.services().tokenService.clearRefreshTokens(internals.user);
-        await server.services().userService.removeByUsername(`tokenService-${Constants.TEST_USER_EMAIL}`);
+        await server.services().userService.removeByIdentifier(`tokenService-${Constants.TEST_USER_EMAIL}`);
     });
 });
