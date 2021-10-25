@@ -39,7 +39,7 @@
     "@hapi/crumb": "^8.0.1",
     "@hapi/glue": "^8.0.0",
     "@hapi/hapi": "^20.0.3",
-    "argon2": "^0.27.1",
+    "argon2": "^0.28.2",
     "csprng": "^0.1.2",
     "generate-password": "^1.6.0",
     "hapi-auth-jwt2": "^10.2.0",
