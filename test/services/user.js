@@ -77,7 +77,8 @@ describe('User Service', () => {
     it('update user', async () => {
 
         const server = await Server.deployment();
-        const userService = server.services().userService;
+        const { userService } = server.services();
+        const { User } = server.models();
 
         const user = await userService.create({
             identifier: `userService-${Constants.TEST_USER_EMAIL}`,
@@ -86,11 +87,15 @@ describe('User Service', () => {
 
         await userService.update({ ...user });
 
-        const updatedUser = await userService.getById(user.id);
+        const updatedUser = await User.query().findById(user.id);
 
         expect(updatedUser.id).to.equal(user.id);
         expect(updatedUser.identifier).to.equal(`userService-${Constants.TEST_USER_EMAIL}`);
-        expect(updatedUser.updatedAt).to.be.greaterThan(user.updatedAt);
+        expect(updatedUser.updatedAt).to.not.be.null();
+
+        if (user.updatedAt) {
+            expect(updatedUser.updatedAt).to.be.greaterThan(user.updatedAt);
+        }
     });
 
     it('remove user', async () => {
@@ -148,20 +153,23 @@ describe('User Service', () => {
 
         const server = await Server.deployment();
         const { userService, tokenService } = server.services();
+        const { User } = server.models();
 
         const user = await userService.create({
             identifier: `userService-${Constants.TEST_USER_EMAIL}`,
             password: Constants.TEST_USER_PASSWORD
         });
 
-        const validatePassword = await Argon2.verify(user.password.toString(), Constants.TEST_USER_PASSWORD);
+        const { password } = await User.query().findById(user.id);
+
+        const validatePassword = await Argon2.verify(password.toString(), Constants.TEST_USER_PASSWORD);
 
         expect(validatePassword).to.be.true();
 
         await tokenService.resetPassword(user, 'test321?');
 
-        const updatedUser = await userService.getById(user.id);
-        const validateNewPassword = await Argon2.verify(updatedUser.password.toString(), Constants.TEST_USER_PASSWORD);
+        const { password: updatedPassword } = await User.query().findById(user.id);
+        const validateNewPassword = await Argon2.verify(updatedPassword.toString(), Constants.TEST_USER_PASSWORD);
 
         expect(validateNewPassword).to.be.false();
     });

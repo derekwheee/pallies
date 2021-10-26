@@ -26,7 +26,7 @@ describe('Forgot Password', () => {
             password: Constants.TEST_USER_PASSWORD
         });
 
-        const { result } = await internals.server.inject({
+        const response = await internals.server.inject({
             method: 'post',
             url: '/forgotpassword',
             payload: {
@@ -34,7 +34,7 @@ describe('Forgot Password', () => {
             }
         });
 
-        expect(result.statusCode).to.equal(200);
+        expect(response.statusCode).to.equal(200);
     });
 
     after(async () => {

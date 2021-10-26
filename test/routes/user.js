@@ -25,7 +25,7 @@ describe('User Route', () => {
             url: `/token?identifier=userRoute-${Constants.TEST_USER_EMAIL}&password=${Constants.TEST_USER_PASSWORD}`
         });
 
-        internals.token = response.result.data.accessToken;
+        internals.token = response.result.accessToken;
     });
 
     it('get current user', async () => {
@@ -39,8 +39,8 @@ describe('User Route', () => {
         });
 
         expect(response.statusCode).to.equal(200);
-        expect(response.result.data.id).to.equal(internals.user.id);
-        expect(response.result.data.identifier).to.equal(internals.user.identifier);
+        expect(response.result.id).to.equal(internals.user.id);
+        expect(response.result.identifier).to.equal(internals.user.identifier);
     });
 
     it('password change fails', async () => {
@@ -61,7 +61,7 @@ describe('User Route', () => {
 
         const updated = await internals.server.services().userService.getByIdentifier(`userRoute-${Constants.TEST_USER_EMAIL}`);
 
-        expect(response.result.data.id).to.equal(user.id);
+        expect(response.result.id).to.equal(user.id);
         expect(updated.password).to.equal(originalPassword);
     });
 

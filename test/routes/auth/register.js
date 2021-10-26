@@ -28,9 +28,8 @@ describe('Register', () => {
             }
         });
 
-        expect(result.statusCode).to.equal(200);
-        expect(result.data.identifier).to.equal(`register-${Constants.TEST_USER_EMAIL}`);
-        expect('password' in result.data).to.be.false();
+        expect(result.identifier).to.equal(`register-${Constants.TEST_USER_EMAIL}`);
+        expect('password' in result).to.be.false();
     });
 
     it('re-register user fails', async () => {

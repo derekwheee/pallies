@@ -25,7 +25,7 @@ describe('Logout Route', () => {
             url: `/token?identifier=logoutRoute-${Constants.TEST_USER_EMAIL}&password=${Constants.TEST_USER_PASSWORD}`
         });
 
-        internals.token = response.result.data.accessToken;
+        internals.token = response.result.accessToken;
     });
 
     it('log user out', async () => {

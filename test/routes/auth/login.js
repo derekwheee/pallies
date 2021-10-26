@@ -32,9 +32,8 @@ describe('Token', () => {
             }
         });
 
-        expect(response.statusCode).to.equal(200);
-        expect(response.result.data).to.be.a.object();
-        expect('accessToken' in response.result.data).to.be.true();
+        expect(response.result).to.be.a.object();
+        expect('accessToken' in response.result).to.be.true();
     });
 
     afterEach(async () => {

@@ -89,11 +89,12 @@ describe('Auth Service', () => {
 
     it('invite user', async () => {
 
-        const { authService, userService } = internals.server.services();
+        const { authService } = internals.server.services();
+        const { User } = internals.server.models();
 
         const { token } = await authService.invite({ identifier: 'inviteuser@test.com' });
 
-        const newUser = await userService.getByIdentifier('inviteuser@test.com');
+        const newUser = await User.query().findOne({ identifier: 'inviteuser@test.com' });
 
         expect(newUser).to.exist();
         expect(newUser.identifier).to.equal('inviteuser@test.com');
