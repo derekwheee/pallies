@@ -73,17 +73,18 @@ describe('Auth Service', () => {
 
     it('reauthorize user', async () => {
 
-        const authService = internals.server.services().authService;
+        const { authService, tokenService } = internals.server.services();
 
         await authService.register({ identifier: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
 
-        const { payload, headers } = await internals.server.inject({ method: 'POST', url: '/login', payload: { identifier: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD } });
-        const refreshToken = headers['set-cookie'][0].match(/=([^;]+)/)[1];
+        const { payload } = await internals.server.inject({ method: 'POST', url: '/login', payload: { identifier: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD } });
 
-        const newTokens = await authService.reauthorize(refreshToken);
+        const { refreshToken, accessToken } = JSON.parse(payload);
+
+        const newTokens = await tokenService.validateRefreshToken(refreshToken);
 
         expect(newTokens).to.exist();
-        expect(newTokens.accessToken).to.not.equal(payload.accessToken);
+        expect(newTokens.accessToken).to.not.equal(accessToken);
         expect('accessToken' in newTokens).to.be.true();
     });
 

@@ -34,7 +34,6 @@
   ],
   "dependencies": {
     "@hapi/boom": "^9.1.1",
-    "@hapi/crumb": "^8.0.1",
     "@hapi/glue": "^8.0.0",
     "@hapi/hapi": "^20.0.3",
     "@hapi/jwt": "^2.1.0",
@@ -50,7 +49,6 @@
     "objection": "^2.2.7",
     "objection-db-errors": "^1.1.2",
     "pg": "^8.5.1",
-    "rand-token": "^1.0.1",
     "schmervice": "^1.6.0",
     "schwifty": "^5.4.1",
     "toys": "^2.3.1"

@@ -47,7 +47,7 @@ describe('Token Service', () => {
         const token = await tokenService.createRefreshToken(internals.user);
 
         expect(token).to.exist();
-        expect(token).to.be.a.string();
+        expect(token).to.be.an.object();
     });
 
     it('validate refresh token', async () => {
@@ -65,7 +65,7 @@ describe('Token Service', () => {
 
         const tokenService = internals.server.services().tokenService;
 
-        expect(tokenService.validateRefreshToken('badtoken')).to.reject('Invalid refresh token');
+        expect(tokenService.validateRefreshToken({ token: 'badtoken' })).to.reject('Invalid refresh token');
     });
 
     it('validate expired refresh token', async () => {
@@ -80,7 +80,7 @@ describe('Token Service', () => {
                 expiredAt: new Date(new Date().getTime() - 1 * 86400000)
             });
 
-        expect(tokenService.validateRefreshToken(refreshToken.token)).to.reject('Refresh token has expired');
+        expect(tokenService.validateRefreshToken({ token: refreshToken.token })).to.reject('Refresh token has expired');
     });
 
     it('clear refresh tokens', async () => {
