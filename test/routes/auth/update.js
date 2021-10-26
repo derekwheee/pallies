@@ -2,8 +2,8 @@
 
 const Code = require('@hapi/code');
 const Lab = require('@hapi/lab');
-const Server = require('../../server');
-const Constants = require('../constants');
+const Server = require('../../../server');
+const Constants = require('../../constants');
 
 const { describe, it, before, after } = exports.lab = Lab.script();
 const { expect } = Code;
@@ -28,21 +28,6 @@ describe('User Route', () => {
         internals.token = response.result.accessToken;
     });
 
-    it('get current user', async () => {
-
-        const response = await internals.server.inject({
-            method: 'get',
-            url: '/user',
-            headers: {
-                Authorization: `Bearer ${internals.token}`
-            }
-        });
-
-        expect(response.statusCode).to.equal(200);
-        expect(response.result.id).to.equal(internals.user.id);
-        expect(response.result.identifier).to.equal(internals.user.identifier);
-    });
-
     it('password change fails', async () => {
 
         const user = await internals.server.services().userService.getByIdentifier(`userRoute-${Constants.TEST_USER_EMAIL}`);
@@ -52,7 +37,7 @@ describe('User Route', () => {
 
         const response = await internals.server.inject({
             method: 'post',
-            url: '/user',
+            url: '/update',
             headers: {
                 Authorization: `Bearer ${internals.token}`
             },
