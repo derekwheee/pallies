@@ -42,9 +42,7 @@ describe('Scoped Route', () => {
                 auth: {
                     strategy: 'jwt',
                     access: {
-                        scope: [
-                            'Test Role'
-                        ]
+                        scope: 'Test Role'
                     }
                 }
             },
@@ -61,9 +59,7 @@ describe('Scoped Route', () => {
                 auth: {
                     strategy: 'jwt',
                     access: {
-                        scope: [
-                            'Admin'
-                        ]
+                        scope: 'Admin'
                     }
                 }
             },

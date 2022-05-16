@@ -19,15 +19,6 @@ module.exports = {
         production: false,
         development: true
     },
-    useCSRFTokens: {
-        $filter: {
-            $env: 'NODE_ENV'
-        },
-        $default: true,
-        production: true,
-        development: true,
-        test: false
-    },
     jwt: {
         useRefreshTokens: true,
         issuer: 'Pallies',

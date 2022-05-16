@@ -51,11 +51,11 @@ describe('Token', () => {
             url: `/token?username=token-${Constants.TEST_USER_EMAIL}&password=${Constants.TEST_USER_PASSWORD}`
         });
 
-        const token = Jwt.token.decode(response.result.data.accessToken);
+        const { decoded: { payload } } = Jwt.token.decode(response.result.data.accessToken);
 
         expect(response.statusCode).to.equal(200);
-        expect(token.hasOwnProperty('scope')).to.be.true();
-        expect(token.scope).to.equal(role.name);
+        expect(payload.hasOwnProperty('scope')).to.be.true();
+        expect(payload.scope).to.equal(role.name);
     });
 
     afterEach(async () => {

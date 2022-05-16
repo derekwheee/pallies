@@ -26,6 +26,9 @@ module.exports = new Confidence.Store({
             },
             production: {
                 request: ['implementation']
+            },
+            test: {
+                request: ['error']
             }
         }
     },

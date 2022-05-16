@@ -6,14 +6,12 @@ const Jwt = require('@hapi/jwt');
 const Server = require('../../../server');
 const Constants = require('../../constants');
 
-console.log(Jwt);
-
 const { describe, it, beforeEach, afterEach } = exports.lab = Lab.script();
 const { expect } = Code;
 
 const internals = {};
 
-describe('Token', () => {
+describe('Login Route', () => {
 
     beforeEach(async () => {
 
@@ -61,11 +59,11 @@ describe('Token', () => {
             }
         });
 
-        const token = Jwt.token.decode(response.result.data.accessToken);
+        const { decoded: { payload } } = Jwt.token.decode(response.result.data.accessToken);
 
         expect(response.statusCode).to.equal(200);
-        expect(token.hasOwnProperty('scope')).to.be.true();
-        expect(token.scope).to.equal(role.name);
+        expect(payload.hasOwnProperty('scope')).to.be.true();
+        expect(payload.scope).to.equal(role.name);
     });
 
     afterEach(async () => {

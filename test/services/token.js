@@ -34,12 +34,12 @@ describe('Token Service', () => {
         const tokenService = internals.server.services().tokenService;
         const token = tokenService.createAccessToken(internals.user);
 
-        const decoded = Jwt.token.decode(token);
+        const { decoded: { payload } } = Jwt.token.decode(token);
 
         expect(token).to.exist();
         expect(token).to.be.a.string();
-        expect(decoded.id).to.equal(internals.user.id);
-        expect(Moment().isBefore(decoded.exp * 1000)).to.be.true();
+        expect(payload.id).to.equal(internals.user.id);
+        expect(Moment().isBefore(payload.exp * 1000)).to.be.true();
     });
 
     it('create refresh token', async () => {
