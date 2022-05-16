@@ -2,7 +2,7 @@
 
 const Code = require('@hapi/code');
 const Lab = require('@hapi/lab');
-const Jwt = require('jsonwebtoken');
+const Jwt = require('@hapi/jwt');
 const Server = require('../../../server');
 const Constants = require('../../constants');
 
@@ -51,7 +51,7 @@ describe('Token', () => {
             url: `/token?username=token-${Constants.TEST_USER_EMAIL}&password=${Constants.TEST_USER_PASSWORD}`
         });
 
-        const token = Jwt.decode(response.result.data.accessToken);
+        const token = Jwt.token.decode(response.result.data.accessToken);
 
         expect(response.statusCode).to.equal(200);
         expect(token.hasOwnProperty('scope')).to.be.true();

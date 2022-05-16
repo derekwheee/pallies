@@ -2,9 +2,11 @@
 
 const Code = require('@hapi/code');
 const Lab = require('@hapi/lab');
-const Jwt = require('jsonwebtoken');
+const Jwt = require('@hapi/jwt');
 const Server = require('../../../server');
 const Constants = require('../../constants');
+
+console.log(Jwt);
 
 const { describe, it, beforeEach, afterEach } = exports.lab = Lab.script();
 const { expect } = Code;
@@ -59,7 +61,7 @@ describe('Token', () => {
             }
         });
 
-        const token = Jwt.decode(response.result.data.accessToken);
+        const token = Jwt.token.decode(response.result.data.accessToken);
 
         expect(response.statusCode).to.equal(200);
         expect(token.hasOwnProperty('scope')).to.be.true();

@@ -1,7 +1,7 @@
 'use strict';
 
 const Dotenv = require('dotenv');
-const Schwifty = require('schwifty');
+const Schwifty = require('@hapipal/schwifty');
 const Confidence = require('confidence');
 const Toys = require('toys');
 // TODO: Merge a default config with a project-specific config
@@ -53,7 +53,7 @@ module.exports = new Confidence.Store({
                 }
             },
             {
-                plugin: 'schwifty',
+                plugin: '@hapipal/schwifty',
                 options: {
                     $filter: { $env: 'NODE_ENV' },
                     $default: {},

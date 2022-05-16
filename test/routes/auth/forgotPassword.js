@@ -27,6 +27,8 @@ describe('Forgot Password', () => {
             password: Constants.TEST_USER_PASSWORD
         });
 
+        console.log(user);
+
         const { result } = await internals.server.inject({
             method: 'post',
             url: '/forgotpassword',

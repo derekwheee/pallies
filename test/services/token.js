@@ -3,7 +3,7 @@
 const Code = require('@hapi/code');
 const Lab = require('@hapi/lab');
 const Moment = require('moment');
-const Jwt = require('jsonwebtoken');
+const Jwt = require('@hapi/jwt');
 const Server = require('../../server');
 const Constants = require('../constants');
 
@@ -34,7 +34,7 @@ describe('Token Service', () => {
         const tokenService = internals.server.services().tokenService;
         const token = tokenService.createAccessToken(internals.user);
 
-        const decoded = Jwt.decode(token);
+        const decoded = Jwt.token.decode(token);
 
         expect(token).to.exist();
         expect(token).to.be.a.string();
