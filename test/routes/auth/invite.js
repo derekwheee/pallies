@@ -31,7 +31,7 @@ describe('Invite User', () => {
 
     it('unauthenticated', async () => {
 
-        const { result } = await internals.server.inject({
+        const result = await internals.server.inject({
             method: 'post',
             url: '/invite',
             payload: {
@@ -47,7 +47,7 @@ describe('Invite User', () => {
 
     it('send invite', async () => {
 
-        const { result } = await internals.server.inject({
+        const result  = await internals.server.inject({
             method: 'post',
             url: '/invite',
             headers: {
@@ -68,7 +68,7 @@ describe('Invite User', () => {
 
         const role = await internals.server.services().roleService.create('Test Role');
 
-        const { result } = await internals.server.inject({
+        const { statusCode, result } = await internals.server.inject({
             method: 'post',
             url: '/invite',
             headers: {
@@ -85,11 +85,11 @@ describe('Invite User', () => {
 
         const user = await internals.server.services().userService.getByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
 
-        expect(result.statusCode).to.equal(200);
-        expect(result.data.hash).to.exist();
-        expect(result.data.token).to.exist();
+        expect(statusCode).to.equal(200);
+        expect(result.hash).to.exist();
+        expect(result.token).to.exist();
         expect(user).to.exist();
-        expect(user.forgotPasswordToken).to.equal(result.data.token);
+        expect(user.forgotPasswordToken).to.equal(result.token);
 
         await internals.server.services().userService.removeByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
         await internals.server.services().roleService.delete(role.id);
@@ -99,7 +99,7 @@ describe('Invite User', () => {
 
         const role = await internals.server.services().roleService.create('Test Role');
 
-        const { result } = await internals.server.inject({
+        const { statusCode, result } = await internals.server.inject({
             method: 'post',
             url: '/invite',
             headers: {
@@ -116,13 +116,11 @@ describe('Invite User', () => {
 
         const user = await internals.server.services().userService.getByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
 
-        expect(result.statusCode).to.equal(200);
-        expect(result.data.hash).to.exist();
-        expect(result.data.token).to.exist();
+        expect(statusCode).to.equal(200);
+        expect(result.hash).to.exist();
+        expect(result.token).to.exist();
         expect(user).to.exist();
-        expect(user.forgotPasswordToken).to.equal(result.data.token);
-
-        expect(result.statusCode).to.equal(200);
+        expect(user.forgotPasswordToken).to.equal(result.token);
         expect(user.roleId).to.equal(role.id);
 
         await internals.server.services().userService.removeByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
@@ -139,7 +137,7 @@ describe('Invite User', () => {
             password: Constants.TEST_USER_PASSWORD
         });
 
-        const { result } = await internals.server.inject({
+        const { statusCode, result } = await internals.server.inject({
             method: 'post',
             url: '/invite',
             headers: {
@@ -153,7 +151,7 @@ describe('Invite User', () => {
             }
         });
 
-        expect(result.statusCode).to.equal(400);
+        expect(statusCode).to.equal(400);
         expect(result.message).to.include('already registered');
     });
 
@@ -167,7 +165,7 @@ describe('Invite User', () => {
             password: Constants.TEST_USER_PASSWORD
         });
 
-        const { result } = await internals.server.inject({
+        const result = await internals.server.inject({
             method: 'post',
             url: '/invite',
             headers: {
@@ -186,6 +184,13 @@ describe('Invite User', () => {
     });
 
     afterEach(async () => {
+
+        const user = await internals.server.services().userService.getByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
+
+        try {
+            await internals.server.services().tokenService.clearRefreshTokens(user);
+        }
+        catch (err) { }
 
         await internals.server.services().userService.removeByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
     });

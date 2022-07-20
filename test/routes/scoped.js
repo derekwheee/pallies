@@ -28,12 +28,12 @@ describe('Scoped Route', () => {
 
         await authService.register(user);
 
-        const response = await internals.server.inject({
+        const { result } = await internals.server.inject({
             method: 'get',
             url: `/token?username=scopedRoute-${Constants.TEST_USER_EMAIL}&password=${Constants.TEST_USER_PASSWORD}`
         });
 
-        internals.token = response.result.data.accessToken;
+        internals.token = result.accessToken;
 
         internals.server.route({
             method: 'GET',
@@ -72,7 +72,7 @@ describe('Scoped Route', () => {
 
     it('access scoped route', async () => {
 
-        const response = await internals.server.inject({
+        const { statusCode } = await internals.server.inject({
             method: 'get',
             url: '/scoped',
             headers: {
@@ -80,12 +80,12 @@ describe('Scoped Route', () => {
             }
         });
 
-        expect(response.statusCode).to.equal(200);
+        expect(statusCode).to.equal(200);
     });
 
     it('forbidden scoped route', async () => {
 
-        const response = await internals.server.inject({
+        const { statusCode } = await internals.server.inject({
             method: 'get',
             url: '/scoped/admin',
             headers: {
@@ -93,7 +93,7 @@ describe('Scoped Route', () => {
             }
         });
 
-        expect(response.statusCode).to.equal(403);
+        expect(statusCode).to.equal(403);
     });
 
     after(async () => {

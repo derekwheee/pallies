@@ -109,3 +109,4 @@ dist
 out/
 
 .DS_Store
+stash/

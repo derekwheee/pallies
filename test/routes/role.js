@@ -20,17 +20,17 @@ describe('Role Route', () => {
 
         await authService.register({ name: Constants.TEST_USER_NAME, username: `roleRoute-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
 
-        const response = await internals.server.inject({
+        const { result } = await internals.server.inject({
             method: 'get',
             url: `/token?username=roleRoute-${Constants.TEST_USER_EMAIL}&password=${Constants.TEST_USER_PASSWORD}`
         });
 
-        internals.token = response.result.data.accessToken;
+        internals.token = result.accessToken;
     });
 
     it('create new role', async () => {
 
-        const response = await internals.server.inject({
+        const { statusCode, result } = await internals.server.inject({
             method: 'put',
             url: '/role',
             headers: {
@@ -41,15 +41,15 @@ describe('Role Route', () => {
             }
         });
 
-        expect(response.statusCode).to.equal(200);
-        expect(response.result.data.name).to.equal('Test Role');
+        expect(statusCode).to.equal(200);
+        expect(result.name).to.equal('Test Role');
     });
 
     it('get role by ID', async () => {
 
         const role = await internals.server.services().roleService.create('Test Role');
 
-        const response = await internals.server.inject({
+        const { statusCode, result } = await internals.server.inject({
             method: 'get',
             url: `/role?id=${role.id}`,
             headers: {
@@ -57,15 +57,15 @@ describe('Role Route', () => {
             }
         });
 
-        expect(response.statusCode).to.equal(200);
-        expect(response.result.data.id).to.equal(role.id);
+        expect(statusCode).to.equal(200);
+        expect(result.id).to.equal(role.id);
     });
 
     it('get role by name', async () => {
 
         const role = await internals.server.services().roleService.create('Test Role');
 
-        const response = await internals.server.inject({
+        const { statusCode, result } = await internals.server.inject({
             method: 'get',
             url: `/role?name=${role.name}`,
             headers: {
@@ -73,15 +73,15 @@ describe('Role Route', () => {
             }
         });
 
-        expect(response.statusCode).to.equal(200);
-        expect(response.result.data.name).to.equal('Test Role');
+        expect(statusCode).to.equal(200);
+        expect(result.name).to.equal('Test Role');
     });
 
     it('update role', async () => {
 
         const role = await internals.server.services().roleService.create('Test Role');
 
-        const response = await internals.server.inject({
+        const { statusCode, result } = await internals.server.inject({
             method: 'post',
             url: '/role',
             headers: {
@@ -93,16 +93,16 @@ describe('Role Route', () => {
             }
         });
 
-        expect(response.statusCode).to.equal(200);
-        expect(response.result.data.id).to.equal(role.id);
-        expect(response.result.data.name).to.equal('Updated Role');
+        expect(statusCode).to.equal(200);
+        expect(result.id).to.equal(role.id);
+        expect(result.name).to.equal('Updated Role');
     });
 
     it('delete role', async () => {
 
         const role = await internals.server.services().roleService.create('Test Role');
 
-        const response = await internals.server.inject({
+        const { statusCode } = await internals.server.inject({
             method: 'delete',
             url: `/role?id=${role.id}`,
             headers: {
@@ -112,7 +112,7 @@ describe('Role Route', () => {
 
         const deletedRole = await internals.server.services().roleService.getById(role.id);
 
-        expect(response.statusCode).to.equal(200);
+        expect(statusCode).to.equal(204);
         expect(deletedRole).to.not.exist();
     });
 

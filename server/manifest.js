@@ -30,6 +30,14 @@ module.exports = new Confidence.Store({
             test: {
                 request: ['error']
             }
+        },
+        routes: {
+            validate: {
+                failAction: (request, h, err) => {
+                    // Provide validation details in responses
+                    throw err;
+                }
+            }
         }
     },
     register: {

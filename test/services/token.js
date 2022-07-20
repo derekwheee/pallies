@@ -73,13 +73,14 @@ describe('Token Service', () => {
 
         const tokenService = internals.server.services().tokenService;
         const RefreshToken = internals.server.models().RefreshToken;
+        const token = await tokenService.createRefreshToken(internals.user);
 
-        const refreshToken = await RefreshToken.query()
-            .insert({
-                userId: internals.user.id,
-                token: 'expiredtoken',
+        const [refreshToken] = await RefreshToken.query()
+            .patch({
                 expiredAt: new Date(new Date().getTime() - 1 * 86400000)
-            });
+            })
+            .where('token', token)
+            .returning('*');
 
         expect(tokenService.validateRefreshToken(refreshToken.token)).to.reject('Refresh token has expired');
     });

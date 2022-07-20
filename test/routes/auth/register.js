@@ -19,7 +19,7 @@ describe('Register', () => {
 
     it('register user', async () => {
 
-        const { result } = await internals.server.inject({
+        const { statusCode, result } = await internals.server.inject({
             method: 'post',
             url: '/register',
             payload: {
@@ -29,10 +29,10 @@ describe('Register', () => {
             }
         });
 
-        expect(result.statusCode).to.equal(200);
-        expect(result.data.name).to.equal(Constants.TEST_USER_NAME);
-        expect(result.data.username).to.equal(`register-${Constants.TEST_USER_EMAIL}`);
-        expect('password' in result.data).to.be.false();
+        expect(statusCode).to.equal(200);
+        expect(result.name).to.equal(Constants.TEST_USER_NAME);
+        expect(result.username).to.equal(`register-${Constants.TEST_USER_EMAIL}`);
+        expect('password' in result).to.be.false();
     });
 
     it('re-register user fails', async () => {
@@ -77,9 +77,9 @@ describe('Register', () => {
             payload: user
         });
 
-        expect(response.result.data.username).to.equal(`register-${Constants.TEST_USER_EMAIL}`);
+        expect(response.result.username).to.equal(`register-${Constants.TEST_USER_EMAIL}`);
 
-        const registered = await userService.getById(response.result.data.id);
+        const registered = await userService.getById(response.result.id);
 
         expect(registered.role).to.not.be.null();
         expect(registered.role.id).to.equal(role.id);

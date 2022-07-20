@@ -20,12 +20,12 @@ describe('Logout Route', () => {
 
         await authService.register({ name: Constants.TEST_USER_NAME, username: `logoutRoute-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
 
-        const response = await internals.server.inject({
+        const { result } = await internals.server.inject({
             method: 'get',
             url: `/token?username=logoutRoute-${Constants.TEST_USER_EMAIL}&password=${Constants.TEST_USER_PASSWORD}`
         });
 
-        internals.token = response.result.data.accessToken;
+        internals.token = result.accessToken;
     });
 
     it('log user out', async () => {
@@ -33,7 +33,7 @@ describe('Logout Route', () => {
         const { userService } = internals.server.services();
         const { RefreshToken } = internals.server.models();
 
-        const response = await internals.server.inject({
+        const { statusCode } = await internals.server.inject({
             method: 'post',
             url: '/logout',
             headers: {
@@ -41,7 +41,7 @@ describe('Logout Route', () => {
             }
         });
 
-        expect(response.statusCode).to.equal(200);
+        expect(statusCode).to.equal(204);
 
         const user = await userService.getByUsername(`logoutRoute-${Constants.TEST_USER_EMAIL}`);
         const tokens = await RefreshToken.query().where({ userId: user.id });
@@ -52,12 +52,12 @@ describe('Logout Route', () => {
 
     it('log unauthenticated user out', async () => {
 
-        const response = await internals.server.inject({
+        const { statusCode } = await internals.server.inject({
             method: 'post',
             url: '/logout'
         });
 
-        expect(response.statusCode).to.equal(401);
+        expect(statusCode).to.equal(401);
     });
 
     after(async () => {

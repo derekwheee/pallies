@@ -20,17 +20,17 @@ describe('User Route', () => {
 
         internals.user = await authService.register({ name: Constants.TEST_USER_NAME, username: `userRoute-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
 
-        const response = await internals.server.inject({
+        const { result } = await internals.server.inject({
             method: 'get',
             url: `/token?username=userRoute-${Constants.TEST_USER_EMAIL}&password=${Constants.TEST_USER_PASSWORD}`
         });
 
-        internals.token = response.result.data.accessToken;
+        internals.token = result.accessToken;
     });
 
     it('get current user', async () => {
 
-        const response = await internals.server.inject({
+        const { statusCode, result } = await internals.server.inject({
             method: 'get',
             url: '/user',
             headers: {
@@ -38,9 +38,9 @@ describe('User Route', () => {
             }
         });
 
-        expect(response.statusCode).to.equal(200);
-        expect(response.result.data.id).to.equal(internals.user.id);
-        expect(response.result.data.username).to.equal(internals.user.username);
+        expect(statusCode).to.equal(200);
+        expect(result.id).to.equal(internals.user.id);
+        expect(result.username).to.equal(internals.user.username);
     });
 
     it('update user', async () => {
@@ -58,8 +58,8 @@ describe('User Route', () => {
             payload: { user }
         });
 
-        expect(result.data.id).to.equal(user.id);
-        expect(result.data.name).to.equal('Test User Update');
+        expect(result.id).to.equal(user.id);
+        expect(result.name).to.equal('Test User Update');
     });
 
     it('password change fails', async () => {
@@ -69,7 +69,7 @@ describe('User Route', () => {
 
         user.password = 'newpassword';
 
-        const response = await internals.server.inject({
+        const { result } = await internals.server.inject({
             method: 'post',
             url: '/user',
             headers: {
@@ -80,7 +80,7 @@ describe('User Route', () => {
 
         const updated = await internals.server.services().userService.getByUsername(`userRoute-${Constants.TEST_USER_EMAIL}`);
 
-        expect(response.result.data.id).to.equal(user.id);
+        expect(result.id).to.equal(user.id);
         expect(updated.password).to.equal(originalPassword);
     });
 
@@ -101,8 +101,8 @@ describe('User Route', () => {
             payload: { user, role: role.name }
         });
 
-        expect(result.data.id).to.equal(user.id);
-        expect(result.data.roleId).to.equal(role.id);
+        expect(result.id).to.equal(user.id);
+        expect(result.roleId).to.equal(role.id);
 
         await internals.server.services().tokenService.clearRefreshTokens(user);
         await internals.server.services().userService.removeByUsername(`userRoute-${Constants.TEST_USER_EMAIL}`);

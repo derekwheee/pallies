@@ -24,14 +24,14 @@ describe('Token', () => {
 
         await authService.register({ name: Constants.TEST_USER_NAME, username: `token-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
 
-        const response = await internals.server.inject({
+        const { statusCode, result } = await internals.server.inject({
             method: 'get',
             url: `/token?username=token-${Constants.TEST_USER_EMAIL}&password=${Constants.TEST_USER_PASSWORD}`
         });
 
-        expect(response.statusCode).to.equal(200);
-        expect(response.result.data).to.be.a.object();
-        expect('accessToken' in response.result.data).to.be.true();
+        expect(statusCode).to.equal(200);
+        expect(result).to.be.a.object();
+        expect('accessToken' in result).to.be.true();
     });
 
     it('get user token with role', async () => {
@@ -46,14 +46,14 @@ describe('Token', () => {
             roleId: role.id
         });
 
-        const response = await internals.server.inject({
+        const { statusCode, result } = await internals.server.inject({
             method: 'get',
             url: `/token?username=token-${Constants.TEST_USER_EMAIL}&password=${Constants.TEST_USER_PASSWORD}`
         });
 
-        const { decoded: { payload } } = Jwt.token.decode(response.result.data.accessToken);
+        const { decoded: { payload } } = Jwt.token.decode(result.accessToken);
 
-        expect(response.statusCode).to.equal(200);
+        expect(statusCode).to.equal(200);
         expect(payload.hasOwnProperty('scope')).to.be.true();
         expect(payload.scope).to.equal(role.name);
     });
