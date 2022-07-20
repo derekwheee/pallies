@@ -62,7 +62,7 @@ describe('Register', () => {
 
     it('register with role', async () => {
 
-        const { roleService, userService } = internals.server.services();
+        const { roleService, pallieService } = internals.server.services();
         const role = await roleService.create('Test Role');
         const user = {
             name: Constants.TEST_USER_NAME,
@@ -79,18 +79,18 @@ describe('Register', () => {
 
         expect(response.result.username).to.equal(`register-${Constants.TEST_USER_EMAIL}`);
 
-        const registered = await userService.getById(response.result.id);
+        const registered = await pallieService.getById(response.result.id);
 
         expect(registered.role).to.not.be.null();
         expect(registered.role.id).to.equal(role.id);
 
-        await userService.removeByUsername(`register-${Constants.TEST_USER_EMAIL}`);
+        await pallieService.removeByUsername(`register-${Constants.TEST_USER_EMAIL}`);
         await roleService.delete(role.id);
 
     });
 
     afterEach(async () => {
 
-        await internals.server.services().userService.removeByUsername(`register-${Constants.TEST_USER_EMAIL}`);
+        await internals.server.services().pallieService.removeByUsername(`register-${Constants.TEST_USER_EMAIL}`);
     });
 });

@@ -16,10 +16,10 @@ describe('Reauthorize Route', () => {
 
         internals.server = await Server.deployment();
 
-        const userService = internals.server.services().userService;
+        const pallieService = internals.server.services().pallieService;
         const authService = internals.server.services().authService;
 
-        internals.user = await userService.create({
+        internals.user = await pallieService.create({
             name: Constants.TEST_USER_NAME,
             username: `auth-${Constants.TEST_USER_EMAIL}`,
             password: Constants.TEST_USER_PASSWORD
@@ -121,14 +121,14 @@ describe('Reauthorize Route', () => {
 
     after(async () => {
 
-        const user = await internals.server.services().userService.getByUsername(`auth-${Constants.TEST_USER_EMAIL}`);
+        const user = await internals.server.services().pallieService.getByUsername(`auth-${Constants.TEST_USER_EMAIL}`);
 
         try {
             await internals.server.services().tokenService.clearRefreshTokens(user);
         }
         catch (err) { }
 
-        await internals.server.services().userService.removeByUsername(`auth-${Constants.TEST_USER_EMAIL}`);
+        await internals.server.services().pallieService.removeByUsername(`auth-${Constants.TEST_USER_EMAIL}`);
 
         await internals.server.services().roleService.deleteByName('Test Role');
     });

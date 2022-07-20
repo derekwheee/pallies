@@ -124,13 +124,13 @@ describe('Role Route', () => {
 
     after(async () => {
 
-        const user = await internals.server.services().userService.getByUsername(`roleRoute-${Constants.TEST_USER_EMAIL}`);
+        const user = await internals.server.services().pallieService.getByUsername(`roleRoute-${Constants.TEST_USER_EMAIL}`);
 
         try {
             await internals.server.services().tokenService.clearRefreshTokens(user);
         }
         catch (err) {}
 
-        await internals.server.services().userService.removeByUsername(`roleRoute-${Constants.TEST_USER_EMAIL}`);
+        await internals.server.services().pallieService.removeByUsername(`roleRoute-${Constants.TEST_USER_EMAIL}`);
     });
 });

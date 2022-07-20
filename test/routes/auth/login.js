@@ -68,14 +68,14 @@ describe('Login Route', () => {
 
     afterEach(async () => {
 
-        const user = await internals.server.services().userService.getByUsername(`token-${Constants.TEST_USER_EMAIL}`);
+        const user = await internals.server.services().pallieService.getByUsername(`token-${Constants.TEST_USER_EMAIL}`);
 
         try {
             await internals.server.services().tokenService.clearRefreshTokens(user);
         }
         catch (err) {}
 
-        await internals.server.services().userService.removeByUsername(`token-${Constants.TEST_USER_EMAIL}`);
+        await internals.server.services().pallieService.removeByUsername(`token-${Constants.TEST_USER_EMAIL}`);
 
         await internals.server.services().roleService.deleteByName('Test Role');
     });

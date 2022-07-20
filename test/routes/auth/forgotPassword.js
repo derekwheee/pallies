@@ -19,9 +19,9 @@ describe('Forgot Password', () => {
 
     it('send forgot password', async () => {
 
-        const userService = internals.server.services().userService;
+        const pallieService = internals.server.services().pallieService;
 
-        const user = await userService.create({
+        const user = await pallieService.create({
             name: Constants.TEST_USER_NAME,
             username: `forgotPassword-${Constants.TEST_USER_EMAIL}`,
             password: Constants.TEST_USER_PASSWORD
@@ -40,6 +40,6 @@ describe('Forgot Password', () => {
 
     after(async () => {
 
-        await internals.server.services().userService.removeByUsername(`forgotPassword-${Constants.TEST_USER_EMAIL}`);
+        await internals.server.services().pallieService.removeByUsername(`forgotPassword-${Constants.TEST_USER_EMAIL}`);
     });
 });

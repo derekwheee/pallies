@@ -98,14 +98,14 @@ describe('Scoped Route', () => {
 
     after(async () => {
 
-        const user = await internals.server.services().userService.getByUsername(`scopedRoute-${Constants.TEST_USER_EMAIL}`);
+        const user = await internals.server.services().pallieService.getByUsername(`scopedRoute-${Constants.TEST_USER_EMAIL}`);
 
         try {
             await internals.server.services().tokenService.clearRefreshTokens(user);
         }
         catch (err) { }
 
-        await internals.server.services().userService.removeByUsername(`scopedRoute-${Constants.TEST_USER_EMAIL}`);
+        await internals.server.services().pallieService.removeByUsername(`scopedRoute-${Constants.TEST_USER_EMAIL}`);
 
         await internals.server.models().Role.query().delete().where('name', 'Test Role');
     });

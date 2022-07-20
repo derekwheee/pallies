@@ -16,10 +16,10 @@ describe('Invite User', () => {
 
         internals.server = await Server.deployment();
 
-        const userService = internals.server.services().userService;
+        const pallieService = internals.server.services().pallieService;
         const authService = internals.server.services().authService;
 
-        const user = await userService.create({
+        const user = await pallieService.create({
             name: Constants.TEST_USER_NAME,
             username: `auth-${Constants.TEST_USER_EMAIL}`,
             password: Constants.TEST_USER_PASSWORD
@@ -83,7 +83,7 @@ describe('Invite User', () => {
             }
         });
 
-        const user = await internals.server.services().userService.getByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
+        const user = await internals.server.services().pallieService.getByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
 
         expect(statusCode).to.equal(200);
         expect(result.hash).to.exist();
@@ -91,7 +91,7 @@ describe('Invite User', () => {
         expect(user).to.exist();
         expect(user.forgotPasswordToken).to.equal(result.token);
 
-        await internals.server.services().userService.removeByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
+        await internals.server.services().pallieService.removeByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
         await internals.server.services().roleService.delete(role.id);
     });
 
@@ -114,7 +114,7 @@ describe('Invite User', () => {
             }
         });
 
-        const user = await internals.server.services().userService.getByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
+        const user = await internals.server.services().pallieService.getByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
 
         expect(statusCode).to.equal(200);
         expect(result.hash).to.exist();
@@ -123,15 +123,15 @@ describe('Invite User', () => {
         expect(user.forgotPasswordToken).to.equal(result.token);
         expect(user.roleId).to.equal(role.id);
 
-        await internals.server.services().userService.removeByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
+        await internals.server.services().pallieService.removeByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
         await internals.server.services().roleService.delete(role.id);
     });
 
     it('invite existing user', async () => {
 
-        const userService = internals.server.services().userService;
+        const pallieService = internals.server.services().pallieService;
 
-        await userService.create({
+        await pallieService.create({
             name: Constants.TEST_USER_NAME,
             username: `invite-${Constants.TEST_USER_EMAIL}`,
             password: Constants.TEST_USER_PASSWORD
@@ -157,9 +157,9 @@ describe('Invite User', () => {
 
     it('force invite existing user', async () => {
 
-        const userService = internals.server.services().userService;
+        const pallieService = internals.server.services().pallieService;
 
-        await userService.create({
+        await pallieService.create({
             name: Constants.TEST_USER_NAME,
             username: `invite-${Constants.TEST_USER_EMAIL}`,
             password: Constants.TEST_USER_PASSWORD
@@ -185,25 +185,25 @@ describe('Invite User', () => {
 
     afterEach(async () => {
 
-        const user = await internals.server.services().userService.getByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
+        const user = await internals.server.services().pallieService.getByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
 
         try {
             await internals.server.services().tokenService.clearRefreshTokens(user);
         }
         catch (err) { }
 
-        await internals.server.services().userService.removeByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
+        await internals.server.services().pallieService.removeByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
     });
 
     after(async () => {
 
-        const user = await internals.server.services().userService.getByUsername(`auth-${Constants.TEST_USER_EMAIL}`);
+        const user = await internals.server.services().pallieService.getByUsername(`auth-${Constants.TEST_USER_EMAIL}`);
 
         try {
             await internals.server.services().tokenService.clearRefreshTokens(user);
         }
         catch (err) { }
 
-        await internals.server.services().userService.removeByUsername(`auth-${Constants.TEST_USER_EMAIL}`);
+        await internals.server.services().pallieService.removeByUsername(`auth-${Constants.TEST_USER_EMAIL}`);
     });
 });
