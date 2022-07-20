@@ -30,8 +30,7 @@
     "docs": "jsdoc --configure .jsdoc.json --verbose"
   },
   "pre-commit": [
-    "lint",
-    "docs"
+    "lint"
   ],
   "dependencies": {
     "@hapi/boom": "^9.1.1",
