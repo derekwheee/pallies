@@ -60,35 +60,6 @@ describe('Register', () => {
         expect(response.statusCode).to.equal(400);
     });
 
-    it('register with role', async () => {
-
-        const { roleService, pallieService } = internals.server.services();
-        const role = await roleService.create('Test Role');
-        const user = {
-            name: Constants.TEST_USER_NAME,
-            username: `register-${Constants.TEST_USER_EMAIL}`,
-            password: Constants.TEST_USER_PASSWORD,
-            roleId: role.id
-        };
-
-        const response = await internals.server.inject({
-            method: 'post',
-            url: '/register',
-            payload: user
-        });
-
-        expect(response.result.username).to.equal(`register-${Constants.TEST_USER_EMAIL}`);
-
-        const registered = await pallieService.getById(response.result.id);
-
-        expect(registered.role).to.not.be.null();
-        expect(registered.role.id).to.equal(role.id);
-
-        await pallieService.removeByUsername(`register-${Constants.TEST_USER_EMAIL}`);
-        await roleService.delete(role.id);
-
-    });
-
     afterEach(async () => {
 
         await internals.server.services().pallieService.removeByUsername(`register-${Constants.TEST_USER_EMAIL}`);

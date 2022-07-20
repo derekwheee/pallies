@@ -64,69 +64,6 @@ describe('Invite User', () => {
         expect(result.statusCode).to.equal(200);
     });
 
-    it('send invite with role name', async () => {
-
-        const role = await internals.server.services().roleService.create('Test Role');
-
-        const { statusCode, result } = await internals.server.inject({
-            method: 'post',
-            url: '/invite',
-            headers: {
-                Authorization: `Bearer ${internals.token.accessToken}`
-            },
-            payload: {
-                user: {
-                    name: Constants.TEST_USER_NAME,
-                    username: `invite-${Constants.TEST_USER_EMAIL}`
-                },
-                role: 'Test Role'
-            }
-        });
-
-        const user = await internals.server.services().pallieService.getByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
-
-        expect(statusCode).to.equal(200);
-        expect(result.hash).to.exist();
-        expect(result.token).to.exist();
-        expect(user).to.exist();
-        expect(user.forgotPasswordToken).to.equal(result.token);
-
-        await internals.server.services().pallieService.removeByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
-        await internals.server.services().roleService.delete(role.id);
-    });
-
-    it('send invite with role id', async () => {
-
-        const role = await internals.server.services().roleService.create('Test Role');
-
-        const { statusCode, result } = await internals.server.inject({
-            method: 'post',
-            url: '/invite',
-            headers: {
-                Authorization: `Bearer ${internals.token.accessToken}`
-            },
-            payload: {
-                user: {
-                    name: Constants.TEST_USER_NAME,
-                    username: `invite-${Constants.TEST_USER_EMAIL}`,
-                    roleId: role.id
-                }
-            }
-        });
-
-        const user = await internals.server.services().pallieService.getByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
-
-        expect(statusCode).to.equal(200);
-        expect(result.hash).to.exist();
-        expect(result.token).to.exist();
-        expect(user).to.exist();
-        expect(user.forgotPasswordToken).to.equal(result.token);
-        expect(user.roleId).to.equal(role.id);
-
-        await internals.server.services().pallieService.removeByUsername(`invite-${Constants.TEST_USER_EMAIL}`);
-        await internals.server.services().roleService.delete(role.id);
-    });
-
     it('invite existing user', async () => {
 
         const pallieService = internals.server.services().pallieService;
