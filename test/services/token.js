@@ -29,10 +29,10 @@ describe('Token Service', () => {
         });
     });
 
-    it('create access token', () => {
+    it('create access token', async () => {
 
         const tokenService = internals.server.services().tokenService;
-        const token = tokenService.createAccessToken(internals.user);
+        const token = await tokenService.createAccessToken(internals.user);
 
         const { decoded: { payload } } = Jwt.token.decode(token);
 

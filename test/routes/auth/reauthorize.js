@@ -129,7 +129,5 @@ describe('Reauthorize Route', () => {
         catch (err) { }
 
         await internals.server.services().pallieService.removeByUsername(`auth-${Constants.TEST_USER_EMAIL}`);
-
-        await internals.server.services().roleService.deleteByName('Test Role');
     });
 });
