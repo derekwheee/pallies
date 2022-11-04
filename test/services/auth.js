@@ -109,18 +109,18 @@ describe('Auth Service', () => {
 
     it('invite user', async () => {
 
-        const { authService, userService } = internals.server.services();
+        const { authService, pallieService } = internals.server.services();
 
         const { token } = await authService.invite({ name: 'INVITE USER', username: 'inviteuser@test.com' });
 
-        const newUser = await userService.getByUsername('inviteuser@test.com');
+        const newUser = await pallieService.getByUsername('inviteuser@test.com');
 
         expect(newUser).to.exist();
         expect(newUser.username).to.equal('inviteuser@test.com');
         expect(newUser.forgotPasswordToken).to.exist();
         expect(newUser.forgotPasswordToken).to.equal(token);
 
-        await internals.server.services().userService.removeByUsername('inviteuser@test.com');
+        await internals.server.services().pallieService.removeByUsername('inviteuser@test.com');
 
     });
 
@@ -190,13 +190,13 @@ describe('Auth Service', () => {
 
     afterEach(async () => {
 
-        const user = await internals.server.services().userService.getByUsername(`authService-${Constants.TEST_USER_EMAIL}`);
+        const user = await internals.server.services().pallieService.getByUsername(`authService-${Constants.TEST_USER_EMAIL}`);
 
         try {
             await internals.server.services().tokenService.clearRefreshTokens(user);
         }
         catch (err) {}
 
-        await internals.server.services().userService.removeByUsername(`authService-${Constants.TEST_USER_EMAIL}`);
+        await internals.server.services().pallieService.removeByUsername(`authService-${Constants.TEST_USER_EMAIL}`);
     });
 });

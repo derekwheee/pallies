@@ -30,7 +30,7 @@ describe('Logout Route', () => {
 
     it('log user out', async () => {
 
-        const { userService } = internals.server.services();
+        const { pallieService } = internals.server.services();
         const { RefreshToken } = internals.server.models();
 
         const { statusCode } = await internals.server.inject({
@@ -43,7 +43,7 @@ describe('Logout Route', () => {
 
         expect(statusCode).to.equal(204);
 
-        const user = await userService.getByUsername(`logoutRoute-${Constants.TEST_USER_EMAIL}`);
+        const user = await pallieService.getByUsername(`logoutRoute-${Constants.TEST_USER_EMAIL}`);
         const tokens = await RefreshToken.query().where({ userId: user.id });
 
         expect(tokens).to.be.an.array();
@@ -62,13 +62,13 @@ describe('Logout Route', () => {
 
     after(async () => {
 
-        const user = await internals.server.services().userService.getByUsername(`logoutRoute-${Constants.TEST_USER_EMAIL}`);
+        const user = await internals.server.services().pallieService.getByUsername(`logoutRoute-${Constants.TEST_USER_EMAIL}`);
 
         try {
             await internals.server.services().tokenService.clearRefreshTokens(user);
         }
         catch (err) {}
 
-        await internals.server.services().userService.removeByUsername(`logoutRoute-${Constants.TEST_USER_EMAIL}`);
+        await internals.server.services().pallieService.removeByUsername(`logoutRoute-${Constants.TEST_USER_EMAIL}`);
     });
 });

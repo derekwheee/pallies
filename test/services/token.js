@@ -20,19 +20,19 @@ describe('Token Service', () => {
     before(async () => {
 
         internals.server = await Server.deployment();
-        const userService = internals.server.services().userService;
+        const pallieService = internals.server.services().pallieService;
 
-        internals.user = await userService.create({
+        internals.user = await pallieService.create({
             name: Constants.TEST_USER_NAME,
             username: `tokenService-${Constants.TEST_USER_EMAIL}`,
             password: Constants.TEST_USER_PASSWORD
         });
     });
 
-    it('create access token', () => {
+    it('create access token', async () => {
 
         const tokenService = internals.server.services().tokenService;
-        const token = tokenService.createAccessToken(internals.user);
+        const token = await tokenService.createAccessToken(internals.user);
 
         const { decoded: { payload } } = Jwt.token.decode(token);
 
@@ -99,6 +99,6 @@ describe('Token Service', () => {
         const server = await Server.deployment();
 
         await server.services().tokenService.clearRefreshTokens(internals.user);
-        await server.services().userService.removeByUsername(`tokenService-${Constants.TEST_USER_EMAIL}`);
+        await server.services().pallieService.removeByUsername(`tokenService-${Constants.TEST_USER_EMAIL}`);
     });
 });
