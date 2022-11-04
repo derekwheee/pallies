@@ -29,7 +29,7 @@ describe('Forgot Password', () => {
 
         const result = await internals.server.inject({
             method: 'post',
-            url: '/forgotpassword',
+            url: '/forgot-password',
             payload: {
                 username: user.username
             }
