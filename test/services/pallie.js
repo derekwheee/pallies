@@ -10,25 +10,40 @@ const Constants = require('../constants');
 const { describe, it, afterEach } = exports.lab = Lab.script();
 const { expect } = Code;
 
-describe('User Service', () => {
+describe('Pallie Service', () => {
 
-    it('create user', async () => {
+    it('create pallie', async () => {
 
         const server = await Server.deployment();
         const pallieService = server.services().pallieService;
 
-        const user = await pallieService.create({
+        const pallie = await pallieService.create({
             name: Constants.TEST_USER_NAME,
             username: `pallieService-${Constants.TEST_USER_EMAIL}`,
             password: Constants.TEST_USER_PASSWORD
         });
 
-        expect(user.name).to.equal(Constants.TEST_USER_NAME);
-        expect(user.username).to.equal(`pallieService-${Constants.TEST_USER_EMAIL}`);
-        expect(user.password).to.not.equal(Constants.TEST_USER_PASSWORD);
+        expect(pallie.name).to.equal(Constants.TEST_USER_NAME);
+        expect(pallie.username).to.equal(`pallieService-${Constants.TEST_USER_EMAIL}`);
+        expect(pallie.password).to.not.equal(Constants.TEST_USER_PASSWORD);
     });
 
-    it('get user by id', async () => {
+    it('create pallie without password', async () => {
+
+        const server = await Server.deployment();
+        const pallieService = server.services().pallieService;
+
+        const pallie = await pallieService.create({
+            name: Constants.TEST_USER_NAME,
+            username: `pallieService-${Constants.TEST_USER_EMAIL}`
+        });
+
+        expect(pallie.name).to.equal(Constants.TEST_USER_NAME);
+        expect(pallie.username).to.equal(`pallieService-${Constants.TEST_USER_EMAIL}`);
+        expect(pallie.password).to.be.null();
+    });
+
+    it('get pallie by id', async () => {
 
         const server = await Server.deployment();
         const pallieService = server.services().pallieService;
@@ -39,13 +54,13 @@ describe('User Service', () => {
             password: Constants.TEST_USER_PASSWORD
         });
 
-        const user = await pallieService.getById(id);
+        const pallie = await pallieService.getById(id);
 
-        expect(user.id).to.equal(id);
-        expect(user.username).to.equal(`pallieService-${Constants.TEST_USER_EMAIL}`);
+        expect(pallie.id).to.equal(id);
+        expect(pallie.username).to.equal(`pallieService-${Constants.TEST_USER_EMAIL}`);
     });
 
-    it('get user by username', async () => {
+    it('get pallie by username', async () => {
 
         const server = await Server.deployment();
         const pallieService = server.services().pallieService;
@@ -56,13 +71,13 @@ describe('User Service', () => {
             password: Constants.TEST_USER_PASSWORD
         });
 
-        const user = await pallieService.getByUsername(username);
+        const pallie = await pallieService.getByUsername(username);
 
-        expect(user.id).to.equal(id);
-        expect(user.username).to.equal(`pallieService-${Constants.TEST_USER_EMAIL}`);
+        expect(pallie.id).to.equal(id);
+        expect(pallie.username).to.equal(`pallieService-${Constants.TEST_USER_EMAIL}`);
     });
 
-    it('get all users', async () => {
+    it('get all pallies', async () => {
 
         const server = await Server.deployment();
         const pallieService = server.services().pallieService;
@@ -73,66 +88,66 @@ describe('User Service', () => {
             password: Constants.TEST_USER_PASSWORD
         });
 
-        const users = await pallieService.getAll();
+        const pallies = await pallieService.getAll();
 
-        expect(Array.isArray(users)).to.be.true();
-        expect(users[0].id).to.equal(id);
+        expect(Array.isArray(pallies)).to.be.true();
+        expect(pallies[0].id).to.equal(id);
     });
 
-    it('update user', async () => {
+    it('update pallie', async () => {
 
         const server = await Server.deployment();
         const pallieService = server.services().pallieService;
 
-        const user = await pallieService.create({
+        const pallie = await pallieService.create({
             name: Constants.TEST_USER_NAME,
             username: `pallieService-${Constants.TEST_USER_EMAIL}`,
             password: Constants.TEST_USER_PASSWORD
         });
 
-        await pallieService.update({ ...user, name: 'Updated User' });
+        await pallieService.update({ ...pallie, name: 'Updated Pallie' });
 
-        const updatedUser = await pallieService.getById(user.id);
+        const updatedPallie = await pallieService.getById(pallie.id);
 
-        expect(updatedUser.id).to.equal(user.id);
-        expect(updatedUser.username).to.equal(`pallieService-${Constants.TEST_USER_EMAIL}`);
-        expect(updatedUser.name).to.equal('Updated User');
+        expect(updatedPallie.id).to.equal(pallie.id);
+        expect(updatedPallie.username).to.equal(`pallieService-${Constants.TEST_USER_EMAIL}`);
+        expect(updatedPallie.name).to.equal('Updated Pallie');
     });
 
-    it('remove user', async () => {
+    it('remove pallie', async () => {
 
         const server = await Server.deployment();
         const pallieService = server.services().pallieService;
 
-        const user = await pallieService.create({
+        const pallie = await pallieService.create({
             name: Constants.TEST_USER_NAME,
             username: `pallieService-${Constants.TEST_USER_EMAIL}`,
             password: Constants.TEST_USER_PASSWORD
         });
 
-        await pallieService.remove(user.id);
+        await pallieService.remove(pallie.id);
 
-        const deletedUser = await pallieService.getById(user.id);
+        const deletedPallie = await pallieService.getById(pallie.id);
 
-        expect(deletedUser).to.not.exist();
+        expect(deletedPallie).to.not.exist();
     });
 
-    it('remove user by email', async () => {
+    it('remove pallie by email', async () => {
 
         const server = await Server.deployment();
         const pallieService = server.services().pallieService;
 
-        const user = await pallieService.create({
+        const pallie = await pallieService.create({
             name: Constants.TEST_USER_NAME,
             username: `pallieService-${Constants.TEST_USER_EMAIL}`,
             password: Constants.TEST_USER_PASSWORD
         });
 
-        await pallieService.removeByUsername(user.email);
+        await pallieService.removeByUsername(pallie.email);
 
-        const deletedUser = await pallieService.getByUsername(user.email);
+        const deletedPallie = await pallieService.getByUsername(pallie.email);
 
-        expect(deletedUser).to.not.exist();
+        expect(deletedPallie).to.not.exist();
     });
 
     it('create forgot password token', async () => {
@@ -140,17 +155,17 @@ describe('User Service', () => {
         const server = await Server.deployment();
         const { pallieService, tokenService } = server.services();
 
-        const user = await pallieService.create({
+        const pallie = await pallieService.create({
             name: Constants.TEST_USER_NAME,
             username: `pallieService-${Constants.TEST_USER_EMAIL}`,
             password: Constants.TEST_USER_PASSWORD
         });
 
-        await tokenService.createForgotPasswordToken(user);
+        await tokenService.createForgotPasswordToken(pallie);
 
-        expect(user.forgotPasswordToken).to.exist();
-        expect(user.forgotPasswordExpiresAt).to.exist();
-        expect(Moment().isBefore(user.forgotPasswordExpiresAt)).to.be.true();
+        expect(pallie.forgotPasswordToken).to.exist();
+        expect(pallie.forgotPasswordExpiresAt).to.exist();
+        expect(Moment().isBefore(pallie.forgotPasswordExpiresAt)).to.be.true();
     });
 
     it('reset password', async () => {
@@ -158,20 +173,20 @@ describe('User Service', () => {
         const server = await Server.deployment();
         const { pallieService, tokenService } = server.services();
 
-        const user = await pallieService.create({
+        const pallie = await pallieService.create({
             name: Constants.TEST_USER_NAME,
             username: `pallieService-${Constants.TEST_USER_EMAIL}`,
             password: Constants.TEST_USER_PASSWORD
         });
 
-        const validatePassword = await Argon2.verify(user.password.toString(), Constants.TEST_USER_PASSWORD);
+        const validatePassword = await Argon2.verify(pallie.password.toString(), Constants.TEST_USER_PASSWORD);
 
         expect(validatePassword).to.be.true();
 
-        await tokenService.resetPassword(user, 'test321?');
+        await tokenService.resetPassword(pallie, 'test321?');
 
-        const updatedUser = await pallieService.getById(user.id);
-        const validateNewPassword = await Argon2.verify(updatedUser.password.toString(), Constants.TEST_USER_PASSWORD);
+        const updatedPallie = await pallieService.getById(pallie.id);
+        const validateNewPassword = await Argon2.verify(updatedPallie.password.toString(), Constants.TEST_USER_PASSWORD);
 
         expect(validateNewPassword).to.be.false();
     });

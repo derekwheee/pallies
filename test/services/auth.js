@@ -51,11 +51,11 @@ describe('Auth Service', () => {
         const { authService } = internals.server.services();
         const { RefreshToken } = internals.server.models();
 
-        const user = await authService.register({ name: Constants.TEST_USER_NAME, username: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
+        const pallie = await authService.register({ name: Constants.TEST_USER_NAME, username: `authService-${Constants.TEST_USER_EMAIL}`, password: Constants.TEST_USER_PASSWORD });
 
-        await authService.logout({ id: user.id });
+        await authService.logout({ id: pallie.id });
 
-        const tokens = await RefreshToken.query().where({ userId: user.id });
+        const tokens = await RefreshToken.query().where({ pallieId: pallie.id });
 
         expect(tokens).to.be.an.array();
         expect(tokens.length).to.equal(0);

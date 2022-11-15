@@ -3,7 +3,7 @@
 const Path = require('path');
 const Hoek = require('@hapi/hoek');
 const Manifest = require('./server/manifest');
-const PluginConfig = require('./lib/plugins/@hapipal.schwifty').plugins.options;
+const PluginConfig = require('./lib/plugins/@hapipal.schwifty').options;
 
 // Take schwifty registration's knex option
 // but specify the plugin's migrations directory
