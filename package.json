@@ -1,6 +1,6 @@
 {
   "name": "pallies",
-  "version": "0.7.2-2",
+  "version": "0.7.2",
   "description": "Robust user management for Hapi",
   "author": "Derek Wheelden <derek.wheelden@gmail.com>",
   "license": "MIT",
