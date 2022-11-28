@@ -43,8 +43,8 @@ describe('Logout Route', () => {
 
         expect(statusCode).to.equal(204);
 
-        const user = await pallieService.getByUsername(`logoutRoute-${Constants.TEST_USER_EMAIL}`);
-        const tokens = await RefreshToken.query().where({ userId: user.id });
+        const pallie = await pallieService.getByUsername(`logoutRoute-${Constants.TEST_USER_EMAIL}`);
+        const tokens = await RefreshToken.query().where({ pallieId: pallie.id });
 
         expect(tokens).to.be.an.array();
         expect(tokens.length).to.equal(0);
