@@ -48,7 +48,7 @@
     "haute": "^4.0.0",
     "joi": "^17.3.0",
     "jsonwebtoken": "^8.5.1",
-    "knex": "^0.21.16",
+    "knex": "^2.4.0",
     "moment": "^2.29.1",
     "objection": "^2.2.7",
     "objection-db-errors": "^1.1.2",
