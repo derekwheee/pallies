@@ -47,14 +47,15 @@
     "hashids": "^2.2.8",
     "haute": "^4.0.0",
     "joi": "^17.3.0",
-    "jsonwebtoken": "^8.5.1",
-    "knex": "^0.21.16",
     "moment": "^2.29.1",
-    "objection": "^2.2.7",
+    "objection": "^3.0.1",
     "objection-db-errors": "^1.1.2",
     "pg": "^8.5.1",
     "rand-token": "^1.0.1",
     "toys": "^2.3.1"
+  },
+  "peerDependencies": {
+    "knex": "2.x.x"
   },
   "devDependencies": {
     "@hapi/code": "^8.0.2",
@@ -68,8 +69,9 @@
     "eslint": "^7.18.0",
     "hpal": "^2.6.0",
     "hpal-debug": "^1.5.0",
-    "jsdoc": "^3.6.6",
+    "jsdoc": "^4.0.2",
     "jsdoc-template": "git+https://github.com/frxnz/jsdoc-template.git",
+    "knex": "2.x.x",
     "nodemon": "^2.0.7",
     "pre-commit": "^1.2.2"
   }
