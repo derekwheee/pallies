@@ -43,7 +43,6 @@
     "argon2": "^0.28.2",
     "csprng": "^0.1.2",
     "generate-password": "^1.6.0",
-    "hapi-auth-jwt2": "^10.2.0",
     "hashids": "^2.2.8",
     "haute": "^4.0.0",
     "joi": "^17.3.0",
