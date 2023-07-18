@@ -20,10 +20,11 @@ module.exports = {
         development: true
     },
     jwt: {
-        useRefreshTokens: true,
         issuer: 'Pallies',
-        accessTokenLifespan: 3600,
-        refreshTokenLifespan: 604800
+        accessTokenLifespan: 3600
+    },
+    refreshToken: {
+        lifespan: 604800
     },
     application: {
         name: 'Pallies',
