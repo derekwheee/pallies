@@ -59,7 +59,7 @@ module.exports = new Confidence.Store({
             {
                 plugin: {
                     $filter: { $env: 'NODE_ENV' },
-                    $default: 'hpal-debug',
+                    $default: Toys.noop,
                     production: Toys.noop
                 }
             },
