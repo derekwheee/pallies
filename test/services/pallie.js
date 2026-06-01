@@ -91,7 +91,7 @@ describe('Pallie Service', () => {
         const pallies = await pallieService.getAll();
 
         expect(Array.isArray(pallies)).to.be.true();
-        expect(pallies[0].id).to.equal(id);
+        expect(pallies.some((p) => p.id === id)).to.be.true();
     });
 
     it('update pallie', async () => {

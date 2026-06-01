@@ -20,7 +20,13 @@ describe('Token Service', () => {
     before(async () => {
 
         internals.server = await Server.deployment();
-        const pallieService = internals.server.services().pallieService;
+        const { pallieService, tokenService } = internals.server.services();
+
+        const existing = await pallieService.getByUsername(`tokenService-${Constants.TEST_USER_EMAIL}`);
+        if (existing) {
+            await tokenService.clearRefreshTokens(existing);
+            await pallieService.removeByUsername(`tokenService-${Constants.TEST_USER_EMAIL}`);
+        }
 
         internals.user = await pallieService.create({
             name: Constants.TEST_USER_NAME,
@@ -66,7 +72,7 @@ describe('Token Service', () => {
 
         const tokenService = internals.server.services().tokenService;
 
-        expect(tokenService.validateRefreshToken('badtoken')).to.reject('Invalid refresh token');
+        return expect(tokenService.validateRefreshToken('badtoken')).to.reject('Invalid refresh token');
     });
 
     it('validate expired refresh token', async () => {
@@ -82,7 +88,7 @@ describe('Token Service', () => {
             .where('token', token)
             .returning('*');
 
-        expect(tokenService.validateRefreshToken(refreshToken.token)).to.reject('Refresh token has expired');
+        await expect(tokenService.validateRefreshToken(refreshToken.token)).to.reject('Refresh token has expired');
     });
 
     it('clear refresh tokens', async () => {
@@ -91,14 +97,18 @@ describe('Token Service', () => {
 
         await tokenService.createRefreshToken(internals.user);
 
-        expect(tokenService.clearRefreshTokens(internals.user)).to.not.reject();
+        await expect(tokenService.clearRefreshTokens(internals.user)).to.not.reject();
     });
 
     after(async () => {
 
-        const server = await Server.deployment();
+        const { pallieService, tokenService } = internals.server.services();
 
-        await server.services().tokenService.clearRefreshTokens(internals.user);
-        await server.services().pallieService.removeByUsername(`tokenService-${Constants.TEST_USER_EMAIL}`);
+        try {
+            await tokenService.clearRefreshTokens(internals.user);
+        }
+        catch (err) {}
+
+        await pallieService.removeByUsername(`tokenService-${Constants.TEST_USER_EMAIL}`);
     });
 });
